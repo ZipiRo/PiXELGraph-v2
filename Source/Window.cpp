@@ -1,10 +1,5 @@
 #include "Console/Window.h"
 
-int Window::WIDTH = 0;
-int Window::HEIGHT = 0;
-int Window::FONT_SIZE = 2;
-std::wstring Window::TITLE = L"";
-
 Window &Window::GetInstance() 
 {
     static Window instance;
@@ -58,10 +53,10 @@ void Window::ConstructWindow()
     { throw Error("GetConsoleScreenBufferInfo"); return; }
 
     if (HEIGHT > csbi.dwMaximumWindowSize.Y)
-    { throw Error("Screen Height / Font Height Too Big"); return; }
+    { throw Error("Screen Height / FontSize Too Big"); return; }
     
     if (WIDTH> csbi.dwMaximumWindowSize.X)
-    { throw Error("Screen Width / Font Width Too Big"); return; }
+    { throw Error("Screen Width / FontSize Too Big"); return; }
 
     LONG style = GetWindowLong(this->ConsoleWindow, GWL_STYLE);
     style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX);
@@ -69,9 +64,7 @@ void Window::ConstructWindow()
     SetWindowLong(this->ConsoleWindow, GWL_STYLE, style);
     SetWindowPos(this->ConsoleWindow, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
     
-    wchar_t s[256];
-    swprintf_s(s, 256, L"PiXELGraph - %s", TITLE.c_str());
-    SetConsoleTitleW(s);
+    SetTitle(TITLE);
     
     WindowRect = {0, 0, (short)(WIDTH - 1), (short)(HEIGHT - 1)};
     if(!SetConsoleWindowInfo(ConsoleOutputH, TRUE, &WindowRect)) 
@@ -84,8 +77,8 @@ void Window::SetParameters(int width, int height, int fontSize, const std::wstri
     if(fontSize <= 1)
         fontSize = 2;
 
-    WIDTH = width;
-    HEIGHT = height;
+    WIDTH = width / fontSize;
+    HEIGHT = height / fontSize;
     FONT_SIZE = fontSize;
     TITLE = title;
 
@@ -100,6 +93,6 @@ void Window::SetTitle(const std::wstring &title)
 {
     TITLE = title;
     wchar_t s[256];
-    swprintf_s(s, 256, L"PiXELGraph - %s", TITLE.c_str());
+    swprintf_s(s, 256, L"PiXELGraph v2.0 - %s", TITLE.c_str());
     SetConsoleTitleW(s);
 }

@@ -1,13 +1,16 @@
 #include "PiXELGraph/PiXELGraph.h"
 
-#include <iostream>
-
 class Demo : public PiXELGraph
 {
 private:
     double timer = 1;
     int counter = 0;
-    
+
+    void Start()
+    {
+        
+    }
+
     void Update() override
     {
         timer += Time::deltaTime;
@@ -20,7 +23,7 @@ private:
 
 public:
     Demo() {
-        Init(1920, 1080, 1, L"DEMO");
+        Init(100, 100, 2, L"DEMO");
     }
 };
 

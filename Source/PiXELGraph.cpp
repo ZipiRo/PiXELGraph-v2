@@ -37,3 +37,12 @@ void PiXELGraph::Run()
         HandleError(exception.what());
     }
 }
+
+void PiXELGraph::HandleError(const std::string &message)
+{
+    std::cerr << "ERROR: " << message << std::endl;
+
+    Quit();
+    std::cin.get();
+    exit(EXIT_FAILURE);
+} 

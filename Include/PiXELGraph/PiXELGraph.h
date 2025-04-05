@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "Console/ErrorSystem.h"
+#include "Console/Window.h"
 #include "Timer.h"
 
 class PiXELGraph
@@ -10,14 +12,7 @@ class PiXELGraph
 private:
     bool RUNNING = true;
 
-    void HandleError(const std::string &message)
-    {
-        std::cout << "ERROR: " << message << '\n';
-        std::cout << "Press anywhere to exit!" << '\n';
-
-        std::cin.get();
-        exit(EXIT_FAILURE);
-    } 
+    void HandleError(const std::string &message);
 
 protected:
     double MaxFPS = 60; 
