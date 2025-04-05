@@ -1,12 +1,14 @@
 #include "Console/Window.h"
 
 #include "PiXELGraph/Timer.h"
+#include "PiXELGraph/Screen.h"
 #include "PiXELGraph/PiXELGraph.h"
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
 {
     try {
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
+        Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
     }
     catch(const std::exception& exception) {
         HandleError(exception.what());
@@ -29,6 +31,12 @@ void PiXELGraph::Run()
 
                 Update();
             }
+
+            Screen::Clear();
+
+            Draw();
+
+            Screen::Display();
         }
 
         Quit();

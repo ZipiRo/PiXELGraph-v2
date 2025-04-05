@@ -5,7 +5,12 @@
 
 #include "Console/ErrorSystem.h"
 #include "Console/Window.h"
+
+class PiXELGraph;
+
 #include "Timer.h"
+#include "Color.h"
+#include "Screen.h"
 
 class PiXELGraph
 {

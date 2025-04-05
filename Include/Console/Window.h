@@ -17,10 +17,10 @@ private:
 
     void ConstructWindow();
 
-    int WIDTH;
-    int HEIGHT;
-    int FONT_SIZE;
-    std::wstring TITLE;
+    static int WIDTH;
+    static int HEIGHT;
+    static int FONT_SIZE;
+    static std::wstring TITLE;
 
 public:
     Window(const Window&) = delete;
@@ -30,4 +30,9 @@ public:
     void SetTitle(const std::wstring &title);
 
     static Window &GetInstance(); 
+
+    static int WindowWidth();
+    static int WindowHeight();
+    static int WindowFontSize();
+    static std::wstring &WindowTitle();
 };

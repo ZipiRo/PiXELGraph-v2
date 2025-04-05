@@ -1,5 +1,10 @@
 #include "Console/Window.h"
 
+int Window::WIDTH = 0;
+int Window::HEIGHT = 0;
+int Window::FONT_SIZE = 0;
+std::wstring Window::TITLE = L"";
+
 Window &Window::GetInstance() 
 {
     static Window instance;
@@ -96,3 +101,8 @@ void Window::SetTitle(const std::wstring &title)
     swprintf_s(s, 256, L"PiXELGraph v2.0 - %s", TITLE.c_str());
     SetConsoleTitleW(s);
 }
+
+int Window::WindowWidth() { return WIDTH; }
+int Window::WindowHeight()  { return HEIGHT; }
+int Window::WindowFontSize() { return FONT_SIZE; }
+std::wstring &Window::WindowTitle() { return TITLE; }

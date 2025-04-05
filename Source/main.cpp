@@ -4,26 +4,29 @@ class Demo : public PiXELGraph
 {
 private:
     double timer = 1;
-    int counter = 0;
 
-    void Start()
+    void Start() override
     {
-        
+
     }
 
     void Update() override
     {
         timer += Time::deltaTime;
-        if(timer >= 1)
-        {
-            counter++;
-            timer = 0;
+        if(timer >= 2)
+        {   
+
         } 
+    }
+
+    void Draw() override
+    {
+        DrawElipse(Screen::Width() / 2, Screen::Height() / 2, 20, Color::Red, 3);
     }
 
 public:
     Demo() {
-        Init(100, 100, 2, L"DEMO");
+        Init(640, 480, 1, L"DEMO");
     }
 };
 
