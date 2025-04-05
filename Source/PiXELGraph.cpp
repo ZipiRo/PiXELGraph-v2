@@ -1,24 +1,39 @@
+#include "Console/Window.h"
+
 #include "PiXELGraph/Timer.h"
 #include "PiXELGraph/PiXELGraph.h"
 
-#include <iostream>
-
-void PiXELGraph::Init()
+void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
 {
-    Time::GetInstance();
+    try {
+        Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
+    }
+    catch(const std::exception& exception) {
+        HandleError(exception.what());
+    }
 }
 
 void PiXELGraph::Run()
 {   
-    while (RUNNING)
-    {
-        Time::Tick();
+    try {
+        Start();
+        Time::GetInstance();
 
-        if(Time::deltaTime >= 1.0f / MaxFPS)
+        while (RUNNING)
         {
-            Time::Reset();
+            Time::Tick();
 
-            Update();
+            if(Time::deltaTime >= 1.0f / MaxFPS)
+            {
+                Time::Reset();
+
+                Update();
+            }
         }
+
+        Quit();
+    }
+    catch(const std::exception& exception) {
+        HandleError(exception.what());
     }
 }

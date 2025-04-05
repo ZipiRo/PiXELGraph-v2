@@ -20,7 +20,7 @@ private:
 
 public:
     Demo() {
-        Init();
+        Init(1920, 1080, 1, L"DEMO");
     }
 };
 
