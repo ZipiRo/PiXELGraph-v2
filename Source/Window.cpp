@@ -1,9 +1,12 @@
+#include <iostream>
+
 #include "Console/Window.h"
 
 int Window::WIDTH = 0;
 int Window::HEIGHT = 0;
 int Window::FONT_SIZE = 0;
 std::wstring Window::TITLE = L"";
+HWND Window::CONSOLE_WINDOW;
 
 Window &Window::GetInstance() 
 {
@@ -13,7 +16,7 @@ Window &Window::GetInstance()
 
 void Window::ConstructWindow()
 {
-    if(ConsoleOutputH == ((HANDLE) (LONG_PTR)-1))
+    if(ConsoleOutputH == INVALID_HANDLE_VALUE)
     { throw Error("Bad Handle"); return; }
 
     SMALL_RECT WindowRect;
@@ -63,17 +66,65 @@ void Window::ConstructWindow()
     if (WIDTH> csbi.dwMaximumWindowSize.X)
     { throw Error("Screen Width / FontSize Too Big"); return; }
 
-    LONG style = GetWindowLong(this->ConsoleWindow, GWL_STYLE);
+    LONG style = GetWindowLong(CONSOLE_WINDOW, GWL_STYLE);
     style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX);
 
-    SetWindowLong(this->ConsoleWindow, GWL_STYLE, style);
-    SetWindowPos(this->ConsoleWindow, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+    SetWindowLong(CONSOLE_WINDOW, GWL_STYLE, style);
+    SetWindowPos(CONSOLE_WINDOW, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
     
     SetTitle(TITLE);
     
     WindowRect = {0, 0, (short)(WIDTH - 1), (short)(HEIGHT - 1)};
     if(!SetConsoleWindowInfo(ConsoleOutputH, TRUE, &WindowRect)) 
     { throw Error("SetConsoleWindowInfo"); return;}
+}
+
+void Window::ResetConsole()
+{
+    SMALL_RECT WindowRect;
+    
+    DWORD ConsoleMode = 0;
+    if (GetConsoleMode(ConsoleOutputH, &ConsoleMode)) 
+    {
+        ConsoleMode &= ~ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(ConsoleOutputH, ConsoleMode);
+    }
+
+    if (GetConsoleMode(ConsoleInputtH, &ConsoleMode)) 
+    {
+        ConsoleMode |= ENABLE_QUICK_EDIT_MODE;
+        SetConsoleMode(ConsoleInputtH, ConsoleMode);
+    }
+
+    WindowRect = {0, 0, 140, 40};
+    SetConsoleWindowInfo(ConsoleOutputH, TRUE, &WindowRect);
+
+    COORD coord = {200, 100};
+    SetConsoleScreenBufferSize(ConsoleOutputH, coord);
+
+    CONSOLE_FONT_INFOEX consoleFontInfo;
+    consoleFontInfo.cbSize = sizeof(consoleFontInfo);
+    consoleFontInfo.nFont = 0;
+    consoleFontInfo.dwFontSize.X = 7; 
+    consoleFontInfo.dwFontSize.Y = 14;
+    consoleFontInfo.FontFamily = FF_DONTCARE;
+    consoleFontInfo.FontWeight = FW_NORMAL;
+    wcscpy(consoleFontInfo.FaceName, L"Consolas");
+    SetCurrentConsoleFontEx(ConsoleOutputH, FALSE, &consoleFontInfo);
+
+    LONG style = GetWindowLong(CONSOLE_WINDOW, GWL_STYLE);
+    style |= (WS_SIZEBOX | WS_MAXIMIZEBOX);
+    SetWindowLong(CONSOLE_WINDOW, GWL_STYLE, style);
+    SetWindowPos(CONSOLE_WINDOW, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+
+    SetTitle(L"Command Prompt");
+
+    SetWindowPos(CONSOLE_WINDOW, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+
+    std::system("cls");
+
+    COORD cursorPosition = {0, 0};
+    SetConsoleCursorPosition(ConsoleOutputH, cursorPosition);
 }
 
 void Window::SetParameters(int width, int height, int fontSize, const std::wstring &title)
@@ -87,7 +138,7 @@ void Window::SetParameters(int width, int height, int fontSize, const std::wstri
     FONT_SIZE = fontSize;
     TITLE = title;
 
-    ConsoleWindow = GetConsoleWindow();
+    CONSOLE_WINDOW = GetConsoleWindow();
     ConsoleOutputH = GetStdHandle(STD_OUTPUT_HANDLE);
     ConsoleInputtH = GetStdHandle(STD_INPUT_HANDLE);
 
@@ -105,4 +156,5 @@ void Window::SetTitle(const std::wstring &title)
 int Window::WindowWidth() { return WIDTH; }
 int Window::WindowHeight()  { return HEIGHT; }
 int Window::WindowFontSize() { return FONT_SIZE; }
-std::wstring &Window::WindowTitle() { return TITLE; }
+std::wstring Window::WindowTitle() { return TITLE; }
+HWND &Window::ConsoleWindow() { return CONSOLE_WINDOW; }

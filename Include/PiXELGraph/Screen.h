@@ -15,13 +15,12 @@ private:
     std::vector<Color> ScreenBuffer;
 
     void SetParameters(int WindowWidth, int WindowHeight);
+    static void Display();
+    static void Clear();
 
 public:
     Screen(const Screen&) = delete;
     void operator=(const Screen&) = delete;
-
-    static void Display();
-    static void Clear();
 
     static Screen &GetInstance();
 
@@ -34,5 +33,5 @@ public:
 
 void PlotPixel(int x, int y, Color color);
 void DrawLine(int x1, int y1, int x2, int y2, Color color);
-void DrawSquare(int x, int y, int width, int height, Color color);
+void DrawRectangle(int x, int y, int width, int height, Color color);
 void DrawElipse(int x, int y, int radius, Color color, int point_count = 30);

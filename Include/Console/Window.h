@@ -1,16 +1,17 @@
 #pragma once
 
 #include <string>
-#include <Windows.h>
+#include <windows.h>
 
 #include "ErrorSystem.h"
+#include "InputSystem.h"
 
 class Window
 {
 private:
     Window() {}    
 
-    HWND ConsoleWindow;
+    static HWND CONSOLE_WINDOW;
 
     HANDLE ConsoleOutputH;
     HANDLE ConsoleInputtH;
@@ -27,12 +28,15 @@ public:
     void operator=(const Window&) = delete;
 
     void SetParameters(int width, int height, int fontSize, const std::wstring &title);
-    void SetTitle(const std::wstring &title);
+    void ResetConsole();
 
     static Window &GetInstance(); 
 
+    static void SetTitle(const std::wstring &title);
+    
     static int WindowWidth();
     static int WindowHeight();
     static int WindowFontSize();
-    static std::wstring &WindowTitle();
+    static std::wstring WindowTitle();
+    static HWND &ConsoleWindow(); 
 };

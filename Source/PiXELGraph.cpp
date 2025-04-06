@@ -1,7 +1,4 @@
 #include "Console/Window.h"
-
-#include "PiXELGraph/Timer.h"
-#include "PiXELGraph/Screen.h"
 #include "PiXELGraph/PiXELGraph.h"
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
@@ -9,6 +6,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
     try {
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
+        Input::GetInstance();
     }
     catch(const std::exception& exception) {
         HandleError(exception.what());
@@ -20,6 +18,8 @@ void PiXELGraph::Run()
     try {
         Start();
         Time::GetInstance();
+
+        InputThread = std::thread(&PiXELGraph::InputLoop, this);
 
         while (RUNNING)
         {
@@ -46,11 +46,26 @@ void PiXELGraph::Run()
     }
 }
 
+void PiXELGraph::InputLoop()
+{
+    while (RUNNING)
+    {
+        Input::FetchInputData();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+}
+
 void PiXELGraph::HandleError(const std::string &message)
 {
-    std::cerr << "ERROR: " << message << std::endl;
+    Window::GetInstance().ResetConsole();
+    std::cout << "ERROR: " << message << std::endl;
 
     Quit();
     std::cin.get();
     exit(EXIT_FAILURE);
 } 
+
+void PiXELGraph::Exit()
+{
+    RUNNING = false;
+}

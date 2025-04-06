@@ -2,8 +2,13 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
+#include <atomic>
+
+#include "Vector2.h"
 
 #include "Console/ErrorSystem.h"
+#include "Console/InputSystem.h"
 #include "Console/Window.h"
 
 class PiXELGraph;
@@ -15,7 +20,10 @@ class PiXELGraph;
 class PiXELGraph
 {
 private:
-    bool RUNNING = true;
+    std::atomic<bool> RUNNING = true;
+    std::thread InputThread;
+
+    void InputLoop();
 
     void HandleError(const std::string &message);
 
@@ -28,6 +36,8 @@ protected:
     virtual void Update() {}
     virtual void Draw() {} 
     virtual void Quit() {}
+
+    void Exit();
 
 public:
 

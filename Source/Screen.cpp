@@ -32,20 +32,20 @@ void Screen::Display()
     std::ostringstream buffer;
     buffer << RESET_CURSOR_POSITION;
 
-    Color prevColor = Color(-1, -1, -1);
+    Color lastColor = Color(-1, -1, -1);
     for (int i = 0; i < instance.ScreenWidth * instance.ScreenHeight; i++)
     {
-        if (instance.ScreenBuffer[i] != prevColor)
+        if (instance.ScreenBuffer[i] != lastColor)
         {
             buffer << "\033[48;2;" << instance.ScreenBuffer[i].r << ';' << instance.ScreenBuffer[i].g  << ';' << instance.ScreenBuffer[i].b << "m";
-            prevColor = instance.ScreenBuffer[i];
+            lastColor = instance.ScreenBuffer[i];
         }
         buffer << ' ';
 
         if ((i + 1) % instance.ScreenWidth == 0)
         {
             buffer << "\033[0m";
-            prevColor = Color(-1, -1, -1);
+            lastColor = Color(-1, -1, -1);
         }
     }
 
@@ -63,7 +63,6 @@ int Screen::Height() { return ScreenHeight - 1; }
 
 void PlotPixel(int x, int y, Color color)
 {
-    
     if (x >= 0 && x < Screen::ScreenWidth && y >= 0 && y < Screen::ScreenHeight)
         Screen::GetInstance().ScreenBuffer[y * Screen::ScreenWidth + x] = color;
 }
@@ -170,7 +169,7 @@ void DrawLine(int x1, int y1, int x2, int y2, Color color)
     }
 }
 
-void DrawSquare(int x, int y, int width, int height, Color color)
+void DrawRectangle(int x, int y, int width, int height, Color color)
 {
     width = width + x;
     height = height + y;
