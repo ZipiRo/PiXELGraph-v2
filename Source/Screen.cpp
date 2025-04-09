@@ -41,12 +41,10 @@ void Screen::Display()
             lastColor = instance.ScreenBuffer[i];
         }
         buffer << ' ';
-
-        if ((i + 1) % instance.ScreenWidth == 0)
-        {
-            buffer << "\033[0m";
-            lastColor = Color(-1, -1, -1);
-        }
+        
+        if((i + 1) % instance.ScreenWidth == 0 && 
+            (i + 1) % (instance.ScreenWidth * instance.ScreenHeight) != 0)
+                buffer << '\n';
     }
 
     std::cout << buffer.str();

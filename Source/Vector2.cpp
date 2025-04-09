@@ -98,7 +98,7 @@ Vector2 operator*(float scalar, const Vector2& vector)
 
 Vector2 operator/(float scalar, const Vector2& vector) 
 {
-    return Vector2(scalar / vector.x, scalar / vector.y);
+    return Vector2(vector.x / scalar, vector.y / scalar);
 }
 
 Vector2 Vector2::operator*(float scalar) const 
