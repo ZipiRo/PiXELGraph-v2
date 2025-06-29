@@ -30,13 +30,13 @@ void PiXELGraph::Run()
                 Time::Reset();
 
                 Update();
+
+                Screen::Clear();
+
+                Draw();
+
+                Screen::Display();
             }
-
-            Screen::Clear();
-
-            Draw();
-
-            Screen::Display();
         }
 
         Quit();
