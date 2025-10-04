@@ -21,13 +21,20 @@ private:
             Window::SetTitle(L"FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)));
             timer = 0;
         }
-
-        ScreenMousePosition =  Input::MousePosition / Window::WindowFontSize();
+        
+        counter++;
+        ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
     }
 
     void Draw() override
     {
-        DrawLine(Screen::Width() / 2, Screen::Height() / 2, ScreenMousePosition.x, ScreenMousePosition.y, Color::Red);
+        for(int i = 0; i <= Screen::Height(); i++)
+        {
+            for(int j = 0; j <= Screen::Width(); j++)
+            {
+                PlotPixel(j, i, Color::RandomColor());
+            }
+        }
     }
 
     void Quit() override
@@ -38,7 +45,7 @@ private:
 public:
     Demo() {
         MaxFPS = 60;
-        Init(1280, 720, 3, L"DEMO");
+        Init(512, 512, 1, L"DEMO");
     }
 };
 
