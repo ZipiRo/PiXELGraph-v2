@@ -32,6 +32,7 @@ public:
 };
 
 void PlotPixel(int x, int y, Color color);
+
 void DrawLine(int x1, int y1, int x2, int y2, Color color);
 void DrawRectangle(int x, int y, int width, int height, Color color);
 void DrawElipse(int x, int y, int radius, Color color, int point_count = 30);

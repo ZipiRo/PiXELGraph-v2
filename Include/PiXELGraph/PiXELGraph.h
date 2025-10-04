@@ -11,6 +11,8 @@
 #include "Console/InputSystem.h"
 #include "Console/Window.h"
 
+#include "Console/Debug.h"
+
 class PiXELGraph;
 
 #include "Timer.h"
