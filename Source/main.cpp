@@ -23,7 +23,6 @@ private:
             timer = 0;
         }
 
-        counter++;
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
     }
 
@@ -39,7 +38,7 @@ private:
 
 public:
     Demo() {
-        MaxFPS = 99999;
+        MaxFPS = 60;
         Init(512, 512, 3, L"DEMO");
     }
 };

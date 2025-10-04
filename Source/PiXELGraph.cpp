@@ -16,6 +16,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
 void PiXELGraph::Run()
 {   
     try {
+        system("start DebugWindow.exe");
         Start();
         Time::GetInstance();
 
