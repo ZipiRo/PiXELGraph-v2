@@ -28,7 +28,6 @@ public:
     void operator=(const Window&) = delete;
 
     void SetParameters(int width, int height, int fontSize, const std::wstring &title);
-    void ResetConsole();
 
     static Window &GetInstance(); 
 

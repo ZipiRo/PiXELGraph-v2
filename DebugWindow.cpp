@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <windows.h>
 
 std::ifstream debug;
 std::ofstream debugOf;
@@ -11,6 +12,10 @@ int bufferSize, lastBufferSize;
 
 int main()
 {
+    wchar_t s[256];
+    swprintf_s(s, 256, L"PiXELGraph v2.0 | DebugWindow");
+    SetConsoleTitleW(s);
+
     while (1)
     {        
         bufferSize = std::filesystem::file_size("debug.tmp");

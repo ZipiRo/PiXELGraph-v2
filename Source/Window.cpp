@@ -16,6 +16,8 @@ Window &Window::GetInstance()
 
 void Window::ConstructWindow()
 {
+    system("start DebugWindow.exe");
+    
     if(ConsoleOutputH == INVALID_HANDLE_VALUE)
     { throw Error("Bad Handle"); return; }
 
@@ -77,54 +79,6 @@ void Window::ConstructWindow()
     WindowRect = {0, 0, (short)(WIDTH - 1), (short)(HEIGHT - 1)};
     if(!SetConsoleWindowInfo(ConsoleOutputH, TRUE, &WindowRect)) 
     { throw Error("SetConsoleWindowInfo"); return;}
-}
-
-void Window::ResetConsole()
-{
-    SMALL_RECT WindowRect;
-    
-    DWORD ConsoleMode = 0;
-    if (GetConsoleMode(ConsoleOutputH, &ConsoleMode)) 
-    {
-        ConsoleMode &= ~ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-        SetConsoleMode(ConsoleOutputH, ConsoleMode);
-    }
-
-    if (GetConsoleMode(ConsoleInputtH, &ConsoleMode)) 
-    {
-        ConsoleMode |= ENABLE_QUICK_EDIT_MODE;
-        SetConsoleMode(ConsoleInputtH, ConsoleMode);
-    }
-
-    WindowRect = {0, 0, 140, 40};
-    SetConsoleWindowInfo(ConsoleOutputH, TRUE, &WindowRect);
-
-    COORD coord = {200, 100};
-    SetConsoleScreenBufferSize(ConsoleOutputH, coord);
-
-    CONSOLE_FONT_INFOEX consoleFontInfo;
-    consoleFontInfo.cbSize = sizeof(consoleFontInfo);
-    consoleFontInfo.nFont = 0;
-    consoleFontInfo.dwFontSize.X = 7; 
-    consoleFontInfo.dwFontSize.Y = 14;
-    consoleFontInfo.FontFamily = FF_DONTCARE;
-    consoleFontInfo.FontWeight = FW_NORMAL;
-    wcscpy(consoleFontInfo.FaceName, L"Consolas");
-    SetCurrentConsoleFontEx(ConsoleOutputH, FALSE, &consoleFontInfo);
-
-    LONG style = GetWindowLong(CONSOLE_WINDOW, GWL_STYLE);
-    style |= (WS_SIZEBOX | WS_MAXIMIZEBOX);
-    SetWindowLong(CONSOLE_WINDOW, GWL_STYLE, style);
-    SetWindowPos(CONSOLE_WINDOW, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
-
-    SetTitle(L"Command Prompt");
-
-    SetWindowPos(CONSOLE_WINDOW, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
-
-    std::system("cls");
-
-    COORD cursorPosition = {0, 0};
-    SetConsoleCursorPosition(ConsoleOutputH, cursorPosition);
 }
 
 void Window::SetParameters(int width, int height, int fontSize, const std::wstring &title)

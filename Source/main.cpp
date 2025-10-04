@@ -39,7 +39,7 @@ private:
 public:
     Demo() {
         MaxFPS = 60;
-        Init(512, 512, 3, L"DEMO");
+        Init(1920, 1080, 3, L"DEMO");
     }
 };
 

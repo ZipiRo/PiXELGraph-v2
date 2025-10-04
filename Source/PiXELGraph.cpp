@@ -16,7 +16,6 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
 void PiXELGraph::Run()
 {   
     try {
-        system("start DebugWindow.exe");
         Start();
         Time::GetInstance();
 
@@ -58,11 +57,9 @@ void PiXELGraph::InputLoop()
 
 void PiXELGraph::HandleError(const std::string &message)
 {
-    Window::GetInstance().ResetConsole();
-    std::cout << "ERROR: " << message << std::endl;
+    Debug::Log("ERROR: " + message);
 
     Quit();
-    std::cin.get();
     exit(EXIT_FAILURE);
 } 
 
