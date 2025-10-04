@@ -9,6 +9,8 @@ public:
     Color(int r, int g, int b);
     Color(int r, int g, int b, int a);
 
+    static Color RandomColor();
+
     bool operator!= (const Color &other) const;
     bool operator== (const Color &other) const;
 

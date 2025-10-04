@@ -13,12 +13,12 @@ Time &Time::GetInstance()
 void Time::Tick()
 {
     auto& instance = GetInstance();
-    instance.DeltaTime = std::chrono::system_clock::now() - instance.StartTime;
+    instance.DeltaTime = std::chrono::steady_clock::now() - instance.StartTime;
     deltaTime = instance.DeltaTime.count() * TimeScale;
 }
 
 void Time::Reset()
 {
     auto& instance = GetInstance();
-    instance.StartTime = std::chrono::system_clock::now();
+    instance.StartTime = std::chrono::steady_clock::now();
 }

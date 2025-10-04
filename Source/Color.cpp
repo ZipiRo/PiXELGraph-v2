@@ -1,5 +1,7 @@
 #include "PiXELGraph/Color.h"
 
+#include <random>
+
 Color::Color() 
 {
     r = g = b = 0;
@@ -46,6 +48,16 @@ Color::Color(int r, int g, int b, int a)
     this->g = g;
     this->b = b;
     this->a = a;
+}
+
+Color Color::RandomColor()
+{
+    int r, g ,b;
+    r = 0 + rand() % 255;
+    g = 0 + rand() % 255;
+    b = 0 + rand() % 255;
+
+    return Color(r, g, b);
 }
 
 const Color Color::Transparent = Color(0, 0, 0, 0);

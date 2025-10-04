@@ -6,9 +6,9 @@ class Time
 {
 private:
     friend class Time;
-    Time() { StartTime = std::chrono::system_clock::now(); }
+    Time() { StartTime = std::chrono::steady_clock::now(); }
 
-    std::chrono::system_clock::time_point StartTime;
+    std::chrono::steady_clock::time_point StartTime;
     std::chrono::duration<double> DeltaTime;
 
 public:
