@@ -3,9 +3,10 @@
 #include <filesystem>
 #include <string>
 #include <windows.h>
+#include <cstring>
 
 std::ifstream debug;
-std::ofstream debugOf;
+std::ofstream debugO;
 
 char buffer[105];
 int bufferSize, lastBufferSize;
@@ -17,7 +18,7 @@ int main()
     SetConsoleTitleW(s);
 
     while (1)
-    {        
+    {      
         bufferSize = std::filesystem::file_size("debug.tmp");
         if(bufferSize == lastBufferSize) continue;
         if(bufferSize == 0)
@@ -30,12 +31,13 @@ int main()
 
         debug.open("debug.tmp");
         debug.getline(buffer, 105);
+
         std::cout << buffer << '\n';
         debug.close();
         
-        debugOf.open("debug.tmp");
-        debugOf << "";
-        debugOf.close();
+        debugO.open("debug.tmp");
+        debugO << "";
+        debugO.close();
     }
 
     return 0;
