@@ -2,7 +2,7 @@
 #include <cmath>
 #include <sstream>
 
-#include "PiXELGraph/Screen.h";
+#include "Core/Screen.h";
 #include "UMath.h";
 
 #define RESET_CURSOR_POSITION "\033[H";

@@ -1,5 +1,5 @@
 #include "Console/Window.h"
-#include "PiXELGraph/PiXELGraph.h"
+#include "Core/PiXELGraph.h"
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
 {

@@ -1,4 +1,4 @@
-#include "PiXELGraph/PiXELGraph.h"
+#include "Core/PiXELGraph.h"
 
 class Demo : public PiXELGraph
 {
