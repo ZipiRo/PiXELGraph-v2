@@ -8,6 +8,11 @@ Transform::Transform()
     position = Vector2::ZERO;
     scale = Vector2(1, 1);
     angle = 0;
+    sin0 = 0;
+    cos0 = 1;
+    right = Vector2::RIGHT;
+    up = Vector2::UP;
+    update = true;
 }
 
 Transform::Transform(Vector2 position, Vector2 scale, float angle)
@@ -15,27 +20,30 @@ Transform::Transform(Vector2 position, Vector2 scale, float angle)
     this->position = position;
     this->scale = scale;
     this->angle = angle;
-    this->sin0 = 0;
-    this->cos0 = 1;
-    this->right = Vector2::RIGHT;
-    this->up = Vector2::UP;
+    sin0 = sin(angle);
+    cos0 = cos(angle);
+    right = Vector2(cos0, sin0);
+    up = Vector2(sin0, -cos0);
+    update = true;
 }
 
 void Transform::SetPosition(float x, float y)
 {
     position = Vector2(x, y);
+    update = true;
 }
 
 void Transform::SetScale(float factorX, float factorY)
 {
     scale = Vector2(factorX, factorY); 
+    update = true;
 }
 
 void Transform::SetAngle(float angle)
 {
     NormalizeAngle(this->angle);
     this->angle = angle;     
-    SinCosUpdate();
+    update = true;
 }
 
 Vector2 Transform::GetPosition()
@@ -56,18 +64,20 @@ float Transform::GetAngle()
 void Transform::Move(Vector2 amount)
 {
     position += amount;
+    update = true;
 }
 
 void Transform::Scale(Vector2 amount)
 {
     scale += amount;
+    update = true;
 }
 
 void Transform::Rotate(float amount)
 {
     angle += amount;
     NormalizeAngle(angle);
-    SinCosUpdate();
+    update = true;
 }
 
 Vector2 Transform::SinCosUpdate()
@@ -81,10 +91,8 @@ Vector2 Transform::SinCosUpdate()
     return Vector2(cos0, sin0);
 }
 
-Vector2 TransformVertex(Transform &transform, Vector2 vertex)
+Vector2 TransformVertex(const Transform &transform, Vector2 vertex)
 {
-    transform.SinCosUpdate();
-
     float sx = vertex.x * transform.scale.x;
     float sy = vertex.y * transform.scale.y;
 

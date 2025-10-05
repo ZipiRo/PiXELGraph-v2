@@ -6,6 +6,7 @@
 #include <atomic>
 #include <vector>
 
+#include "UMath.h"
 #include "Vector2.h"
 
 #include "Console/ErrorSystem.h"

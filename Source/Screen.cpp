@@ -233,5 +233,11 @@ void DrawLines(const std::vector<Vertex>& vertices, bool closed)
 
 void DrawShape(Shape &shape)
 {
-    DrawLines(shape.vertices);
+    if(shape.transform.update)
+    {
+        shape.Tvertices = UpdateVertices(shape.transform, shape.vertices);
+        shape.transform.update = false;
+    }
+
+    DrawLines(shape.Tvertices);
 }

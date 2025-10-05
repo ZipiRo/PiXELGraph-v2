@@ -4,7 +4,6 @@ class Demo : public PiXELGraph
 {
 private:
     double timer = 1;
-    int counter = 0;
 
     Vector2 ScreenMousePosition;
 
@@ -14,12 +13,16 @@ private:
 
     void Start() override
     {      
-        vertices.push_back({0, 0, Color::Black});
-        vertices.push_back({10, 0, Color::Black});
-        vertices.push_back({10, 10, Color::Black});
-        vertices.push_back({0, 10, Color::Black});
+        vertices.push_back({-0.5, 0.5});
+        vertices.push_back({0.5, 0.5});
+        vertices.push_back({0.5, -0.5});
+        vertices.push_back({-0.5, -0.5});
+        vertices.push_back({-1, -1});
 
         shape = Shape(vertices, Color::Red, Color::Green);
+        
+        shape.transform.Scale({20, 30});
+        shape.transform.Move({50, 50});
     }
 
     void Update() override
@@ -33,6 +36,7 @@ private:
         }
 
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
+        shape.transform.Rotate(PI * Time::deltaTime);
     }
 
     void Draw() override
@@ -47,7 +51,7 @@ private:
 
 public:
     Demo() {
-        MaxFPS = 60;
+        MaxFPS = 9999;
         Init(512, 512, 3, L"DEMO");
     }
 };

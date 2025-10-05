@@ -13,10 +13,8 @@ private:
 
     Vector2 right;
     Vector2 up;
-    Vector2 SinCosUpdate();
 
-    friend Vector2 TransformVertex(Transform &transform, Vector2 vertex);
-
+    friend Vector2 TransformVertex(const Transform &transform, Vector2 vertex);
 public:
     Transform();
     Transform(Vector2 position, Vector2 scale, float angle);
@@ -32,4 +30,7 @@ public:
     void Move(Vector2 amount);
     void Scale(Vector2 amount);
     void Rotate(float amount);
+
+    Vector2 SinCosUpdate();
+    bool update;
 };

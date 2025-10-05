@@ -11,6 +11,7 @@ class Shape
 {
 private:
     std::vector<Vertex> vertices;
+    std::vector<Vertex> Tvertices;
 
     Color color;
     Color fillColor;
@@ -21,4 +22,10 @@ public:
     
     Shape() {}
     Shape(const std::vector<Vertex>& vertices, Color color, Color fillColor);
+    
+    std::vector<Vertex> GetTvertices();
+    void SetColor(Color color);
+    void SetFillColor(Color color);
 };
+
+std::vector<Vertex> UpdateVertices(Transform &transform, const std::vector<Vertex>& vertices);

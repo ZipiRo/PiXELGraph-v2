@@ -10,6 +10,6 @@ public:
     Color color;
 
     Vertex();
-    Vertex(float x, float y, Color color);
-    Vertex(Vector2 position, Color color);
+    Vertex(float x, float y, Color color = Color::Transparent);
+    Vertex(Vector2 position, Color color = Color::Transparent);
 };
