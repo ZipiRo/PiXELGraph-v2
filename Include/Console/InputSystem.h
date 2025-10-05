@@ -155,12 +155,11 @@ public:
 
     static bool IsKeyDown(Key key);
     static bool IsKeyUp(Key key);
-    static bool IsKeyPressed(Key key);
-    static bool IsKeyHeld(Key key);
+    static bool IsKey(Key key);
+    
     static bool IsMouseButtonDown(MouseButton button);
     static bool IsMouseButtonUp(MouseButton button);
-    static bool IsMouseButtonPressed(MouseButton button);
-    static bool IsMouseButtonHeld(MouseButton button);
+    static bool IsMouseButton(MouseButton button);
 
     static Input &GetInstance();
 

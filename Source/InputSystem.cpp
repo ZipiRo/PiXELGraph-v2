@@ -46,7 +46,7 @@ bool Input::IsKeyDown(Key key)
     auto &instance = Input::GetInstance();
 
     auto it = instance.Keyboard.find(key);
-    return it != instance.Keyboard.end() && it->second.pressed;
+    return it != instance.Keyboard.end() && it->second.pressed && !it->second.wasPressed;
 }
 
 bool Input::IsKeyUp(Key key)
@@ -62,20 +62,7 @@ bool Input::IsKeyUp(Key key)
     return false;
 }
 
-bool Input::IsKeyPressed(Key key)
-{
-    auto &instance = Input::GetInstance();
-
-    auto it = instance.Keyboard.find(key);
-    if (it != instance.Keyboard.end()) 
-    {
-        const auto& state = it->second;
-        return state.pressed && !state.wasPressed;
-    }
-    return false;
-}
-
-bool Input::IsKeyHeld(Key key)
+bool Input::IsKey(Key key)
 {
     auto &instance = Input::GetInstance();
 
@@ -93,7 +80,7 @@ bool Input::IsMouseButtonDown(MouseButton button)
     auto &instance = Input::GetInstance();
 
     auto it = instance.Mouse.find(button);
-    return it != instance.Mouse.end() && it->second.pressed;
+    return it != instance.Mouse.end() && it->second.pressed  && !it->second.wasPressed;
 }
 
 bool Input::IsMouseButtonUp(MouseButton button)
@@ -109,20 +96,7 @@ bool Input::IsMouseButtonUp(MouseButton button)
     return false;
 }
 
-bool Input::IsMouseButtonPressed(MouseButton button)
-{
-    auto &instance = Input::GetInstance();
-
-    auto it = instance.Mouse.find(button);
-    if (it != instance.Mouse.end()) 
-    {
-        const auto& state = it->second;
-        return state.pressed && !state.wasPressed;
-    }
-    return false;
-}
-
-bool Input::IsMouseButtonHeld(MouseButton button)
+bool Input::IsMouseButton(MouseButton button)
 {
     auto &instance = Input::GetInstance();
 
