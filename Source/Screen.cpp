@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include <sstream>
 
+#include "Graphics/Vertex.h"
 #include "Core/Screen.h";
 #include "UMath.h";
 
@@ -204,4 +206,32 @@ void DrawElipse(int x, int y, int radius, Color color, int point_count)
     }
 
     DrawLine(last_X + x, last_Y + y, f_X + x, f_Y + y, color);
+}
+
+void DrawVertex(Vertex vertex)
+{
+    PlotPixel(vertex.position.x, vertex.position.y, vertex.color);
+}
+
+void DrawLines(const std::vector<Vertex>& vertices, bool closed)
+{
+    for(auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+    {
+        auto next_vertex = std::next(vertex);
+        if(next_vertex == vertices.end())
+        {
+            if(closed) next_vertex = vertices.begin(); 
+                else return;
+        }
+
+        Vertex vertexA = *vertex;
+        Vertex vertexB = *next_vertex;
+
+        DrawLine(vertexA.position.x, vertexA.position.y, vertexB.position.x, vertexB.position.y, vertexA.color);        
+    }
+}
+
+void DrawShape(Shape &shape)
+{
+    DrawLines(shape.vertices);
 }

@@ -8,13 +8,18 @@ private:
 
     Vector2 ScreenMousePosition;
 
-    Vector2 position;
-    float speed = 100;
-    float size = 10;
+    std::vector<Vertex> vertices;
+
+    Shape shape;
 
     void Start() override
-    {
+    {      
+        vertices.push_back({0, 0, Color::Black});
+        vertices.push_back({10, 0, Color::Black});
+        vertices.push_back({10, 10, Color::Black});
+        vertices.push_back({0, 10, Color::Black});
 
+        shape = Shape(vertices, Color::Red, Color::Green);
     }
 
     void Update() override
@@ -28,34 +33,11 @@ private:
         }
 
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
-
-        Vector2 direction;
-        if(Input::IsKey(Key_A))
-            direction.x += -1;
-        if(Input::IsKey(Key_D))
-            direction.x += 1;
-        if(Input::IsKey(Key_W))
-            direction.y += -1;
-        if(Input::IsKey(Key_S))
-            direction.y += 1;
-
-        if(Input::IsKey(Key::Key_Q))
-            size-=1;
-        if(Input::IsKey(Key::Key_E))
-            size+=1;
-
-        if(direction.x != 0 || direction.y != 0)
-        {
-            Vector2::Normalize(direction);
-            position += direction * speed * Time::deltaTime;
-    
-            Debug::Log("X: " + std::to_string(position.x) + " Y: " + std::to_string(position.y));
-        }
     }
 
     void Draw() override
     {
-        DrawElipse(position.x, position.y, size, Color::Red);
+        DrawShape(shape);
     }
 
     void Quit() override

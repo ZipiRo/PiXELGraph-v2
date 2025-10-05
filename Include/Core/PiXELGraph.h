@@ -4,13 +4,13 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include <vector>
 
 #include "Vector2.h"
 
 #include "Console/ErrorSystem.h"
 #include "Console/InputSystem.h"
 #include "Console/Window.h"
-
 #include "Console/Debug.h"
 
 class PiXELGraph;
@@ -18,6 +18,10 @@ class PiXELGraph;
 #include "Timer.h"
 #include "Color.h"
 #include "Screen.h"
+
+#include "Graphics/Vertex.h"
+#include "Graphics/Transform.h"
+#include "Graphics/Shape.h"
 
 class PiXELGraph
 {
