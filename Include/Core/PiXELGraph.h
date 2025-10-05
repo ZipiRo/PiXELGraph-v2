@@ -22,6 +22,7 @@ class PiXELGraph;
 
 #include "Graphics/Vertex.h"
 #include "Graphics/Transform.h"
+#include "Graphics/AABB.h"
 #include "Graphics/Shape.h"
 
 class PiXELGraph

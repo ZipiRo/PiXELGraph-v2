@@ -1,8 +1,6 @@
 #include "Graphics/Transform.h"
 #include "UMath.h"
 
-#include "Console/Debug.h"
-
 Transform::Transform()
 {
     position = Vector2::ZERO;

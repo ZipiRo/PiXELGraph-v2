@@ -6,6 +6,7 @@
 #include "Graphics/Vertex.h"
 #include "Core/Screen.h";
 #include "UMath.h";
+#include "Console/Debug.h"
 
 #define RESET_CURSOR_POSITION "\033[H";
 
@@ -231,13 +232,70 @@ void DrawLines(const std::vector<Vertex>& vertices, bool closed)
     }
 }
 
+void FillShape(Shape &shape)
+{
+    int minY = shape.boundingBox.top;
+    int maxY = shape.boundingBox.bottom;
+
+    if(minY > maxY)
+        std::swap(minY, maxY);
+
+    if(minY < 0 && maxY >= 0) minY = 0;
+    else if(minY < 0 || maxY < 0)
+        return;
+        
+    const int maxSize = maxY * 2 + 5;
+    int* intersections = new int[maxSize];
+    
+    for(int y = minY; y <= maxY; y++)
+    {   
+        int count = 0;
+
+        for(auto vertex = shape.Tvertices.begin(); vertex != shape.Tvertices.end(); ++vertex)
+        {
+            auto next_vertex = std::next(vertex);
+            if(next_vertex == shape.Tvertices.end()) 
+                next_vertex = shape.Tvertices.begin();
+            
+            Vertex vertexA = *vertex;
+            Vertex vertexB = *next_vertex;
+
+            if(vertexA.position.y == vertexB.position.y) continue;
+
+            if ((y >= vertexA.position.y && y < vertexB.position.y) || (y >= vertexB.position.y && y < vertexA.position.y))
+            {
+                int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
+                intersections[count++] = x; 
+            }
+        }
+
+        HeapSort(intersections, count);
+
+        for(int i = 0; i + 1 < count; i += 2)
+        {   
+            int xStart = intersections[i];
+            int xEnd = std::floor(intersections[i + 1]);
+
+            for(int x = xStart; x <= xEnd; x++)
+                PlotPixel(x, y, shape.fillColor);
+        }
+    }
+
+    delete[] intersections;
+}
+
 void DrawShape(Shape &shape)
 {
     if(shape.transform.update)
     {
         shape.Tvertices = UpdateVertices(shape.transform, shape.vertices);
+        shape.boundingBox = UpdateAABB(shape.Tvertices);
         shape.transform.update = false;
     }
 
-    DrawLines(shape.Tvertices);
+    if(shape.fillColor != Color::Transparent)
+        FillShape(shape);
+
+    if(shape.color != Color::Transparent)
+        DrawLines(shape.Tvertices);
 }

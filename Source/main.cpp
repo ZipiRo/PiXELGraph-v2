@@ -9,7 +9,9 @@ private:
 
     std::vector<Vertex> vertices;
 
+
     Shape shape;
+    AABB bounds;
 
     void Start() override
     {      
@@ -17,12 +19,10 @@ private:
         vertices.push_back({0.5, 0.5});
         vertices.push_back({0.5, -0.5});
         vertices.push_back({-0.5, -0.5});
-        vertices.push_back({-1, -1});
 
-        shape = Shape(vertices, Color::Red, Color::Green);
+        shape = Shape(vertices, Color::Blue, Color::Red);
         
-        shape.transform.Scale({20, 30});
-        shape.transform.Move({50, 50});
+        shape.transform.Scale({15, 30});
     }
 
     void Update() override
@@ -36,12 +36,30 @@ private:
         }
 
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
+
+        shape.transform.SetPosition(ScreenMousePosition.x, ScreenMousePosition.y);
+
+        if(Input::IsMouseButtonDown(MouseButton::Left))
+        {
+            shape.SetColor(Color::RandomColor());
+            shape.SetFillColor(Color::RandomColor());
+        }
+
         shape.transform.Rotate(PI * Time::deltaTime);
     }
 
     void Draw() override
-    {
+    {   
+        std::vector<Vertex> boundBox;
+        bounds = shape.GetBoundingBox();
+
+        boundBox.push_back({bounds.left, bounds.top, Color::Black});
+        boundBox.push_back({bounds.right, bounds.top, Color::Black});
+        boundBox.push_back({bounds.right, bounds.bottom, Color::Black});
+        boundBox.push_back({bounds.left, bounds.bottom, Color::Black}); 
+
         DrawShape(shape);
+        DrawLines(boundBox);
     }
 
     void Quit() override
