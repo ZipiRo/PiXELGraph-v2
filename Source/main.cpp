@@ -7,21 +7,22 @@ private:
 
     Vector2 ScreenMousePosition;
 
-    std::vector<Vertex> vertices;
-
-    Shape shape;
-    AABB bounds;
+    Shapes::Rectangle rect;
+    Shapes::Elipse regpol;
 
     void Start() override
     {
-        vertices.push_back({-0.5, 0.5});
-        vertices.push_back({0.5, 0.5});
-        vertices.push_back({0.5, -0.5});
-        vertices.push_back({-0.5, -0.5});
+        rect = Shapes::Rectangle(10, 10);
+        rect.SetColor(Color::Black);
+        rect.SetFillColor(Color::Red);
 
-        shape = Shape(vertices, Color::Red, Color::Black);
+        regpol = Shapes::Elipse(10, 10, 5);
+        regpol.SetColor(Color::Black);
+        regpol.SetFillColor(Color::Red);
 
-        shape.transform.Scale({25, 50});
+        rect.transform.SetPosition(Screen::Width() / 2, Screen::Height() / 2);
+
+        regpol.transform.SetPosition(30, 50);
     }
 
     void Update() override
@@ -36,33 +37,20 @@ private:
 
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
 
-        shape.transform.SetPosition(ScreenMousePosition.x, ScreenMousePosition.y);
+        rect.transform.Rotate(PI * Time::deltaTime);
 
-        if (Input::IsMouseButtonDown(MouseButton::Left))
-        {
-            shape.SetColor(Color::RandomColor());
-            shape.SetFillColor(Color::RandomColor());
-        }
-
-        shape.transform.Rotate(PI * Time::deltaTime);
+        regpol.transform.Rotate(PI / 2 * Time::deltaTime);
     }
 
     void Draw() override
     {
-        std::vector<Vertex> boundBox;
-        bounds = shape.GetBoundingBox();
-
-        boundBox.push_back({bounds.left, bounds.top, Color::Black});
-        boundBox.push_back({bounds.right, bounds.top, Color::Black});
-        boundBox.push_back({bounds.right, bounds.bottom, Color::Black});
-        boundBox.push_back({bounds.left, bounds.bottom, Color::Black});
-
-        DrawShape(shape);
-        DrawLines(boundBox);
+        DrawShape(rect);
+        DrawShape(regpol);
     }
 
     void Quit() override
     {
+
     }
 
 public:

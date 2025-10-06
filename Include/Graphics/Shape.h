@@ -10,8 +10,10 @@
 
 class Shape
 {
-private:
+protected:
     std::vector<Vertex> vertices;
+
+private:
     std::vector<Vertex> Tvertices;
 
     AABB boundingBox;
@@ -21,12 +23,12 @@ private:
 
     friend void FillShape(Shape &shape);
     friend void DrawShape(Shape &shape);
+    Shape() {}
 
 public:
     Transform transform;
 
-    Shape() {}
-    Shape(const std::vector<Vertex> &vertices, Color color = Color::Transparent, Color fillColor = Color::Transparent);
+    Shape(const std::vector<Vertex> &vertices);
 
     std::vector<Vertex> GetTvertices();
     AABB GetBoundingBox();

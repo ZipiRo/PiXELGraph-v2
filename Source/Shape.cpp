@@ -5,12 +5,12 @@
 
 #include "Console/Debug.h"
 
-Shape::Shape(const std::vector<Vertex> &vertices, Color color, Color fillColor)
+Shape::Shape(const std::vector<Vertex> &vertices)
 {
     this->vertices = vertices;
 
-    this->color = color;
-    this->fillColor = fillColor;
+    this->color = Color::Transparent;
+    this->fillColor = Color::Transparent;
 
     boundingBox = UpdateAABB(vertices);
 
