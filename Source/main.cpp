@@ -16,12 +16,11 @@ private:
         rect.SetColor(Color::Black);
         rect.SetFillColor(Color::Red);
 
-        regpol = Shapes::Elipse(10, 10, 5);
+        regpol = Shapes::Elipse(10, 5);
         regpol.SetColor(Color::Black);
         regpol.SetFillColor(Color::Red);
 
         rect.transform.SetPosition(Screen::Width() / 2, Screen::Height() / 2);
-
         regpol.transform.SetPosition(30, 50);
     }
 
@@ -32,6 +31,9 @@ private:
         {
             Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)));
             Debug::Log(std::string("FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
+
+            rect.SetFillColor(Color::RandomColor());
+
             timer = 0;
         }
 
@@ -56,8 +58,8 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 9999;
-        Init(812, 512, 3, L"DEMO");
+        MaxFPS = 31;
+        Init(812, 512, 2, L"DEMO");
     }
 };
 
