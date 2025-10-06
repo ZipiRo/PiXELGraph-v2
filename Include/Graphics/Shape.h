@@ -25,7 +25,7 @@ public:
     Transform transform;
     
     Shape() {}
-    Shape(const std::vector<Vertex>& vertices, Color color, Color fillColor);
+    Shape(const std::vector<Vertex>& vertices, Color color = Color::Transparent, Color fillColor = Color::Transparent);
     
     std::vector<Vertex> GetTvertices();
     AABB GetBoundingBox();

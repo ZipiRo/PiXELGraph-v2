@@ -9,7 +9,6 @@ private:
 
     std::vector<Vertex> vertices;
 
-
     Shape shape;
     AABB bounds;
 
@@ -20,9 +19,9 @@ private:
         vertices.push_back({0.5, -0.5});
         vertices.push_back({-0.5, -0.5});
 
-        shape = Shape(vertices, Color::Blue, Color::Red);
-        
-        shape.transform.Scale({15, 30});
+        shape = Shape(vertices, Color::Red, Color::Black);
+
+        shape.transform.Scale({25, 50});
     }
 
     void Update() override
@@ -70,7 +69,7 @@ private:
 public:
     Demo() {
         MaxFPS = 9999;
-        Init(512, 512, 3, L"DEMO");
+        Init(812, 512, 3, L"DEMO");
     }
 };
 

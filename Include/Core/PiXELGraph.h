@@ -5,6 +5,7 @@
 #include <thread>
 #include <atomic>
 #include <vector>
+#include <limits>
 
 #include "UMath.h"
 #include "Vector2.h"

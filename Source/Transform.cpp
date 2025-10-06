@@ -1,5 +1,5 @@
-#include "Graphics/Transform.h"
 #include "UMath.h"
+#include "Graphics/Transform.h"
 
 Transform::Transform()
 {
@@ -17,6 +17,18 @@ Transform::Transform(Vector2 position, Vector2 scale, float angle)
 {
     this->position = position;
     this->scale = scale;
+    this->angle = angle;
+    sin0 = sin(angle);
+    cos0 = cos(angle);
+    right = Vector2(cos0, sin0);
+    up = Vector2(sin0, -cos0);
+    update = true;
+}
+
+Transform::Transform(float x, float y, float scaleX, float scaleY, float angle)
+{
+    this->position = Vector2(x, y);
+    this->scale = Vector2(scaleX, scaleY);
     this->angle = angle;
     sin0 = sin(angle);
     cos0 = cos(angle);
@@ -44,6 +56,16 @@ void Transform::SetAngle(float angle)
     update = true;
 }
 
+void Transform::SetPosition(Vector2 position)
+{
+    this->position = position;
+}
+
+void Transform::SetScale(Vector2 scale)
+{
+    this->scale = scale;
+}
+
 Vector2 Transform::GetPosition()
 {
     return position;
@@ -52,6 +74,16 @@ Vector2 Transform::GetPosition()
 Vector2 Transform::GetScale()
 {
     return scale;
+}
+
+Vector2 Transform::Right()
+{
+    return right;
+}
+
+Vector2 Transform::Up()
+{
+    return up;
 }
 
 float Transform::GetAngle()
@@ -76,6 +108,16 @@ void Transform::Rotate(float amount)
     angle += amount;
     NormalizeAngle(angle);
     update = true;
+}
+
+void Transform::Move(float amountX, float amountY)
+{
+    position += Vector2(amountX, amountY);
+}
+
+void Transform::Scale(float amountX, float amountY)
+{
+    scale += Vector2(amountX, amountY);
 }
 
 Vector2 Transform::SinCosUpdate()
