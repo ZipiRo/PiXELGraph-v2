@@ -45,14 +45,14 @@ void Transform::SetPosition(float x, float y)
 
 void Transform::SetScale(float factorX, float factorY)
 {
-    scale = Vector2(factorX, factorY); 
+    scale = Vector2(factorX, factorY);
     update = true;
 }
 
 void Transform::SetAngle(float angle)
 {
     NormalizeAngle(this->angle);
-    this->angle = angle;     
+    this->angle = angle;
     update = true;
 }
 
@@ -141,7 +141,6 @@ Vector2 TransformVertex(const Transform &transform, Vector2 vertex)
 
     float tx = rx + transform.position.x;
     float ty = ry + transform.position.y;
-
 
     return Vector2(tx, ty);
 }

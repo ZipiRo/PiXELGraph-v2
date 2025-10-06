@@ -129,7 +129,7 @@ class Input
 {
 private:
     Input() {}
-    
+
     friend class PiXELGraph;
 
     struct KeyState
@@ -150,13 +150,13 @@ private:
     std::unordered_map<MouseButton, MouseButtonState> Mouse;
 
 public:
-    Input(const Input&) = delete;
-    void operator=(const Input&) = delete;
+    Input(const Input &) = delete;
+    void operator=(const Input &) = delete;
 
     static bool IsKeyDown(Key key);
     static bool IsKeyUp(Key key);
     static bool IsKey(Key key);
-    
+
     static bool IsMouseButtonDown(MouseButton button);
     static bool IsMouseButtonUp(MouseButton button);
     static bool IsMouseButton(MouseButton button);

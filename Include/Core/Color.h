@@ -3,7 +3,7 @@
 class Color
 {
 public:
-    int r, g, b, a; 
+    int r, g, b, a;
 
     Color();
     Color(int r, int g, int b);
@@ -11,8 +11,8 @@ public:
 
     static Color RandomColor();
 
-    bool operator!= (const Color &other) const;
-    bool operator== (const Color &other) const;
+    bool operator!=(const Color &other) const;
+    bool operator==(const Color &other) const;
 
     static const Color Transparent;
     static const Color White;

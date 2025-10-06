@@ -9,6 +9,6 @@ private:
     std::string message;
 
 public:
-    explicit Error(const std::string& msg);
-    const char* what() const noexcept override;
+    explicit Error(const std::string &msg);
+    const char *what() const noexcept override;
 };

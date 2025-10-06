@@ -13,7 +13,7 @@ private:
     AABB bounds;
 
     void Start() override
-    {      
+    {
         vertices.push_back({-0.5, 0.5});
         vertices.push_back({0.5, 0.5});
         vertices.push_back({0.5, -0.5});
@@ -27,7 +27,7 @@ private:
     void Update() override
     {
         timer += Time::deltaTime;
-        if(timer >= 1)
+        if (timer >= 1)
         {
             Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)));
             Debug::Log(std::string("FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
@@ -38,7 +38,7 @@ private:
 
         shape.transform.SetPosition(ScreenMousePosition.x, ScreenMousePosition.y);
 
-        if(Input::IsMouseButtonDown(MouseButton::Left))
+        if (Input::IsMouseButtonDown(MouseButton::Left))
         {
             shape.SetColor(Color::RandomColor());
             shape.SetFillColor(Color::RandomColor());
@@ -48,14 +48,14 @@ private:
     }
 
     void Draw() override
-    {   
+    {
         std::vector<Vertex> boundBox;
         bounds = shape.GetBoundingBox();
 
         boundBox.push_back({bounds.left, bounds.top, Color::Black});
         boundBox.push_back({bounds.right, bounds.top, Color::Black});
         boundBox.push_back({bounds.right, bounds.bottom, Color::Black});
-        boundBox.push_back({bounds.left, bounds.bottom, Color::Black}); 
+        boundBox.push_back({bounds.left, bounds.bottom, Color::Black});
 
         DrawShape(shape);
         DrawLines(boundBox);
@@ -63,11 +63,11 @@ private:
 
     void Quit() override
     {
-        
     }
 
 public:
-    Demo() {
+    Demo()
+    {
         MaxFPS = 9999;
         Init(812, 512, 3, L"DEMO");
     }

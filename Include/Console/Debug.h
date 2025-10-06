@@ -1,5 +1,5 @@
 #pragma once
-#include <fstream> 
+#include <fstream>
 #include <string>
 
 class Debug
@@ -7,10 +7,9 @@ class Debug
 private:
     Debug() {};
 
-    static std::ofstream debugBuffer;     
+    static std::ofstream debugBuffer;
 
 public:
-
-    static Debug& GetDebug();
+    static Debug &GetDebug();
     static void Log(std::string log);
 };

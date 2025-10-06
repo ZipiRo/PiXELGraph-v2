@@ -15,10 +15,10 @@ public:
     static float TimeScale;
     static double deltaTime;
 
-    Time(const Time&) = delete;
-    void operator=(const Time&) = delete;
+    Time(const Time &) = delete;
+    void operator=(const Time &) = delete;
 
-    static Time& GetInstance();
+    static Time &GetInstance();
 
     static void Tick();
     static void Reset();

@@ -9,7 +9,7 @@
 class Window
 {
 private:
-    Window() {}    
+    Window() {}
 
     static HWND CONSOLE_WINDOW;
 
@@ -24,18 +24,18 @@ private:
     static std::wstring TITLE;
 
 public:
-    Window(const Window&) = delete;
-    void operator=(const Window&) = delete;
+    Window(const Window &) = delete;
+    void operator=(const Window &) = delete;
 
     void SetParameters(int width, int height, int fontSize, const std::wstring &title);
 
-    static Window &GetInstance(); 
+    static Window &GetInstance();
 
     static void SetTitle(const std::wstring &title);
-    
+
     static int WindowWidth();
     static int WindowHeight();
     static int WindowFontSize();
     static std::wstring WindowTitle();
-    static HWND &ConsoleWindow(); 
+    static HWND &ConsoleWindow();
 };

@@ -21,8 +21,8 @@ private:
     static void Clear();
 
 public:
-    Screen(const Screen&) = delete;
-    void operator=(const Screen&) = delete;
+    Screen(const Screen &) = delete;
+    void operator=(const Screen &) = delete;
 
     static Screen &GetInstance();
 
@@ -30,7 +30,7 @@ public:
 
     static int Width();
     static int Height();
-    static Color BacgroundColor; 
+    static Color BacgroundColor;
 };
 
 void PlotPixel(int x, int y, Color color);
@@ -40,5 +40,5 @@ void DrawRectangle(int x, int y, int width, int height, Color color);
 void DrawElipse(int x, int y, int radius, Color color, int point_count = 30);
 void DrawVertex(Vertex vertex);
 
-void DrawLines(const std::vector<Vertex>& vertices, bool closed = true);
-void DrawShape(const Shape& shape);
+void DrawLines(const std::vector<Vertex> &vertices, bool closed = true);
+void DrawShape(const Shape &shape);

@@ -16,9 +16,10 @@ private:
     Vector2 up;
 
     friend Vector2 TransformVertex(const Transform &transform, Vector2 vertex);
+
 public:
     bool update;
-    
+
     Transform();
     Transform(Vector2 position, Vector2 scale, float angle);
     Transform(float x, float y, float scaleX, float scaleY, float angle);

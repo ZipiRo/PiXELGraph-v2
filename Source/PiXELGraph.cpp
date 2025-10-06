@@ -3,19 +3,22 @@
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
 {
-    try {
+    try
+    {
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
         Input::GetInstance();
     }
-    catch(const std::exception& exception) {
+    catch (const std::exception &exception)
+    {
         HandleError(exception.what());
     }
 }
 
 void PiXELGraph::Run()
-{   
-    try {
+{
+    try
+    {
         Start();
         Time::GetInstance();
 
@@ -25,7 +28,7 @@ void PiXELGraph::Run()
         {
             Time::Tick();
 
-            if(Time::deltaTime >= 1.0f / MaxFPS)
+            if (Time::deltaTime >= 1.0f / MaxFPS)
             {
                 Time::Reset();
 
@@ -41,7 +44,8 @@ void PiXELGraph::Run()
 
         Quit();
     }
-    catch(const std::exception& exception) {
+    catch (const std::exception &exception)
+    {
         HandleError(exception.what());
     }
 }
@@ -61,7 +65,7 @@ void PiXELGraph::HandleError(const std::string &message)
 
     Quit();
     exit(EXIT_FAILURE);
-} 
+}
 
 void PiXELGraph::Exit()
 {

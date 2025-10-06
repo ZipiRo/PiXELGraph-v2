@@ -37,18 +37,17 @@ private:
     void HandleError(const std::string &message);
 
 protected:
-    double MaxFPS = 60; 
+    double MaxFPS = 60;
 
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
 
     virtual void Start() {}
     virtual void Update() {}
-    virtual void Draw() {} 
+    virtual void Draw() {}
     virtual void Quit() {}
 
     void Exit();
 
 public:
-
     void Run();
 };

@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "UMath.h";
-#include "Console/Debug.h"
 
 #include "Graphics/Vertex.h"
 #include "Core/Screen.h";
@@ -31,8 +30,8 @@ void Screen::SetParameters(int WindowWidth, int WindowHeight)
 
 void Screen::Display()
 {
-    auto &instance = GetInstance();   
-    
+    auto &instance = GetInstance();
+
     std::ostringstream buffer;
     buffer << RESET_CURSOR_POSITION;
 
@@ -41,14 +40,14 @@ void Screen::Display()
     {
         if (instance.ScreenBuffer[i] != lastColor)
         {
-            buffer << "\033[48;2;" << instance.ScreenBuffer[i].r << ';' << instance.ScreenBuffer[i].g  << ';' << instance.ScreenBuffer[i].b << "m";
+            buffer << "\033[48;2;" << instance.ScreenBuffer[i].r << ';' << instance.ScreenBuffer[i].g << ';' << instance.ScreenBuffer[i].b << "m";
             lastColor = instance.ScreenBuffer[i];
         }
         buffer << ' ';
-        
-        if((i + 1) % instance.ScreenWidth == 0 && 
+
+        if ((i + 1) % instance.ScreenWidth == 0 &&
             (i + 1) % (instance.ScreenWidth * instance.ScreenHeight) != 0)
-                buffer << '\n';
+            buffer << '\n';
     }
 
     std::cout << buffer.str();
@@ -56,7 +55,7 @@ void Screen::Display()
 
 void Screen::Clear()
 {
-    auto &instance = GetInstance(); 
+    auto &instance = GetInstance();
     std::fill(instance.ScreenBuffer.begin(), instance.ScreenBuffer.end(), BacgroundColor);
 }
 
@@ -72,14 +71,14 @@ void PlotPixel(int x, int y, Color color)
 void DrawLine(int x1, int y1, int x2, int y2, Color color)
 {
     // Initialize variables
-    int x, y;                     // Current pixel coordinates
-    int dx = x2 - x1;             // Difference in x-coordinates
-    int dy = y2 - y1;             // Difference in y-coordinates
-    int dx1 = abs(dx);            // Absolute value of dx
-    int dy1 = abs(dy);            // Absolute value of dy
-    int px = 2 * dy1 - dx1;       // Decision parameter for shallow slopes
-    int py = 2 * dx1 - dy1;       // Decision parameter for steep slopes
-    int xe, ye, i;                // Loop control variables
+    int x, y;               // Current pixel coordinates
+    int dx = x2 - x1;       // Difference in x-coordinates
+    int dy = y2 - y1;       // Difference in y-coordinates
+    int dx1 = abs(dx);      // Absolute value of dx
+    int dy1 = abs(dy);      // Absolute value of dy
+    int px = 2 * dy1 - dx1; // Decision parameter for shallow slopes
+    int py = 2 * dx1 - dy1; // Decision parameter for steep slopes
+    int xe, ye, i;          // Loop control variables
 
     // Case 1: Line with a shallow slope (|dy| <= |dx|)
     if (dy1 <= dx1)
@@ -180,19 +179,20 @@ void DrawRectangle(int x, int y, int width, int height, Color color)
     DrawLine(width, y, width, height, color);
     DrawLine(width, height, x, height, color);
     DrawLine(x, height, x, y, color);
-}   
+}
 
 void DrawElipse(int x, int y, int radius, Color color, int point_count)
 {
     float rez = (2 * PI) / point_count;
     float last_X, last_Y, f_X, f_Y;
-    
-    for(float angle = 0.0f; angle <= 2 * PI; angle += rez)
+
+    for (float angle = 0.0f; angle <= 2 * PI; angle += rez)
     {
         float new_X = cos(angle) * radius;
-        float new_Y = sin(angle) * radius; 
+        float new_Y = sin(angle) * radius;
 
-        if(angle <= 0.0f) {
+        if (angle <= 0.0f)
+        {
             last_X = new_X;
             last_Y = new_Y;
             f_X = new_X;
@@ -215,21 +215,23 @@ void DrawVertex(Vertex vertex)
     PlotPixel(vertex.position.x, vertex.position.y, vertex.color);
 }
 
-void DrawLines(const std::vector<Vertex>& vertices, bool closed)
+void DrawLines(const std::vector<Vertex> &vertices, bool closed)
 {
-    for(auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+    for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
     {
         auto next_vertex = std::next(vertex);
-        if(next_vertex == vertices.end())
+        if (next_vertex == vertices.end())
         {
-            if(closed) next_vertex = vertices.begin(); 
-                else return;
+            if (closed)
+                next_vertex = vertices.begin();
+            else
+                return;
         }
 
         Vertex vertexA = *vertex;
         Vertex vertexB = *next_vertex;
 
-        DrawLine(vertexA.position.x, vertexA.position.y, vertexB.position.x, vertexB.position.y, vertexA.color);        
+        DrawLine(vertexA.position.x, vertexA.position.y, vertexB.position.x, vertexB.position.y, vertexA.color);
     }
 }
 
@@ -238,46 +240,48 @@ void FillShape(Shape &shape)
     int minY = shape.boundingBox.top;
     int maxY = shape.boundingBox.bottom;
 
-    if(minY > maxY)
+    if (minY > maxY)
         std::swap(minY, maxY);
 
-    if(minY < 0 && maxY >= 0) minY = 0;
-    else if(minY < 0 || maxY < 0)
+    if (minY < 0 && maxY >= 0)
+        minY = 0;
+    else if (minY < 0 || maxY < 0)
         return;
-        
+
     const int maxSize = maxY * 2 + 5;
-    int* intersections = new int[maxSize];
-    
-    for(int y = minY; y <= maxY; y++)
-    {   
+    int *intersections = new int[maxSize];
+
+    for (int y = minY; y <= maxY; y++)
+    {
         int count = 0;
 
-        for(auto vertex = shape.Tvertices.begin(); vertex != shape.Tvertices.end(); ++vertex)
+        for (auto vertex = shape.Tvertices.begin(); vertex != shape.Tvertices.end(); ++vertex)
         {
             auto next_vertex = std::next(vertex);
-            if(next_vertex == shape.Tvertices.end()) 
+            if (next_vertex == shape.Tvertices.end())
                 next_vertex = shape.Tvertices.begin();
-            
+
             Vertex vertexA = *vertex;
             Vertex vertexB = *next_vertex;
 
-            if(vertexA.position.y == vertexB.position.y) continue;
+            if (vertexA.position.y == vertexB.position.y)
+                continue;
 
             if ((y >= vertexA.position.y && y < vertexB.position.y) || (y >= vertexB.position.y && y < vertexA.position.y))
             {
                 int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
-                intersections[count++] = x; 
+                intersections[count++] = x;
             }
         }
 
         HeapSort(intersections, count);
 
-        for(int i = 0; i + 1 < count; i += 2)
-        {   
+        for (int i = 0; i + 1 < count; i += 2)
+        {
             int xStart = intersections[i];
             int xEnd = std::floor(intersections[i + 1]);
 
-            for(int x = xStart; x <= xEnd; x++)
+            for (int x = xStart; x <= xEnd; x++)
                 PlotPixel(x, y, shape.fillColor);
         }
     }
@@ -287,16 +291,16 @@ void FillShape(Shape &shape)
 
 void DrawShape(Shape &shape)
 {
-    if(shape.transform.update)
+    if (shape.transform.update)
     {
         shape.Tvertices = UpdateVertices(shape.transform, shape.vertices);
         shape.boundingBox = UpdateAABB(shape.Tvertices);
         shape.transform.update = false;
     }
 
-    if(shape.fillColor != Color::Transparent)
+    if (shape.fillColor != Color::Transparent)
         FillShape(shape);
 
-    if(shape.color != Color::Transparent)
+    if (shape.color != Color::Transparent)
         DrawLines(shape.Tvertices);
 }
