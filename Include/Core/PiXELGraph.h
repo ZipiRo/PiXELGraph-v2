@@ -7,6 +7,7 @@
 #include <vector>
 #include <limits>
 
+
 #include "UMath.h"
 #include "Vector2.h"
 
@@ -20,6 +21,8 @@ class PiXELGraph;
 #include "Timer.h"
 #include "Color.h"
 #include "Screen.h"
+
+#include "Audio/AudioSource.h"
 
 #include "Graphics/Vertex.h"
 #include "Graphics/Transform.h"

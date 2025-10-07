@@ -29,12 +29,24 @@ private:
         timer += Time::deltaTime;
         if (timer >= 1)
         {
-            Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)));
-            Debug::Log(std::string("FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
+            Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)) + L" | DEMO");
+            Debug::Log(std::string("DT: ") + std::to_string(Time::deltaTime) + std::string(" | FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
 
             rect.SetFillColor(Color::RandomColor());
 
             timer = 0;
+        }
+
+        if(Input::IsMouseButtonDown(MouseButton::Left))
+        {
+            Debug::Log("Slash");
+            Audio::PlaySound("slash.mp3");
+        }
+
+        if(Input::IsKeyDown(Key::Key_Space))
+        {
+            Debug::Log("Ding");
+            Audio::PlaySound("sound.mp3");
         }
 
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
@@ -58,8 +70,8 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 31;
-        Init(812, 512, 2, L"DEMO");
+        MaxFPS = 9999;
+        Init(1280, 720, 10, L"DEMO");
     }
 };
 
