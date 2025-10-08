@@ -22,6 +22,8 @@ private:
 
         rect.transform.SetPosition(Screen::Width() / 2, Screen::Height() / 2);
         regpol.transform.SetPosition(30, 50);
+
+        Audio::PlaySound("mus.wav");
     }
 
     void Update() override
@@ -70,7 +72,7 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 9999;
+        MaxFPS = 60;
         Init(1280, 720, 10, L"DEMO");
     }
 };

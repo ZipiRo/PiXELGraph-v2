@@ -31,6 +31,5 @@ void Audio::PlaySound(std::string file)
 
     auto &instance = Audio::GetInstance();
 
-
     ma_engine_play_sound(&instance.audio_engine, file.c_str(), NULL);
 }
