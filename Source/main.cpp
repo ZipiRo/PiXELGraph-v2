@@ -7,23 +7,28 @@ private:
 
     Vector2 ScreenMousePosition;
 
-    Shapes::Rectangle rect;
-    Shapes::Elipse regpol;
+    Shapes::Elipse elipse1;
+    Shapes::Elipse elipse2;
+    Shapes::Elipse elipse3;
 
     void Start() override
     {
-        rect = Shapes::Rectangle(10, 10);
-        rect.SetColor(Color::Black);
-        rect.SetFillColor(Color::Red);
+        Camera::SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
 
-        regpol = Shapes::Elipse(10, 5);
-        regpol.SetColor(Color::Black);
-        regpol.SetFillColor(Color::Red);
+        elipse1 = Shapes::Elipse(10, 10);
+        elipse1.SetColor(Color::Black);
+        elipse1.SetFillColor(Color::Red);
+        elipse1.transform.SetPosition(0, 0);
 
-        rect.transform.SetPosition(Screen::Width() / 2, Screen::Height() / 2);
-        regpol.transform.SetPosition(30, 50);
-
-        Audio::PlaySound("mus.wav");
+        elipse2 = Shapes::Elipse(10, 10, 3);
+        elipse2.SetColor(Color::Black);
+        elipse2.SetFillColor(Color::Blue);
+        elipse2.transform.SetPosition(100, 0);
+        
+        elipse3 = Shapes::Elipse(10, 10, 5);
+        elipse3.SetColor(Color::Black);
+        elipse3.SetFillColor(Color::Green);
+        elipse3.transform.SetPosition(-100, 0);
     }
 
     void Update() override
@@ -33,35 +38,46 @@ private:
         {
             Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)) + L" | DEMO");
             Debug::Log(std::string("DT: ") + std::to_string(Time::deltaTime) + std::string(" | FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
-
-            rect.SetFillColor(Color::RandomColor());
-
             timer = 0;
         }
 
-        if(Input::IsMouseButtonDown(MouseButton::Left))
+        Vector2 cameraDirection;
+
+        elipse1.transform.Move(Vector2::RIGHT * 9.81 * Time::deltaTime * 20);
+        elipse2.transform.Move(Vector2::DOWN * 9.81 * Time::deltaTime * 3);
+        elipse3.transform.Move(Vector2::LEFT * 9.81 * Time::deltaTime * 3);
+
+        if(Input::IsKey(Key::Key_W))
+            cameraDirection.y += -1;
+        
+        if(Input::IsKey(Key::Key_S))
+            cameraDirection.y += 1;
+        
+        if(Input::IsKey(Key::Key_A))
+            cameraDirection.x += -1;
+        
+        if(Input::IsKey(Key::Key_D))
+            cameraDirection.x += 1;
+    
+        if(Input::IsKey(Key::Key_Q))
+            Camera::Zoom(-0.3 * Time::deltaTime);
+
+        if(Input::IsKey(Key::Key_E))
+            Camera::Zoom(0.3 * Time::deltaTime);
+
+        if(cameraDirection.x != 0 || cameraDirection.y != 0)
         {
-            Debug::Log("Slash");
-            Audio::PlaySound("slash.mp3");
+            Vector2::Normalize(cameraDirection);
+            Vector2 newPosition = cameraDirection * 500 * Time::deltaTime;
+            Camera::Move(newPosition);
         }
-
-        if(Input::IsKeyDown(Key::Key_Space))
-        {
-            Debug::Log("Ding");
-            Audio::PlaySound("sound.mp3");
-        }
-
-        ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
-
-        rect.transform.Rotate(PI * Time::deltaTime);
-
-        regpol.transform.Rotate(PI / 2 * Time::deltaTime);
     }
 
     void Draw() override
     {
-        DrawShape(rect);
-        DrawShape(regpol);
+        DrawShape(elipse1);
+        DrawShape(elipse2);
+        DrawShape(elipse3);
     }
 
     void Quit() override
@@ -72,15 +88,15 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 60;
-        Init(1280, 720, 10, L"DEMO");
+        MaxFPS = 120;
+        Init(1280, 720, 3, L"DEMO");
     }
 };
 
 int main()
 {
-    Demo p;
-    p.Run();
+    Demo demo;
+    demo.Run();
 
     return 0;
 }

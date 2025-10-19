@@ -99,7 +99,7 @@ void Transform::Move(Vector2 amount)
 
 void Transform::Scale(Vector2 amount)
 {
-    scale += amount;
+    scale = Vector2(amount.x * scale.x, amount.y * scale.y);
     update = true;
 }
 
@@ -113,11 +113,13 @@ void Transform::Rotate(float amount)
 void Transform::Move(float amountX, float amountY)
 {
     position += Vector2(amountX, amountY);
+    update = true;
 }
 
 void Transform::Scale(float amountX, float amountY)
 {
-    scale += Vector2(amountX, amountY);
+    scale = Vector2(amountX * scale.x, amountY * scale.y);
+    update = true;
 }
 
 Vector2 Transform::SinCosUpdate()

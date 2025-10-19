@@ -6,6 +6,7 @@
 #include "UMath.h";
 
 #include "Graphics/Vertex.h"
+#include "Graphics/Camera.h"
 #include "Core/Screen.h";
 
 #define RESET_CURSOR_POSITION "\033[H";
@@ -235,10 +236,10 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed)
     }
 }
 
-void FillShape(Shape &shape)
+void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color)
 {
-    int minY = shape.boundingBox.top;
-    int maxY = shape.boundingBox.bottom;
+    int minY = boundingBox.top;
+    int maxY = boundingBox.bottom;
 
     if (minY > maxY)
         std::swap(minY, maxY);
@@ -255,11 +256,11 @@ void FillShape(Shape &shape)
     {
         int count = 0;
 
-        for (auto vertex = shape.Tvertices.begin(); vertex != shape.Tvertices.end(); ++vertex)
+        for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
         {
             auto next_vertex = std::next(vertex);
-            if (next_vertex == shape.Tvertices.end())
-                next_vertex = shape.Tvertices.begin();
+            if (next_vertex == vertices.end())
+                next_vertex = vertices.begin();
 
             Vertex vertexA = *vertex;
             Vertex vertexB = *next_vertex;
@@ -282,7 +283,7 @@ void FillShape(Shape &shape)
             int xEnd = std::floor(intersections[i + 1]);
 
             for (int x = xStart; x <= xEnd; x++)
-                PlotPixel(x, y, shape.fillColor);
+                PlotPixel(x, y, color);
         }
     }
 
@@ -298,9 +299,20 @@ void DrawShape(Shape &shape)
         shape.transform.update = false;
     }
 
+    std::vector<Vertex> cameraShapeVertices;
+    AABB cameraShapeBoundingBox;
+    for(auto vertex : shape.Tvertices)
+    {
+        Vertex transformed = vertex;
+        transformed.position = Camera::WorldToScreen(vertex.position);
+        cameraShapeVertices.emplace_back(transformed);
+    }
+
+    cameraShapeBoundingBox = UpdateAABB(cameraShapeVertices);
+
     if (shape.fillColor != Color::Transparent)
-        FillShape(shape);
+        Fill(cameraShapeVertices, cameraShapeBoundingBox, shape.fillColor);
 
     if (shape.color != Color::Transparent)
-        DrawLines(shape.Tvertices);
+        DrawLines(cameraShapeVertices);
 }

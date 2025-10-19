@@ -20,6 +20,8 @@ class PiXELGraph;
 
 #include "Timer.h"
 #include "Color.h"
+
+#include "Graphics/Camera.h"
 #include "Screen.h"
 
 #include "Audio/AudioSource.h"

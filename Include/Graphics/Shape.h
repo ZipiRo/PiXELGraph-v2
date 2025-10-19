@@ -21,7 +21,6 @@ private:
     Color color;
     Color fillColor;
 
-    friend void FillShape(Shape &shape);
     friend void DrawShape(Shape &shape);
     Shape() {}
 
