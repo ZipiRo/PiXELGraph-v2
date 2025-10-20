@@ -16,6 +16,7 @@ cd ../..
 BASH RUN APP
 ============================================================
 @echo off
+
 cd Build/Debug
 start PiXELGraph
 cd ../..

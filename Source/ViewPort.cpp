@@ -15,18 +15,21 @@ View::View()
 {
     this->position = Vector2::ZERO;
     this->screenCenter = Vector2::ZERO;
+    zoom = 1;
 }
 
 View::View(Vector2 position, Vector2 screenCenter)
 {
     this->position = position;
     this->screenCenter = screenCenter;
+    zoom = 1;
 }
 
 View::View(float positionX, float positionY, float screeCenterX, float screeCenterY)
 {
     this->position = Vector2(positionX, positionY);
     this->screenCenter = Vector2(screeCenterX, screeCenterY);
+    zoom = 1;
 }
 
 void View::Move(const Vector2& delta)

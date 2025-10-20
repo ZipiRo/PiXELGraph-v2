@@ -20,7 +20,7 @@ private:
         elipse1.SetFillColor(Color::Red);
         elipse1.transform.SetPosition(0, 0);
 
-        elipse2 = Shapes::Elipse(10, 10, 3);
+        elipse2 = Shapes::Elipse(100, 100, 3);
         elipse2.SetColor(Color::Black);
         elipse2.SetFillColor(Color::Blue);
         elipse2.transform.SetPosition(100, 0);
@@ -29,10 +29,12 @@ private:
         elipse3.SetColor(Color::Black);
         elipse3.SetFillColor(Color::Green);
         elipse3.transform.SetPosition(-100, 0);
+        elipse3.transform.Rotate(PI / 3);
     }
 
     void Update() override
     {
+        ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
         timer += Time::deltaTime;
         if (timer >= 1)
         {
@@ -44,8 +46,11 @@ private:
         Vector2 cameraDirection;
 
         elipse1.transform.Move(Vector2::RIGHT * 9.81 * Time::deltaTime * 20);
-        elipse2.transform.Move(Vector2::DOWN * 9.81 * Time::deltaTime * 3);
-        elipse3.transform.Move(Vector2::LEFT * 9.81 * Time::deltaTime * 3);
+        elipse2.transform.Rotate(PI / 2 * Time::deltaTime);
+        elipse3.transform.Move(elipse3.transform.Right() * 9.81 * Time::deltaTime * 3);
+
+        Vector2 worldMousePosition = Screen::GetView().ScreenToWorld(ScreenMousePosition);
+        elipse2.transform.SetPosition(worldMousePosition);
 
         if(Input::IsKey(Key::Key_W))
             cameraDirection.y += -1;
@@ -88,8 +93,8 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 120;
-        Init(1280, 720, 3, L"DEMO");
+        MaxFPS = 60;
+        Init(1280, 720, 4, L"DEMO");
     }
 };
 
