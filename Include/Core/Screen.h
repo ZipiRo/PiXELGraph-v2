@@ -16,6 +16,8 @@ private:
     static int ScreenWidth, ScreenHeight;
     std::vector<Color> ScreenBuffer;
 
+    static View viewPort;
+
     void SetParameters(int WindowWidth, int WindowHeight);
     static void Display();
     static void Clear();
@@ -25,6 +27,9 @@ public:
     void operator=(const Screen &) = delete;
 
     static Screen &GetInstance();
+
+    static void SetView(const View& view);
+    static View& GetView();
 
     friend void PlotPixel(int, int, Color);
 
@@ -42,3 +47,5 @@ void DrawVertex(Vertex vertex);
 
 void DrawLines(const std::vector<Vertex> &vertices, bool closed = true);
 void DrawShape(const Shape &shape);
+
+void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color);

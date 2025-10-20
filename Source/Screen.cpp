@@ -6,7 +6,7 @@
 #include "UMath.h";
 
 #include "Graphics/Vertex.h"
-#include "Graphics/Camera.h"
+#include "Core/ViewPort.h"
 #include "Core/Screen.h";
 
 #define RESET_CURSOR_POSITION "\033[H";
@@ -14,11 +14,22 @@
 int Screen::ScreenWidth = 0;
 int Screen::ScreenHeight = 0;
 Color Screen::BacgroundColor = Color::White;
+View Screen::viewPort = View();
 
 Screen &Screen::GetInstance()
 {
     static Screen instance;
     return instance;
+}
+
+void Screen::SetView(const View &view)
+{
+    viewPort = view;
+}
+
+View &Screen::GetView()
+{
+    return viewPort;
 }
 
 void Screen::SetParameters(int WindowWidth, int WindowHeight)
@@ -304,7 +315,7 @@ void DrawShape(Shape &shape)
     for(auto vertex : shape.Tvertices)
     {
         Vertex transformed = vertex;
-        transformed.position = Camera::WorldToScreen(vertex.position);
+        transformed.position = Screen::GetView().WorldToScreen(vertex.position);
         cameraShapeVertices.emplace_back(transformed);
     }
 

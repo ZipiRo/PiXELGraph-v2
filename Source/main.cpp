@@ -13,7 +13,7 @@ private:
 
     void Start() override
     {
-        Camera::SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
+        Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
 
         elipse1 = Shapes::Elipse(10, 10);
         elipse1.SetColor(Color::Black);
@@ -58,18 +58,18 @@ private:
         
         if(Input::IsKey(Key::Key_D))
             cameraDirection.x += 1;
-    
+
         if(Input::IsKey(Key::Key_Q))
-            Camera::Zoom(-0.3 * Time::deltaTime);
+            Screen::GetView().Zoom(-1 * Time::deltaTime);
 
         if(Input::IsKey(Key::Key_E))
-            Camera::Zoom(0.3 * Time::deltaTime);
+            Screen::GetView().Zoom(1 * Time::deltaTime);
 
         if(cameraDirection.x != 0 || cameraDirection.y != 0)
         {
             Vector2::Normalize(cameraDirection);
             Vector2 newPosition = cameraDirection * 500 * Time::deltaTime;
-            Camera::Move(newPosition);
+            Screen::GetView().Move(newPosition);
         }
     }
 

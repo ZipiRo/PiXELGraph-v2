@@ -21,7 +21,7 @@ class PiXELGraph;
 #include "Timer.h"
 #include "Color.h"
 
-#include "Graphics/Camera.h"
+#include "ViewPort.h"
 #include "Screen.h"
 
 #include "Audio/AudioSource.h"
