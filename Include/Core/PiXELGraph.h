@@ -12,6 +12,7 @@
 #include "Vector2.h"
 
 #include "Console/ErrorSystem.h"
+#include "Console/EventSystem.h"
 #include "Console/InputSystem.h"
 #include "Console/Window.h"
 #include "Console/Debug.h"
@@ -38,8 +39,10 @@ class PiXELGraph
 private:
     std::atomic<bool> RUNNING = true;
     std::thread InputThread;
+    std::thread EventThread;
 
     void InputLoop();
+    void EventLoop();
 
     void HandleError(const std::string &message);
 
@@ -49,6 +52,7 @@ protected:
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
 
     virtual void Start() {}
+    virtual void Event() {}
     virtual void Update() {}
     virtual void Draw() {}
     virtual void Quit() {}

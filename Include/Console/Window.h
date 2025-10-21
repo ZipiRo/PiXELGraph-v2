@@ -14,7 +14,7 @@ private:
     static HWND CONSOLE_WINDOW;
 
     HANDLE ConsoleOutputH;
-    HANDLE ConsoleInputtH;
+    static HANDLE ConsoleInputtH;
 
     void ConstructWindow();
 
@@ -26,16 +26,18 @@ private:
 public:
     Window(const Window &) = delete;
     void operator=(const Window &) = delete;
-
     void SetParameters(int width, int height, int fontSize, const std::wstring &title);
 
     static Window &GetInstance();
 
     static void SetTitle(const std::wstring &title);
 
+    static bool Focused();
+
     static int WindowWidth();
     static int WindowHeight();
     static int WindowFontSize();
     static std::wstring WindowTitle();
     static HWND &ConsoleWindow();
+    static HANDLE &ConsoleInputHandle();
 };

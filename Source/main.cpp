@@ -16,20 +16,39 @@ private:
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
 
         elipse1 = Shapes::Elipse(10, 10);
-        elipse1.SetColor(Color::Black);
+        elipse1.SetColor(Color::White);
         elipse1.SetFillColor(Color::Red);
         elipse1.transform.SetPosition(0, 0);
 
         elipse2 = Shapes::Elipse(100, 100, 3);
-        elipse2.SetColor(Color::Black);
+        elipse2.SetColor(Color::White);
         elipse2.SetFillColor(Color::Blue);
         elipse2.transform.SetPosition(100, 0);
         
         elipse3 = Shapes::Elipse(10, 10, 5);
-        elipse3.SetColor(Color::Black);
+        elipse3.SetColor(Color::White);
         elipse3.SetFillColor(Color::Green);
         elipse3.transform.SetPosition(-100, 0);
         elipse3.transform.Rotate(PI / 3);
+    }
+
+    void Event() override 
+    {
+        if(Event::GetEvent() == EventType::EVENT_MOUSE_LCLICK)
+        {
+            Debug::Log("Mouse L Click");
+        }
+        if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
+        {
+            Debug::Log("SCROLL UP");
+            Screen::GetView().Zoom(1 * Time::deltaTime);
+        }
+            
+        if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_DOWN)
+        {
+            Debug::Log("SCROLL DOWN");
+            Screen::GetView().Zoom(-1 * Time::deltaTime);
+        }
     }
 
     void Update() override
@@ -63,7 +82,7 @@ private:
         
         if(Input::IsKey(Key::Key_D))
             cameraDirection.x += 1;
-
+            
         if(Input::IsKey(Key::Key_Q))
             Screen::GetView().Zoom(-1 * Time::deltaTime);
 
@@ -94,6 +113,7 @@ public:
     Demo()
     {
         MaxFPS = 60;
+        Screen::BacgroundColor = Color::Black;
         Init(1280, 720, 4, L"DEMO");
     }
 };

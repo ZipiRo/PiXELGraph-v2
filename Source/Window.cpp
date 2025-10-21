@@ -7,6 +7,7 @@ int Window::HEIGHT = 0;
 int Window::FONT_SIZE = 0;
 std::wstring Window::TITLE = L"";
 HWND Window::CONSOLE_WINDOW;
+HANDLE Window::ConsoleInputtH;
 
 Window &Window::GetInstance()
 {
@@ -35,7 +36,9 @@ void Window::ConstructWindow()
 
     if (GetConsoleMode(ConsoleInputtH, &ConsoleMode))
     {
+        ConsoleMode |= ENABLE_EXTENDED_FLAGS;  
         ConsoleMode &= ~ENABLE_QUICK_EDIT_MODE;
+        ConsoleMode |= ENABLE_MOUSE_INPUT;     
         SetConsoleMode(ConsoleInputtH, ConsoleMode);
     }
 
@@ -105,6 +108,11 @@ void Window::ConstructWindow()
     }
 }
 
+bool Window::Focused()
+{
+    return GetForegroundWindow() == CONSOLE_WINDOW;
+}
+
 void Window::SetParameters(int width, int height, int fontSize, const std::wstring &title)
 {
     fontSize += 1;
@@ -136,3 +144,4 @@ int Window::WindowHeight() { return HEIGHT; }
 int Window::WindowFontSize() { return FONT_SIZE; }
 std::wstring Window::WindowTitle() { return TITLE; }
 HWND &Window::ConsoleWindow() { return CONSOLE_WINDOW; }
+HANDLE &Window::ConsoleInputHandle() { return ConsoleInputtH; }

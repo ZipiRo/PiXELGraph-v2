@@ -7,6 +7,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
     {
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
+        Event::GetInstance();
         Input::GetInstance();
         Audio::GetInstance();
     }
@@ -24,11 +25,13 @@ void PiXELGraph::Run()
         Time::GetInstance();
 
         InputThread = std::thread(&PiXELGraph::InputLoop, this);
+        EventThread = std::thread(&PiXELGraph::EventLoop, this);
 
         while (RUNNING)
         {
             Time::Tick();
 
+            Event();
             if (Time::deltaTime >= 1.0f / MaxFPS)
             {
                 Time::Reset();
@@ -57,7 +60,18 @@ void PiXELGraph::InputLoop()
 {
     while (RUNNING)
     {
+        if(!Window::Focused()) continue;
         Input::FetchInputData();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+}
+
+void PiXELGraph::EventLoop()
+{
+    while (RUNNING)
+    {
+        if(!Window::Focused()) continue;
+        Event::FetchEventData();
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
