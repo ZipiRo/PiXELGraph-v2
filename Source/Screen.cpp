@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "UMath.h";
+#include "Console/Debug.h"
 
 #include "Graphics/Vertex.h"
 #include "Core/ViewPort.h"
@@ -222,11 +223,6 @@ void DrawElipse(int x, int y, int radius, Color color, int point_count)
     DrawLine(last_X + x, last_Y + y, f_X + x, f_Y + y, color);
 }
 
-void DrawVertex(Vertex vertex)
-{
-    PlotPixel(vertex.position.x, vertex.position.y, vertex.color);
-}
-
 void DrawLines(const std::vector<Vertex> &vertices, bool closed)
 {
     for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
@@ -243,7 +239,10 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed)
         Vertex vertexA = *vertex;
         Vertex vertexB = *next_vertex;
 
-        DrawLine(vertexA.position.x, vertexA.position.y, vertexB.position.x, vertexB.position.y, vertexA.color);
+        Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
+        Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
+
+        DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
     }
 }
 
@@ -261,7 +260,7 @@ void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color co
         return;
 
     const int maxSize = maxY * 2 + 5;
-    int *intersections = new int[maxSize];
+    float *intersections = new float[maxSize];
 
     for (int y = minY; y <= maxY; y++)
     {
@@ -279,18 +278,23 @@ void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color co
             if (vertexA.position.y == vertexB.position.y)
                 continue;
 
-            if ((y >= vertexA.position.y && y < vertexB.position.y) || (y >= vertexB.position.y && y < vertexA.position.y))
+            if (y >= std::min(vertexA.position.y, vertexB.position.y) && y < std::max(vertexB.position.y, vertexA.position.y))
             {
-                int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
+                float x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
                 intersections[count++] = x;
             }
         }
 
-        HeapSort(intersections, count);
+        // HeapSort(intersections, count);
 
+        for(int i = 0; i < count - 1; i++)
+            for(int j = i + 1; j < count; j++)
+                if(intersections[i] > intersections[j])
+                    std::swap(intersections[i], intersections[j]);
+                    
         for (int i = 0; i + 1 < count; i += 2)
         {
-            int xStart = intersections[i];
+            int xStart = std::ceil(intersections[i]);
             int xEnd = std::floor(intersections[i + 1]);
 
             for (int x = xStart; x <= xEnd; x++)
@@ -307,23 +311,25 @@ void DrawShape(Shape &shape)
     {
         shape.Tvertices = UpdateVertices(shape.transform, shape.vertices);
         shape.boundingBox = UpdateAABB(shape.Tvertices);
-        shape.transform.update = false;
     }
-
-    std::vector<Vertex> cameraShapeVertices;
-    AABB cameraShapeBoundingBox;
-    for(auto vertex : shape.Tvertices)
-    {
-        Vertex transformed = vertex;
-        transformed.position = Screen::GetView().WorldToScreen(vertex.position);
-        cameraShapeVertices.emplace_back(transformed);
-    }
-
-    cameraShapeBoundingBox = UpdateAABB(cameraShapeVertices);
 
     if (shape.fillColor != Color::Transparent)
-        Fill(cameraShapeVertices, cameraShapeBoundingBox, shape.fillColor);
+    {
+        if (shape.transform.update || Screen::GetView().update)
+        {
+            std::vector<Vertex> cameraShapeVertices;
+            for(auto vertex : shape.Tvertices)
+                cameraShapeVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
+
+            shape.cameraTvertices = cameraShapeVertices;
+            shape.cameraBoundingBox = UpdateAABB(cameraShapeVertices);
+        }
+     
+        Fill(shape.cameraTvertices, shape.cameraBoundingBox, shape.fillColor);
+    }
 
     if (shape.color != Color::Transparent)
-        DrawLines(cameraShapeVertices);
+        DrawLines(shape.Tvertices);
+    
+    shape.transform.update = false;
 }

@@ -15,8 +15,10 @@ protected:
 
 private:
     std::vector<Vertex> Tvertices;
+    std::vector<Vertex> cameraTvertices;
 
     AABB boundingBox;
+    AABB cameraBoundingBox;
 
     Color color;
     Color fillColor;

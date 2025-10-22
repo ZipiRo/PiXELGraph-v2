@@ -43,6 +43,7 @@ void PiXELGraph::Run()
                 Draw();
 
                 Screen::Display();
+                Screen::GetView().update = false;
             }
         }
 

@@ -10,6 +10,8 @@ private:
     float zoom;
 
 public:
+    bool update;
+    
     View();
     View(Vector2 position, Vector2 screenCenter);
     View(float positionX, float positionY, float screeCenterX, float screeCenterY);

@@ -6,6 +6,7 @@ View::View()
     this->position = Vector2::ZERO;
     this->screenCenter = Vector2::ZERO;
     zoom = 1;
+    update = true;
 }
 
 View::View(Vector2 position, Vector2 screenCenter)
@@ -13,6 +14,7 @@ View::View(Vector2 position, Vector2 screenCenter)
     this->position = position;
     this->screenCenter = screenCenter;
     zoom = 1;
+    update = true;
 }
 
 View::View(float positionX, float positionY, float screeCenterX, float screeCenterY)
@@ -20,16 +22,19 @@ View::View(float positionX, float positionY, float screeCenterX, float screeCent
     this->position = Vector2(positionX, positionY);
     this->screenCenter = Vector2(screeCenterX, screeCenterY);
     zoom = 1;
+    update = true;
 }
 
 void View::Move(const Vector2 &delta)
 {
     position += delta;
+    update = true;
 }
 
 void View::SetZoom(float newZoom)
 {
     zoom = newZoom;
+    update = true;
 }
 
 void View::Zoom(float amount)
@@ -37,16 +42,19 @@ void View::Zoom(float amount)
     zoom += amount;
     if (zoom < 0.1f)
         zoom = 0.1f;
+    update = true;
 }
 
 void View::SetPosition(const Vector2 &newPosition)
 {
     position = newPosition;
+    update = true;
 }
 
 void View::SetScreenCenter(const Vector2 &center)
 {
     screenCenter = center;
+    update = true;
 }
 
 Vector2 View::WorldToScreen(const Vector2 &worldPosition)

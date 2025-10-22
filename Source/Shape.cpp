@@ -3,8 +3,6 @@
 #include "Graphics/Transform.h"
 #include "Graphics/Shape.h"
 
-#include "Console/Debug.h"
-
 Shape::Shape(const std::vector<Vertex> &vertices)
 {
     this->vertices = vertices;
@@ -25,19 +23,17 @@ std::vector<Vertex> UpdateVertices(Transform &transfrom, const std::vector<Verte
     transfrom.SinCosUpdate();
 
     for (auto &vertex : vertices)
-        Tvertices.emplace_back(Vertex(
-            TransformVertex(transfrom, vertex.position),
-            vertex.color));
+        Tvertices.emplace_back(Vertex(TransformVertex(transfrom, vertex.position), vertex.color));
 
     return Tvertices;
 }
 
 AABB UpdateAABB(const std::vector<Vertex> &vertices)
 {
-    int left = INT_MAX;
-    int top = INT_MAX;
-    int right = INT_MIN;
-    int bottom = INT_MIN;
+    float left = vertices[0].position.x;
+    float right = left;
+    float top = vertices[0].position.y;
+    float bottom = top;
 
     for (const auto &vertex : vertices)
     {
