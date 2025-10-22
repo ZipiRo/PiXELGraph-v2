@@ -7,7 +7,11 @@ class View
 private:
     Vector2 screenCenter;
     Vector2 position;
+    float angle;
     float zoom;
+
+    float sin0;
+    float cos0;
 
 public:
     bool update;
@@ -19,6 +23,9 @@ public:
     void SetScreenCenter(const Vector2& center);
     void SetPosition(const Vector2& newPosition);
     void Move(const Vector2& delta);
+
+    void SetAngle(float newAngle);
+    void Rotate(float amount);
 
     void SetZoom(float newZoom);
     void Zoom(float amount);

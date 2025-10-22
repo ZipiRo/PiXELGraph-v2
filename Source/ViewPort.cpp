@@ -1,10 +1,16 @@
+#include <cmath>
+
+#include "UMath.h"
 #include "Vector2.h"
 #include "Core/ViewPort.h"
 
 View::View()
 {
-    this->position = Vector2::ZERO;
-    this->screenCenter = Vector2::ZERO;
+    position = Vector2::ZERO;
+    screenCenter = Vector2::ZERO;
+    angle = 0;
+    sin0 = 0;
+    cos0 = 1;
     zoom = 1;
     update = true;
 }
@@ -13,6 +19,9 @@ View::View(Vector2 position, Vector2 screenCenter)
 {
     this->position = position;
     this->screenCenter = screenCenter;
+    angle = 0;
+    sin0 = 0;
+    cos0 = 1;
     zoom = 1;
     update = true;
 }
@@ -21,7 +30,28 @@ View::View(float positionX, float positionY, float screeCenterX, float screeCent
 {
     this->position = Vector2(positionX, positionY);
     this->screenCenter = Vector2(screeCenterX, screeCenterY);
+    angle = 0;
+    sin0 = 0;
+    cos0 = 1;
     zoom = 1;
+    update = true;
+}
+
+void View::SetAngle(float newAngle)
+{
+    angle = newAngle;
+    NormalizeAngle(angle);
+    sin0 = sin(angle);
+    cos0 = cos(angle);
+    update = true;
+}
+
+void View::Rotate(float amount)
+{
+    angle += amount;
+    NormalizeAngle(angle);
+    sin0 = sin(angle);
+    cos0 = cos(angle);
     update = true;
 }
 
@@ -59,12 +89,25 @@ void View::SetScreenCenter(const Vector2 &center)
 
 Vector2 View::WorldToScreen(const Vector2 &worldPosition)
 {
-    return (worldPosition - position) * zoom + screenCenter;
+    Vector2 relative = worldPosition - position;
+
+    Vector2 rotated(relative.x * cos0 - relative.y * sin0, 
+                    relative.x * sin0 + relative.y * cos0);
+
+    return rotated * zoom + screenCenter;
 }
 
 Vector2 View::ScreenToWorld(const Vector2 &screenPosition)
 {
-    return (screenPosition - screenCenter) / zoom + position;
+    Vector2 relative = (screenPosition - screenCenter) / zoom;
+
+    sin0 = -sin0;
+    cos0 = -cos0;
+    
+    Vector2 unRotated(relative.x * cos0 - relative.y * sin0, 
+                    relative.x * sin0 + relative.y * cos0);
+
+    return unRotated + position;
 }
 
 float View::GetZoom() { return zoom; }

@@ -260,7 +260,7 @@ void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color co
         return;
 
     const int maxSize = maxY * 2 + 5;
-    float *intersections = new float[maxSize];
+    int *intersections = new int[maxSize];
 
     for (int y = minY; y <= maxY; y++)
     {
@@ -280,21 +280,16 @@ void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color co
 
             if (y >= std::min(vertexA.position.y, vertexB.position.y) && y < std::max(vertexB.position.y, vertexA.position.y))
             {
-                float x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
+                int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
                 intersections[count++] = x;
             }
         }
 
-        // HeapSort(intersections, count);
-
-        for(int i = 0; i < count - 1; i++)
-            for(int j = i + 1; j < count; j++)
-                if(intersections[i] > intersections[j])
-                    std::swap(intersections[i], intersections[j]);
+        HeapSort(intersections, count);
                     
         for (int i = 0; i + 1 < count; i += 2)
         {
-            int xStart = std::ceil(intersections[i]);
+            int xStart = intersections[i];
             int xEnd = std::floor(intersections[i + 1]);
 
             for (int x = xStart; x <= xEnd; x++)

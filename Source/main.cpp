@@ -9,6 +9,7 @@ private:
 
     Shapes::Elipse elipse1;
     Shapes::Elipse elipse2;
+    Shapes::Elipse elipse3;
 
     void Start() override
     {
@@ -22,28 +23,27 @@ private:
         elipse2 = Shapes::Elipse(50, 50, 3);
         elipse2.SetColor(Color::Black);
         elipse2.SetFillColor(Color::Blue);
-        elipse2.transform.SetPosition(200, 200);
+        elipse2.transform.SetPosition(300, 200);
+
+        elipse3 = Shapes::Elipse(50, 50, 3);
+        elipse3.SetColor(Color::Black);
+        elipse3.SetFillColor(Color::Yellow);
+        elipse3.transform.SetPosition(0, 300);
     }
 
     void Event() override 
     {
         if(Event::GetEvent() == EventType::EVENT_MOUSE_LCLICK)
         {
-            Debug::Log("Mouse Left Click");
             Screen::BacgroundColor = Color::RandomColor();
         }
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
         {
-            Debug::Log("SCROLL UP");
-            // Screen::GetView().Zoom(1 * Time::deltaTime);
-            elipse1.transform.Rotate(PI / 6 * Time::deltaTime);
+            elipse1.transform.Rotate(PI / 2 * Time::deltaTime);
         }
-            
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_DOWN)
         {
-            Debug::Log("SCROLL DOWN");
-            // Screen::GetView().Zoom(-1 * Time::deltaTime);
-            elipse1.transform.Rotate(-PI / 6 * Time::deltaTime);
+            elipse1.transform.Rotate(-PI / 2 * Time::deltaTime);
         }
     }
 
@@ -61,6 +61,9 @@ private:
         Vector2 cameraDirection;
 
         elipse2.transform.Rotate(PI * Time::deltaTime);
+        
+        elipse3.transform.Rotate(PI / 3 * Time::deltaTime);
+        elipse3.transform.Move(elipse3.transform.Right() * 300 * Time::deltaTime);
 
         if(Input::IsKey(Key::Key_W))
             cameraDirection.y += -1;
@@ -80,6 +83,12 @@ private:
         if(Input::IsKey(Key::Key_E))
             Screen::GetView().Zoom(1.0f * Time::deltaTime);
 
+        if(Input::IsKey(Key::Key_Z))
+            Screen::GetView().Rotate(PI / 3 * Time::deltaTime);
+
+        if(Input::IsKey(Key::Key_X))
+            Screen::GetView().Rotate(-PI / 3 * Time::deltaTime);
+
         if(cameraDirection.x != 0 || cameraDirection.y != 0)
         {
             Vector2::Normalize(cameraDirection);
@@ -94,16 +103,21 @@ private:
 
         DrawShape(elipse2);
 
+        DrawShape(elipse3);
+
         AABB boundingBox = elipse2.GetBoundingBox();
 
         std::vector<Vertex> boundingBoxVertices;
 
         boundingBoxVertices.emplace_back(Vector2(boundingBox.left, boundingBox.top), Color::Green);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.top), Color::Green);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.bottom), Color::Green);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.left, boundingBox.bottom), Color::Green);
+        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.top), Color::Blue);
+        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.bottom), Color::Purple);
+        boundingBoxVertices.emplace_back(Vector2(boundingBox.left, boundingBox.bottom), Color::Cyan);
 
         DrawLines(boundingBoxVertices);
+        
+        DrawLine(0, 0, Screen::Width(), Screen::Height(), Color::Black);
+        DrawLine(0, Screen::Height(), Screen::Width(), 0, Color::Black);
     }
 
     void Quit() override
@@ -114,8 +128,8 @@ private:
 public:
     Demo()
     {
-        MaxFPS = 61;
-        Init(1280, 720, 4, L"DEMO");
+        MaxFPS = 60;
+        Init(800, 600, 3, L"DEMO");
     }
 };
 

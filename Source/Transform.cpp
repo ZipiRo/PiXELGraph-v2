@@ -49,21 +49,21 @@ void Transform::SetScale(float factorX, float factorY)
     update = true;
 }
 
-void Transform::SetAngle(float angle)
+void Transform::SetAngle(float newAngle)
 {
+    angle = newAngle;
     NormalizeAngle(this->angle);
-    this->angle = angle;
     update = true;
 }
 
-void Transform::SetPosition(Vector2 position)
+void Transform::SetPosition(Vector2 newPosition)
 {
-    this->position = position;
+    position = newPosition;
 }
 
-void Transform::SetScale(Vector2 scale)
+void Transform::SetScale(Vector2 newScale)
 {
-    this->scale = scale;
+    scale = newScale;
 }
 
 Vector2 Transform::GetPosition()
