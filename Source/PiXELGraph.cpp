@@ -10,6 +10,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Event::GetInstance();
         Input::GetInstance();
         Audio::GetInstance();
+        Font::GetInstance();
     }
     catch (const std::exception &exception)
     {

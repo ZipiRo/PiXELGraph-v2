@@ -58,8 +58,7 @@ void Screen::Display()
         }
         buffer << ' ';
 
-        if ((i + 1) % instance.ScreenWidth == 0 &&
-            (i + 1) % (instance.ScreenWidth * instance.ScreenHeight) != 0)
+        if ((i + 1) % instance.ScreenWidth == 0 && (i + 1) % (instance.ScreenWidth * instance.ScreenHeight) != 0)
             buffer << '\n';
     }
 
@@ -312,12 +311,12 @@ void DrawShape(Shape &shape)
     {
         if (shape.transform.update || Screen::GetView().update)
         {
-            std::vector<Vertex> cameraShapeVertices;
+            std::vector<Vertex> cameraVertices;
             for(auto vertex : shape.Tvertices)
-                cameraShapeVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
+                cameraVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
 
-            shape.cameraTvertices = cameraShapeVertices;
-            shape.cameraBoundingBox = UpdateAABB(cameraShapeVertices);
+            shape.cameraTvertices = cameraVertices;
+            shape.cameraBoundingBox = UpdateAABB(cameraVertices);
         }
      
         Fill(shape.cameraTvertices, shape.cameraBoundingBox, shape.fillColor);
@@ -327,4 +326,43 @@ void DrawShape(Shape &shape)
         DrawLines(shape.Tvertices);
     
     shape.transform.update = false;
+}
+
+void DrawText(Text &text)
+{
+    if(text.string.empty()) return;
+
+    if (text.transform.update)
+    {
+        text.Tvertices = UpdateVertices(text.transform, text.vertices);
+        text.boundingBox = UpdateAABB(text.Tvertices);
+    }
+
+    if (text.fillColor != Color::Transparent)
+    {
+        if (text.transform.update || Screen::GetView().update)
+        {
+            std::vector<Vertex> cameraVertices;
+            for(auto vertex : text.Tvertices)
+                cameraVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
+
+            text.cameraTvertices = cameraVertices;
+            text.cameraBoundingBox = UpdateAABB(cameraVertices);
+        }
+     
+        Fill(text.cameraTvertices, text.cameraBoundingBox, text.fillColor);
+    }
+    
+    if (text.color != Color::Transparent)
+    {    
+        for (auto index = text.indices.begin(); index != text.indices.end(); ++index)
+        {
+            auto next_index = std::next(index);
+
+            int indexA = *index;
+            int indexB = *next_index;
+    
+            DrawLines({text.cameraTvertices[indexA], text.cameraTvertices[indexB]}, false);
+        }
+    }
 }

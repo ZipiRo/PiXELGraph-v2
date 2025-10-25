@@ -70,8 +70,6 @@ void View::SetZoom(float newZoom)
 void View::Zoom(float amount)
 {
     zoom += amount;
-    if (zoom < 0.1f)
-        zoom = 0.1f;
     update = true;
 }
 

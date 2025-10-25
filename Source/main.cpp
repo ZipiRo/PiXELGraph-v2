@@ -11,6 +11,8 @@ private:
     Shapes::Elipse elipse2;
     Shapes::Elipse elipse3;
 
+    Text t1;
+
     void Start() override
     {
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
@@ -29,6 +31,8 @@ private:
         elipse3.SetColor(Color::Black);
         elipse3.SetFillColor(Color::Yellow);
         elipse3.transform.SetPosition(0, 300);
+
+        // t1.SetString("AVB");
     }
 
     void Event() override 

@@ -7,7 +7,6 @@
 #include <vector>
 #include <limits>
 
-
 #include "UMath.h"
 #include "Vector2.h"
 
@@ -27,12 +26,15 @@ class PiXELGraph;
 
 #include "Audio/AudioSource.h"
 
+#include "Graphics/Font.h"
+
 #include "Graphics/Vertex.h"
 #include "Graphics/Transform.h"
 #include "Graphics/AABB.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Rectangle.h"
 #include "Graphics/Elipse.h"
+#include "Graphics/Text.h"
 
 class PiXELGraph
 {
