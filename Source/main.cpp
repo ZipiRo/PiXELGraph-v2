@@ -15,6 +15,7 @@ private:
 
         t1.transform.SetScale(20, 20);        
         t1.SetColor(Color::Black);
+        t1.SetString("THE QUCIK BROWN FOX JUMPS OVER THE LAZY DOG\nthe quick brown fox jumps over the lazy dog\n0123456789");
     }
 
     void Event() override 
@@ -41,7 +42,6 @@ private:
         {
             int fps = 1.0f / Time::deltaTime;
             float dt = Time::deltaTime;
-            t1.SetString(std::to_string(dt) + '\n' + std::to_string(fps));
             
             Window::SetTitle(L" | FPS: " + std::to_wstring(fps) + L" | DEMO");
             Debug::Log(std::string("DT: ") + std::to_string(dt) + std::string(" | FPS: ") + std::to_string(fps));

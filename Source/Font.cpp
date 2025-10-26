@@ -47,6 +47,7 @@ std::map<char, Character> CreateFontTable(const std::string &fontFile)
             character.indices.emplace_back(index);
 
         character.devance = characterData["devance"];
+        // character.advance = characterData["advance"];
 
         characters[charValue] = character;
     }

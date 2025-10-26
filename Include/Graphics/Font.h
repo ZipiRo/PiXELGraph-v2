@@ -11,6 +11,7 @@ struct Character
     std::vector<Vertex> vertices;
     std::vector<int> indices;
     float devance;
+    float advance;
 };
 
 class Font
