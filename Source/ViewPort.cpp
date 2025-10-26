@@ -98,12 +98,12 @@ Vector2 View::WorldToScreen(const Vector2 &worldPosition)
 Vector2 View::ScreenToWorld(const Vector2 &screenPosition)
 {
     Vector2 relative = (screenPosition - screenCenter) / zoom;
-
-    sin0 = -sin0;
-    cos0 = -cos0;
     
-    Vector2 unRotated(relative.x * cos0 - relative.y * sin0, 
-                    relative.x * sin0 + relative.y * cos0);
+    float cos0 = -this->cos0;
+    float sin0 = -this->sin0;
+
+    Vector2 unRotated(relative.x * -cos0 - relative.y * -sin0, 
+                    relative.x * -sin0 + relative.y * -cos0);
 
     return unRotated + position;
 }

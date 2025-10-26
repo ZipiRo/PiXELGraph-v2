@@ -59,11 +59,13 @@ void Transform::SetAngle(float newAngle)
 void Transform::SetPosition(Vector2 newPosition)
 {
     position = newPosition;
+    update = true;
 }
 
 void Transform::SetScale(Vector2 newScale)
 {
     scale = newScale;
+    update = true;
 }
 
 Vector2 Transform::GetPosition()
