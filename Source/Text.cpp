@@ -5,8 +5,8 @@
 
 void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, std::vector<int> &indices)
 {
-    std::vector<Vertex> newVertices;
-    std::vector<int> newIndices;
+    vertices.clear();
+    indices.clear();
 
     int linesCount = 0;
     int lineLetterCount = 0;
@@ -41,18 +41,15 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
             if(lineLetterCount != 0)
                 position.x += character.devance;
 
-            newVertices.emplace_back(position + Vector2(lineLetterCount + space, linesCount * (LineSpace + 1)));
+            vertices.emplace_back(position + Vector2(lineLetterCount + space, linesCount * (LineSpace + 1)));
         }
 
         for(const auto &index : character.indices)
-            newIndices.emplace_back(index + indexOffset);
+            indices.emplace_back(index + indexOffset);
 
         indexOffset += character.vertices.size();
         lineLetterCount++;
     }
-
-    vertices = newVertices;
-    indices = newIndices;
 }
 
 Text::Text()
@@ -91,6 +88,8 @@ void Text::SetString(const std::string &text)
     
     for (auto &vertex : vertices)
         vertex.color = this->color;
+    
+    transform.update = true;
 }
 
 void Text::SetColor(Color color)

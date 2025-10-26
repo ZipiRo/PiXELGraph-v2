@@ -7,20 +7,13 @@ private:
 
     Vector2 ScreenMousePosition;
 
-    Shapes::Elipse elipse1;
-    Shapes::Elipse elipse2;
-    Shapes::Elipse elipse3;
-
     Text t1;
 
     void Start() override
     {
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
 
-        t1.SetString("PULA MARE IN PARCARE\nCE DRQ VREI?");
-
-        t1.transform.SetScale(10, 10);
-        
+        t1.transform.SetScale(20, 20);        
         t1.SetColor(Color::Black);
     }
 
@@ -32,11 +25,11 @@ private:
         }
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
         {
-            elipse1.transform.Rotate(PI / 2 * Time::deltaTime);
+            Screen::GetView().Zoom(1.0f * Time::deltaTime);
         }
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_DOWN)
         {
-            elipse1.transform.Rotate(-PI / 2 * Time::deltaTime);
+            Screen::GetView().Zoom(-1.0f * Time::deltaTime);
         }
     }
 
@@ -46,17 +39,17 @@ private:
         timer += Time::deltaTime;
         if (timer >= 1)
         {
-            Window::SetTitle(L" | FPS: " + std::to_wstring(int(1.0f / Time::deltaTime)) + L" | DEMO");
-            Debug::Log(std::string("DT: ") + std::to_string(Time::deltaTime) + std::string(" | FPS: ") + std::to_string(int(1.0f / Time::deltaTime)));
+            int fps = 1.0f / Time::deltaTime;
+            float dt = Time::deltaTime;
+            t1.SetString(std::to_string(dt) + '\n' + std::to_string(fps));
+            
+            Window::SetTitle(L" | FPS: " + std::to_wstring(fps) + L" | DEMO");
+            Debug::Log(std::string("DT: ") + std::to_string(dt) + std::string(" | FPS: ") + std::to_string(fps));
+            
             timer = 0;
         }
 
         Vector2 cameraDirection;
-
-        elipse2.transform.Rotate(PI * Time::deltaTime);
-        
-        elipse3.transform.Rotate(PI / 3 * Time::deltaTime);
-        elipse3.transform.Move(elipse3.transform.Right() * 300 * Time::deltaTime);
 
         if(Input::IsKey(Key::Key_W))
             cameraDirection.y += -1;
@@ -71,15 +64,9 @@ private:
             cameraDirection.x += 1;
             
         if(Input::IsKey(Key::Key_Q))
-            Screen::GetView().Zoom(-1.0f * Time::deltaTime);
-
-        if(Input::IsKey(Key::Key_E))
-            Screen::GetView().Zoom(1.0f * Time::deltaTime);
-
-        if(Input::IsKey(Key::Key_Z))
             Screen::GetView().Rotate(PI / 3 * Time::deltaTime);
 
-        if(Input::IsKey(Key::Key_X))
+        if(Input::IsKey(Key::Key_E))
             Screen::GetView().Rotate(-PI / 3 * Time::deltaTime);
 
         if(cameraDirection.x != 0 || cameraDirection.y != 0)
