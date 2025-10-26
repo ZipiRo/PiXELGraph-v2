@@ -33,12 +33,13 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
         }
 
         Character character = Font::GetC(letter);
-
+        space += character.devance;
+        
         for(const auto &vertex : character.vertices)
         {
             Vector2 position = vertex.position;
             if(lineLetterCount != 0)
-                position.x += character.devance * lineLetterCount;
+                position.x += character.devance;
 
             newVertices.emplace_back(position + Vector2(lineLetterCount + space, linesCount * (LineSpace + 1)));
         }

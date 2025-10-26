@@ -35,4 +35,5 @@ public:
 
     float GetZoom();
     Vector2 GetPosition();
+    float GetAngle();
 };

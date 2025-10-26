@@ -110,3 +110,4 @@ Vector2 View::ScreenToWorld(const Vector2 &screenPosition)
 
 float View::GetZoom() { return zoom; }
 Vector2 View::GetPosition() { return position; }
+float View::GetAngle() { return angle; }
