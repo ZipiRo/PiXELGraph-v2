@@ -1,3 +1,4 @@
+#include "Console/Debug.h"
 #include "Graphics/Font.h"
 #include "Graphics/Text.h"
 #include "Graphics/Shape.h"
@@ -12,18 +13,18 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
     int indexOffset = 0;
     float space = 0;
 
-    const float LineSpace = 0.25f;
-    const float LetterSpace = 0.20f;
+    const float LineSpace = 0.50f;
+    const float LetterSpace = 0.50f;
      
-    for(const auto &charValue : text)
+    for(const auto &letter : text)
     {
-        if(charValue == ' ')
+        if(letter == ' ')
         {
-            space = LetterSpace;
+            space += LetterSpace;
             continue;
         }
 
-        if(charValue == '\n')
+        if(letter == '\n')
         {
             lineLetterCount = 0;
             space = 0;
@@ -31,23 +32,26 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
             continue;
         }
 
-        Character character = Font::GetC(charValue);
+        Character character = Font::GetC(letter);
 
         for(const auto &vertex : character.vertices)
         {
             Vector2 position = vertex.position;
             if(lineLetterCount != 0)
-                position = Vector2(position.x + character.devance, position.y + character.devance);
+                position.x += character.devance * lineLetterCount;
 
-            vertices.emplace_back(position + Vector2(lineLetterCount + space, LineSpace * linesCount));
+            newVertices.emplace_back(position + Vector2(lineLetterCount + space, linesCount * (LineSpace + 1)));
         }
 
         for(const auto &index : character.indices)
-            indices.emplace_back(index + indexOffset);
+            newIndices.emplace_back(index + indexOffset);
 
         indexOffset += character.vertices.size();
         lineLetterCount++;
     }
+
+    vertices = newVertices;
+    indices = newIndices;
 }
 
 Text::Text()
@@ -83,6 +87,9 @@ void Text::SetString(const std::string &text)
 {
     this->string = text;
     CreateTextVertices(this->string, vertices, indices);
+    
+    for (auto &vertex : vertices)
+        vertex.color = this->color;
 }
 
 void Text::SetColor(Color color)
@@ -90,9 +97,4 @@ void Text::SetColor(Color color)
     this->color = color;
     for (auto &vertex : vertices)
         vertex.color = this->color;
-}
-
-void Text::SetFillColor(Color color)
-{
-    fillColor = color;
 }

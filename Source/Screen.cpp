@@ -328,7 +328,7 @@ void DrawShape(Shape &shape)
     shape.transform.update = false;
 }
 
-void DrawText(Text &text)
+void DrawTEXT(Text &text)
 {
     if(text.string.empty()) return;
 
@@ -336,33 +336,19 @@ void DrawText(Text &text)
     {
         text.Tvertices = UpdateVertices(text.transform, text.vertices);
         text.boundingBox = UpdateAABB(text.Tvertices);
-    }
-
-    if (text.fillColor != Color::Transparent)
-    {
-        if (text.transform.update || Screen::GetView().update)
-        {
-            std::vector<Vertex> cameraVertices;
-            for(auto vertex : text.Tvertices)
-                cameraVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
-
-            text.cameraTvertices = cameraVertices;
-            text.cameraBoundingBox = UpdateAABB(cameraVertices);
-        }
-     
-        Fill(text.cameraTvertices, text.cameraBoundingBox, text.fillColor);
+        
+        text.transform.update = false;
     }
     
     if (text.color != Color::Transparent)
     {    
-        for (auto index = text.indices.begin(); index != text.indices.end(); ++index)
+        for(int i = 0; i < text.indices.size() - 1; i += 2)
         {
-            auto next_index = std::next(index);
+            std::vector<Vertex>line;
+            line.emplace_back(text.Tvertices[text.indices[i]]);
+            line.emplace_back(text.Tvertices[text.indices[i + 1]]);
 
-            int indexA = *index;
-            int indexB = *next_index;
-    
-            DrawLines({text.cameraTvertices[indexA], text.cameraTvertices[indexB]}, false);
+            DrawLines(line, false);
         }
     }
 }

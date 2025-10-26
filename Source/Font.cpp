@@ -8,6 +8,7 @@
 #include "nlohmann/json.hpp"
 
 #include "Console/ErrorSystem.h"
+#include "Console/Debug.h"
 
 #include "Graphics/Font.h"
 
@@ -42,7 +43,7 @@ std::map<char, Character> CreateFontTable(const std::string &fontFile)
             // vertex[0] (x) vertex[1] (y)
             character.vertices.emplace_back(Vector2(vertex[0], vertex[1]));
     
-        for(const auto &index : FontData["indices"])
+        for(const auto &index : characterData["indices"])
             character.indices.emplace_back(index);
 
         character.devance = characterData["devance"];

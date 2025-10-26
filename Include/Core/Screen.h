@@ -47,6 +47,6 @@ void DrawElipse(int x, int y, int radius, Color color, int point_count = 30);
 
 void DrawLines(const std::vector<Vertex> &vertices, bool closed = true);
 void DrawShape(Shape &shape);
-void DrawText(Text &text);
+void DrawTEXT(Text &text);
 
 void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color);

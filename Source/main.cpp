@@ -17,22 +17,11 @@ private:
     {
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
 
-        elipse1 = Shapes::Elipse(100, 100, 6);
-        elipse1.SetColor(Color::Black);
-        elipse1.SetFillColor(Color::Red);
-        elipse1.transform.SetPosition(0, 0);
+        t1.SetString("PULA MARE IN PARCARE\nCE DRQ VREI?");
 
-        elipse2 = Shapes::Elipse(50, 50, 3);
-        elipse2.SetColor(Color::Black);
-        elipse2.SetFillColor(Color::Blue);
-        elipse2.transform.SetPosition(300, 200);
-
-        elipse3 = Shapes::Elipse(50, 50, 3);
-        elipse3.SetColor(Color::Black);
-        elipse3.SetFillColor(Color::Yellow);
-        elipse3.transform.SetPosition(0, 300);
-
-        // t1.SetString("AVB");
+        t1.transform.SetScale(10, 10);
+        
+        t1.SetColor(Color::Black);
     }
 
     void Event() override 
@@ -102,23 +91,8 @@ private:
     }
 
     void Draw() override
-    {
-        DrawShape(elipse1);
-
-        DrawShape(elipse2);
-
-        DrawShape(elipse3);
-
-        AABB boundingBox = elipse2.GetBoundingBox();
-
-        std::vector<Vertex> boundingBoxVertices;
-
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.left, boundingBox.top), Color::Green);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.top), Color::Blue);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.right, boundingBox.bottom), Color::Purple);
-        boundingBoxVertices.emplace_back(Vector2(boundingBox.left, boundingBox.bottom), Color::Cyan);
-
-        DrawLines(boundingBoxVertices);
+    {        
+        DrawTEXT(t1);
         
         DrawLine(0, 0, Screen::Width(), Screen::Height(), Color::Black);
         DrawLine(0, Screen::Height(), Screen::Width(), 0, Color::Black);
