@@ -12,7 +12,6 @@ private:
     AudioSource();
 
     ma_engine audio_engine;
-
     float masterVolume;
 
     friend class PiXELGraph;

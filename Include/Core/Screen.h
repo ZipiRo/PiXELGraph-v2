@@ -7,6 +7,8 @@
 #include "Graphics/Shape.h"
 #include "Graphics/Text.h"
 
+#define TRANSPARENCY
+
 class Screen
 {
 private:

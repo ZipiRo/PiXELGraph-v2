@@ -76,8 +76,28 @@ int Screen::Height() { return ScreenHeight - 1; }
 
 void PlotPixel(int x, int y, Color color)
 {
+    auto& screenInstance = Screen::GetInstance();
+
+    Color pixelColor = color;
+
     if (x >= 0 && x < Screen::ScreenWidth && y >= 0 && y < Screen::ScreenHeight)
-        Screen::GetInstance().ScreenBuffer[y * Screen::ScreenWidth + x] = color;
+    {
+        
+#ifdef TRANSPARENCY
+        Color lastColor = screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x];
+
+        float inverseAlpha = 1.0f - color.a;
+
+        pixelColor = Color(
+            (color.r * color.a) + (lastColor.r * inverseAlpha), 
+            (color.g * color.a) + (lastColor.g * inverseAlpha), 
+            (color.b * color.a) + (lastColor.b * inverseAlpha),
+            color.a
+        );
+#endif
+
+        screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x] = pixelColor;        
+    }
 }
 
 void DrawLine(int x1, int y1, int x2, int y2, Color color)

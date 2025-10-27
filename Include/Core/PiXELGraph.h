@@ -20,7 +20,6 @@ class PiXELGraph;
 
 #include "Timer.h"
 #include "Color.h"
-
 #include "ViewPort.h"
 #include "Screen.h"
 

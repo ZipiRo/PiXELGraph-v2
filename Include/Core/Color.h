@@ -3,11 +3,12 @@
 class Color
 {
 public:
-    int r, g, b, a;
+    int r, g, b;
+    float a;
 
     Color();
     Color(int r, int g, int b);
-    Color(int r, int g, int b, int a);
+    Color(int r, int g, int b, float a);
 
     static Color RandomColor();
 

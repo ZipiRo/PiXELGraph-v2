@@ -21,8 +21,8 @@ private:
         t1.transform.SetScale(20, 20);        
         t1.SetColor(Color::Black);
         
-        e1 = Shapes::Elipse(1, 1);
-        e1.SetFillColor(Color::Red);
+        e1 = Shapes::Elipse(50, 50);
+        e1.SetFillColor(Color(255, 0, 0, 0.5));
 
         clip = Clip("gun.mp3", 1.0);
     }
@@ -97,12 +97,12 @@ private:
 
     void Draw() override
     {        
-        DrawShape(e1);
-
         DrawTEXT(t1);
         
         DrawLine(0, 0, Screen::Width(), Screen::Height(), Color::Black);
         DrawLine(0, Screen::Height(), Screen::Width(), 0, Color::Black);
+
+        DrawShape(e1);
     }
 
     void Quit() override
@@ -114,7 +114,7 @@ public:
     Demo()
     {
         MaxFPS = 60;
-        Init(800, 600, 3, L"DEMO");
+        Init(1280, 720, 3, L"DEMO");
     }
 };
 

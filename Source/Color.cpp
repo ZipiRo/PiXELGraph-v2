@@ -5,7 +5,7 @@
 Color::Color() 
 {
     r = g = b = 0;
-    a = 255;
+    a = 1.0f;
 }
 
 Color::Color(int r, int g, int b)
@@ -16,7 +16,7 @@ Color::Color(int r, int g, int b)
     if (r > 255) r = 255;
     if (g > 255) g = 255;
     if (b > 255) b = 255;
-    a = 255;
+    a = 1.0f;
     
     this->r = r;
     this->g = g;
@@ -25,15 +25,15 @@ Color::Color(int r, int g, int b)
 
 bool Color::operator!= (const Color &other) const
 {
-    return r != other.r || g != other.g || b != other.b;
+    return r != other.r || g != other.g || b != other.b || a != other.a;
 }
 
 bool Color::operator== (const Color &other) const
 {
-    return r == other.r && g == other.g && b == other.b;
+    return r == other.r && g == other.g && b == other.b && a == other.a;
 }
 
-Color::Color(int r, int g, int b, int a)
+Color::Color(int r, int g, int b, float a)
 {
     if (r < 0) r = 0;
     if (g < 0) g = 0;
@@ -42,7 +42,7 @@ Color::Color(int r, int g, int b, int a)
     if (r > 255) r = 255;
     if (g > 255) g = 255;
     if (b > 255) b = 255;
-    if (a > 255) a = 255;
+    if (a > 1) a = 1.0f;
     
     this->r = r;
     this->g = g;
