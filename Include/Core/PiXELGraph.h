@@ -24,6 +24,7 @@ class PiXELGraph;
 #include "ViewPort.h"
 #include "Screen.h"
 
+#include "Audio/Clip.h"
 #include "Audio/AudioSource.h"
 
 #include "Graphics/Font.h"

@@ -9,7 +9,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
         Event::GetInstance();
         Input::GetInstance();
-        Audio::GetInstance();
+        AudioSource::GetInstance();
         Font::GetInstance();
     }
     catch (const std::exception &exception)
@@ -48,7 +48,7 @@ void PiXELGraph::Run()
             }
         }
 
-        Audio::Dispose();
+        AudioSource::Dispose();
 
         Quit();
     }

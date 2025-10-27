@@ -4,22 +4,29 @@
 
 #include "miniaudio.h"
 
-class Audio
+#include "Clip.h"
+
+class AudioSource
 {
 private:
-    Audio();
+    AudioSource();
 
     ma_engine audio_engine;
+
+    float masterVolume;
 
     friend class PiXELGraph;
 
     static void Dispose();
 
 public:
-    Audio(const Audio &) = delete;
-    void operator=(const Audio &) = delete;
+    AudioSource(const AudioSource &) = delete;
+    void operator=(const AudioSource &) = delete;
 
-    static Audio &GetInstance();
+    static AudioSource &GetInstance();
 
-    static void PlaySound(std::string file);
+    static void PlaySound(const Clip &clip);
+
+    static void SetVolume(float newVolume);
+    static float GetVolume();
 };

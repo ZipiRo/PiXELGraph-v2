@@ -6,30 +6,51 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "Audio/AudioSource.h"
 
-Audio::Audio()
+#include "Audio/Clip.h"
+
+AudioSource::AudioSource()
 {
     ma_engine_init(NULL, &audio_engine);
+    masterVolume = 1.0f;
 }
 
-void Audio::Dispose()
+void AudioSource::Dispose()
 {
-    auto &instance = Audio::GetInstance();
+    auto &instance = AudioSource::GetInstance();
 
     ma_engine_uninit(&instance.audio_engine);
 }
 
-Audio &Audio::GetInstance()
+AudioSource &AudioSource::GetInstance()
 {
-    static Audio instance;
+    static AudioSource instance;
     return instance;
 }
 
-void Audio::PlaySound(std::string file)
+void AudioSource::PlaySound(const Clip &audioClip)
 {
-    if(!std::filesystem::exists(file)) 
-        throw::Error("File " + file + " can not be found");
+    auto &instance = AudioSource::GetInstance();
 
-    auto &instance = Audio::GetInstance();
+    if(instance.masterVolume == 0) 
+        return;
 
-    ma_engine_play_sound(&instance.audio_engine, file.c_str(), NULL);
+    if(!std::filesystem::exists(audioClip.audioFilePath)) 
+        throw::Error("File " + audioClip.audioFilePath + " can not be found");
+
+    float volume = instance.masterVolume * audioClip.volume;
+
+    ma_engine_set_volume(&instance.audio_engine, volume);
+    ma_engine_play_sound(&instance.audio_engine, audioClip.audioFilePath.c_str(), NULL);
+}
+
+void AudioSource::SetVolume(float newVolume)
+{
+    auto &instance = AudioSource::GetInstance();
+    instance.masterVolume = newVolume;
+}
+
+float AudioSource::GetVolume()
+{
+    auto &instance = AudioSource::GetInstance();
+    return instance.masterVolume;
 }

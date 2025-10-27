@@ -6,8 +6,13 @@ private:
     double timer = 1;
 
     Vector2 ScreenMousePosition;
+    Vector2 WorldMousePosition;
 
     Text t1;
+
+    Shapes::Elipse e1;
+
+    Clip clip;
 
     void Start() override
     {
@@ -15,7 +20,11 @@ private:
 
         t1.transform.SetScale(20, 20);        
         t1.SetColor(Color::Black);
-        t1.SetString("THE QUCIK BROWN FOX JUMPS OVER THE LAZY DOG\nthe quick brown fox jumps over the lazy dog\n0123456789");
+        
+        e1 = Shapes::Elipse(1, 1);
+        e1.SetFillColor(Color::Red);
+
+        clip = Clip("gun.mp3", 1.0);
     }
 
     void Event() override 
@@ -23,11 +32,14 @@ private:
         if(Event::GetEvent() == EventType::EVENT_MOUSE_LCLICK)
         {
             Screen::BacgroundColor = Color::RandomColor();
+            AudioSource::PlaySound(clip);
         }
+        
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
         {
             Screen::GetView().Zoom(1.0f * Time::deltaTime);
         }
+
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_DOWN)
         {
             Screen::GetView().Zoom(-1.0f * Time::deltaTime);
@@ -37,6 +49,7 @@ private:
     void Update() override
     {
         ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
+        
         timer += Time::deltaTime;
         if (timer >= 1)
         {
@@ -49,6 +62,9 @@ private:
             timer = 0;
         }
 
+        WorldMousePosition = Screen::GetView().ScreenToWorld(ScreenMousePosition);
+        e1.transform.SetPosition(WorldMousePosition);
+        
         Vector2 cameraDirection;
 
         if(Input::IsKey(Key::Key_W))
@@ -64,10 +80,10 @@ private:
             cameraDirection.x += 1;
             
         if(Input::IsKey(Key::Key_Q))
-            Screen::GetView().Rotate(PI / 3 * Time::deltaTime);
+            AudioSource::SetVolume(AudioSource::GetVolume() - 0.1);
 
         if(Input::IsKey(Key::Key_E))
-            Screen::GetView().Rotate(-PI / 3 * Time::deltaTime);
+            AudioSource::SetVolume(AudioSource::GetVolume() + 0.1);
 
         if(cameraDirection.x != 0 || cameraDirection.y != 0)
         {
@@ -75,10 +91,14 @@ private:
             Vector2 newPosition = cameraDirection * 500 * Time::deltaTime;
             Screen::GetView().Move(newPosition);
         }
+
+        t1.SetString(std::to_string(AudioSource::GetVolume()));
     }
 
     void Draw() override
     {        
+        DrawShape(e1);
+
         DrawTEXT(t1);
         
         DrawLine(0, 0, Screen::Width(), Screen::Height(), Color::Black);
