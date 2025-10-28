@@ -15,7 +15,6 @@
 int Screen::ScreenWidth = 0;
 int Screen::ScreenHeight = 0;
 Color Screen::BacgroundColor = Color::White;
-View Screen::viewPort = View();
 
 Screen &Screen::GetInstance()
 {
@@ -25,12 +24,14 @@ Screen &Screen::GetInstance()
 
 void Screen::SetView(const View &view)
 {
-    viewPort = view;
+    auto &instance = GetInstance();
+    instance.viewPort = view;
 }
 
 View &Screen::GetView()
 {
-    return viewPort;
+    auto &instance = GetInstance();
+    return instance.viewPort;
 }
 
 void Screen::SetParameters(int WindowWidth, int WindowHeight)

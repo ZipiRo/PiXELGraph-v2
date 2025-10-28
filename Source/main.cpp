@@ -38,11 +38,13 @@ private:
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
         {
             Screen::GetView().Zoom(1.0f * Time::deltaTime);
+            Debug::Log(std::to_string(Screen::GetView().GetZoom()));
         }
 
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_DOWN)
         {
             Screen::GetView().Zoom(-1.0f * Time::deltaTime);
+            Debug::Log(std::to_string(Screen::GetView().GetZoom()));
         }
     }
 
@@ -80,10 +82,16 @@ private:
             cameraDirection.x += 1;
             
         if(Input::IsKey(Key::Key_Q))
+        {
             AudioSource::SetVolume(AudioSource::GetVolume() - 0.1);
+            t1.SetString(std::to_string(AudioSource::GetVolume()));
+        }
 
         if(Input::IsKey(Key::Key_E))
+        {
             AudioSource::SetVolume(AudioSource::GetVolume() + 0.1);
+            t1.SetString(std::to_string(AudioSource::GetVolume()));
+        }
 
         if(cameraDirection.x != 0 || cameraDirection.y != 0)
         {
@@ -92,15 +100,14 @@ private:
             Screen::GetView().Move(newPosition);
         }
 
-        t1.SetString(std::to_string(AudioSource::GetVolume()));
     }
 
     void Draw() override
     {        
         DrawTEXT(t1);
         
-        DrawLine(0, 0, Screen::Width(), Screen::Height(), Color::Black);
-        DrawLine(0, Screen::Height(), Screen::Width(), 0, Color::Black);
+        DrawLine(0, 0, Screen::Width(), Screen::Height(), Color(0, 0, 0, 0.5));
+        DrawLine(0, Screen::Height(), Screen::Width(), 0, Color(0, 0, 0, 0.5));
 
         DrawShape(e1);
     }
@@ -114,7 +121,7 @@ public:
     Demo()
     {
         MaxFPS = 60;
-        Init(1280, 720, 3, L"DEMO");
+        Init(1280, 720, 1, L"DEMO");
     }
 };
 

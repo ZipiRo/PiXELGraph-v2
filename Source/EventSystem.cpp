@@ -49,7 +49,7 @@ void Event::FetchEventData()
         if (eventRecord.Event.MouseEvent.dwEventFlags == MOUSE_WHEELED)
         {
             short delta = (short)HIWORD(eventRecord.Event.MouseEvent.dwButtonState);
-
+            
             if (delta > 0) 
                 event = EventType::EVENT_MOUSE_SCROLL_UP;
             else if(delta < 0)
