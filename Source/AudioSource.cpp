@@ -35,7 +35,7 @@ void AudioSource::PlaySound(const Clip &audioClip)
         return;
 
     if(!std::filesystem::exists(audioClip.audioFilePath)) 
-        throw::Error("File " + audioClip.audioFilePath + " can not be found");
+        throw Error("File " + audioClip.audioFilePath + " can not be found");
 
     float volume = instance.masterVolume * audioClip.volume;
 

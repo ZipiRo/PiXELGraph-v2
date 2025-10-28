@@ -3,12 +3,12 @@
 #include <vector>
 #include <sstream>
 
-#include "UMath.h";
+#include "UMath.h"
 #include "Console/Debug.h"
 
 #include "Graphics/Vertex.h"
 #include "Core/ViewPort.h"
-#include "Core/Screen.h";
+#include "Core/Screen.h"
 
 #define RESET_CURSOR_POSITION "\033[H";
 

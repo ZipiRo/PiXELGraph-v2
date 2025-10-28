@@ -121,7 +121,7 @@ public:
     Demo()
     {
         MaxFPS = 60;
-        Init(1280, 720, 1, L"DEMO");
+        Init(1280, 720, 5, L"DEMO");
     }
 };
 

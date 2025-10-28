@@ -5,7 +5,6 @@
 class Time
 {
 private:
-    friend class Time;
     Time() { StartTime = std::chrono::steady_clock::now(); }
 
     std::chrono::steady_clock::time_point StartTime;
