@@ -1,16 +1,33 @@
+HOW TO BUILD USING THE BASH BUILD
+build.bat R -> for release
+build.bat -> for debug
+
+
 BASH BUILD APP
 ============================================================
 @echo off
+setlocal
 
-g++ DebugWindow.cpp -o Build/Debug/DebugWindow.exe
+set BUILD_TYPE=%1
 
-cd Build 
-cmake ..
-cmake --build . 
+if "%BUILD_TYPE%"=="R" (
+    echo "WHAT"
+    cd Build 
+    cmake ..
+    cmake --build . --config Release
+    
+    cd Release
+    start PiXELGraph
+    cd ../..
+) else (
+    cd Build 
+    cmake ..
+    cmake --build . --config Debug
 
-cd Debug
-start PiXELGraph
-cd ../..
+    cd Debug
+    start PiXELGraph
+    cd ../..
+)
 ============================================================
 
 BASH RUN APP

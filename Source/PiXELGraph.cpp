@@ -1,10 +1,35 @@
 #include "Console/Window.h"
 #include "Core/PiXELGraph.h"
 
+PiXELGraph* PiXELGraph::activeInstance = nullptr;
+
+BOOL WINAPI ConsoleHandler(DWORD signal)
+{
+    switch (signal)
+    {
+    case CTRL_CLOSE_EVENT:
+        PiXELGraph::GetInstance().Exit();
+        break;
+    default:
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+PiXELGraph::PiXELGraph() { activeInstance = this; }
+
+PiXELGraph &PiXELGraph::GetInstance()
+{
+    return *activeInstance;
+}
+
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
 {
     try
     {
+        SetConsoleCtrlHandler(ConsoleHandler, TRUE);
+
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
         Event::GetInstance();
@@ -16,6 +41,18 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
     {
         HandleError(exception.what());
     }
+}
+
+void PiXELGraph::Exit()
+{
+    if(!RUNNING) return;
+    RUNNING = false;
+
+    activeInstance->Quit();
+
+    if(InputThread.joinable()) InputThread.join();
+    if(EventThread.joinable()) EventThread.join();
+    AudioSource::Dispose();
 }
 
 void PiXELGraph::Run()
@@ -47,10 +84,6 @@ void PiXELGraph::Run()
                 Screen::GetView().update = false;
             }
         }
-
-        AudioSource::Dispose();
-
-        Quit();
     }
     catch (const std::exception &exception)
     {
@@ -82,11 +115,5 @@ void PiXELGraph::HandleError(const std::string &message)
 {
     Debug::Log("ERROR: " + message);
 
-    Quit();
-    exit(EXIT_FAILURE);
-}
-
-void PiXELGraph::Exit()
-{
-    RUNNING = false;
+    Exit();
 }

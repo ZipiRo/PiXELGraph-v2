@@ -39,6 +39,7 @@ class PiXELGraph;
 class PiXELGraph
 {
 private:
+    static PiXELGraph* activeInstance;
     std::atomic<bool> RUNNING = true;
     std::thread InputThread;
     std::thread EventThread;
@@ -48,10 +49,17 @@ private:
 
     void HandleError(const std::string &message);
 
+    friend BOOL WINAPI ConsoleHandler(DWORD signal);
+
 protected:
+
     double MaxFPS = 60;
 
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
+
+    PiXELGraph();
+
+    static PiXELGraph &GetInstance();
 
     virtual void Start() {}
     virtual void Event() {}

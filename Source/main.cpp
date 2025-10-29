@@ -99,7 +99,6 @@ private:
             Vector2 newPosition = cameraDirection * 500 * Time::deltaTime;
             Screen::GetView().Move(newPosition);
         }
-
     }
 
     void Draw() override
@@ -114,14 +113,14 @@ private:
 
     void Quit() override
     {
-
+        Debug::Log("BRO");
     }
 
 public:
     Demo()
     {
         MaxFPS = 60;
-        Init(1280, 720, 5, L"DEMO");
+        Init(1280, 720, 3, L"DEMO");
     }
 };
 
