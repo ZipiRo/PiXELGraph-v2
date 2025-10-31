@@ -47,6 +47,7 @@ void PiXELGraph::Exit()
 {
     if(!RUNNING) return;
     RUNNING = false;
+    Debug::KillDebuger();
 
     activeInstance->Quit();
 

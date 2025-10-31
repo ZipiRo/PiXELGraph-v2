@@ -15,4 +15,5 @@ public:
     
     static Debug &GetDebug();
     static void Log(std::string log);
+    static void KillDebuger();
 };

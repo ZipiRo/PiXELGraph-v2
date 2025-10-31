@@ -18,3 +18,10 @@ void Debug::Log(std::string log)
     debugBuffer << log << '\n';
     debugBuffer.close();
 }
+
+void Debug::KillDebuger()
+{
+    debugBuffer.open("debug.tmp");
+    debugBuffer << "-0xKILL";
+    debugBuffer.close();
+}

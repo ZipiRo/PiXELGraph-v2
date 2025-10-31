@@ -16,6 +16,10 @@ int main()
     wchar_t s[256];
     swprintf_s(s, 256, L"PiXELGraph v2.0 | DebugWindow");
     SetConsoleTitleW(s);
+        
+    debugO.open("debug.tmp");
+    debugO << "";
+    debugO.close();
 
     while (1)
     {      
@@ -31,6 +35,9 @@ int main()
 
         debug.open("debug.tmp");
         debug.getline(buffer, 105);
+
+        if(strstr(buffer, "-0xKILL") != nullptr)
+            return 0;
 
         std::cout << buffer << '\n';
         debug.close();
