@@ -10,9 +10,12 @@ setlocal
 
 set BUILD_TYPE=%1
 
+cd Build
+if errorlevel 1 (
+    mkdir Build
+)
+
 if "%BUILD_TYPE%"=="R" (
-    echo "WHAT"
-    cd Build 
     cmake ..
     cmake --build . --config Release
     
@@ -20,7 +23,6 @@ if "%BUILD_TYPE%"=="R" (
     start PiXELGraph
     cd ../..
 ) else (
-    cd Build 
     cmake ..
     cmake --build . --config Debug
 
@@ -33,10 +35,20 @@ if "%BUILD_TYPE%"=="R" (
 BASH RUN APP
 ============================================================
 @echo off
+setlocal
 
-cd Build/Debug
-start PiXELGraph
-cd ../..
+set BUILD_TYPE=%1
+
+if "%BUILD_TYPE%"=="R" (
+    cd Release
+    start PiXELGraph
+    cd ../..
+) else (
+    cd Debug
+    start PiXELGraph
+    cd ../..
+)
+
 ============================================================
 
 BASE RUNTIME
@@ -46,54 +58,31 @@ BASE RUNTIME
 class GameScene : public PiXELGraph
 {
 private:
-    double timer = 1;
-
-    Vector2 ScreenMousePosition;
-    Vector2 WorldMousePosition;
+    Shapes::Elipse e1;
 
     void Start() override
     {
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
-    }
-
-    void Event() override 
-    {
-
+        e1 = Shapes::Elipse(10, 10, 3);
+        e1.SetColor(Color::Black);
+        e1.SetFillColor(Color::Red);
     }
 
     void Update() override
     {
-        ScreenMousePosition = Input::MousePosition / Window::WindowFontSize();
-        WorldMousePosition = Screen::GetView().ScreenToWorld(ScreenMousePosition);
-        
-        timer += Time::deltaTime;
-        if (timer >= 1)
-        {
-            int fps = 1.0f / Time::deltaTime;
-            float dt = Time::deltaTime;
-            
-            Window::SetTitle(L" | FPS: " + std::to_wstring(fps) + L" | DEMO");
-            Debug::Log(std::string("DT: ") + std::to_string(dt) + std::string(" | FPS: ") + std::to_string(fps));
-            
-            timer = 0;
-        }
+
     }
 
     void Draw() override
     {
-                
-    }
-
-    void Quit() override
-    {
-
+        DrawShape(e1);
     }
 
 public:
     GameScene()
     {
         MaxFPS = 60;
-        Init(1280, 720, 5, L"DEMO");
+        Init(1280, 720, 3, L"DEMO");
     }
 }; 
 ============================================================
