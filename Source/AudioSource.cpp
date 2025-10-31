@@ -29,6 +29,9 @@ AudioSource &AudioSource::GetInstance()
 
 void AudioSource::PlaySound(const Clip &audioClip)
 {
+    if(audioClip.audioFilePath.empty())
+        return;
+        
     auto &instance = AudioSource::GetInstance();
 
     if(instance.masterVolume == 0) 
