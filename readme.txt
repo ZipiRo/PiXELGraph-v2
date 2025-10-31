@@ -8,28 +8,21 @@ BASH BUILD APP
 @echo off
 setlocal
 
+cls
+
 set BUILD_TYPE=%1
 
+if not exist Build mkdir Build
 cd Build
-if errorlevel 1 (
-    mkdir Build
-)
 
-if "%BUILD_TYPE%"=="R" (
-    cmake ..
-    cmake --build . --config Release
-    
-    cd Release
-    start PiXELGraph
-    cd ../..
-) else (
-    cmake ..
-    cmake --build . --config Debug
+g++ ../DebugWindow.cpp -o ../Build/Release/DebugWindow
+cmake ..
+cmake --build . --config Release
 
-    cd Debug
-    start PiXELGraph
-    cd ../..
-)
+cd Release
+start PiXELGraph
+cd ../..
+
 ============================================================
 
 BASH RUN APP
@@ -37,19 +30,15 @@ BASH RUN APP
 @echo off
 setlocal
 
+cls
+
 set BUILD_TYPE=%1
 
 cd Build
+cd Release
+start PiXELGraph
+cd ../..
 
-if "%BUILD_TYPE%"=="R" (
-    cd Release
-    start PiXELGraph
-    cd ../..
-) else (
-    cd Debug
-    start PiXELGraph
-    cd ../..
-)
 
 ============================================================
 

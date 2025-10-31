@@ -19,6 +19,7 @@ void Window::ConstructWindow()
 {
     system("start DebugWindow.exe");
 
+
     if (ConsoleOutputH == INVALID_HANDLE_VALUE)
     {
         throw Error("Bad Handle");
