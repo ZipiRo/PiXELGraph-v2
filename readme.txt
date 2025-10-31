@@ -39,6 +39,8 @@ setlocal
 
 set BUILD_TYPE=%1
 
+cd Build
+
 if "%BUILD_TYPE%"=="R" (
     cd Release
     start PiXELGraph

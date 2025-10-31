@@ -34,8 +34,8 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
         Event::GetInstance();
         Input::GetInstance();
-        AudioSource::GetInstance();
         Font::GetInstance();
+        AudioSource::GetInstance();
     }
     catch (const std::exception &exception)
     {
@@ -50,8 +50,6 @@ void PiXELGraph::Exit()
 
     activeInstance->Quit();
 
-    if(InputThread.joinable()) InputThread.join();
-    if(EventThread.joinable()) EventThread.join();
     AudioSource::Dispose();
 }
 
@@ -84,6 +82,9 @@ void PiXELGraph::Run()
                 Screen::GetView().update = false;
             }
         }
+
+        if(InputThread.joinable()) InputThread.join();
+        if(EventThread.joinable()) EventThread.join();
     }
     catch (const std::exception &exception)
     {
@@ -114,6 +115,9 @@ void PiXELGraph::EventLoop()
 void PiXELGraph::HandleError(const std::string &message)
 {
     Debug::Log("ERROR: " + message);
+        
+    if(InputThread.joinable()) InputThread.join();
+    if(EventThread.joinable()) EventThread.join();
 
     Exit();
 }

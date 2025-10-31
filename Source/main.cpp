@@ -22,7 +22,7 @@ private:
         t1.SetColor(Color::Black);
         
         e1 = Shapes::Elipse(50, 50);
-        e1.SetFillColor(Color(255, 0, 0, 0.5));
+        e1.SetFillColor(Color(255, 0, 0, 0.1));
 
         clip = Clip("gun.mp3", 1.0);
     }
