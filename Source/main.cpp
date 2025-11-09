@@ -119,6 +119,7 @@ private:
 public:
     Demo()
     {
+        Screen::BacgroundColor = Color::Black;
         MaxFPS = 60;
         Init(1280, 720, 1, L"DEMO");
     }

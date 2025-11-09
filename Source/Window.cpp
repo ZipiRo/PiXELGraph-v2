@@ -72,6 +72,17 @@ void Window::ConstructWindow()
         throw Error("SetCurrentConsoleFontEx");
         return;
     }
+    
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(ConsoleOutputH, &cursorInfo);
+    cursorInfo.bVisible = FALSE;
+    
+    if(!SetConsoleCursorInfo(ConsoleOutputH, &cursorInfo))
+    {
+        throw Error("SetCursorInfo");
+        return;
+    }
+
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (!GetConsoleScreenBufferInfo(ConsoleOutputH, &csbi))

@@ -40,7 +40,7 @@ class PiXELGraph
 {
 private:
     static PiXELGraph* activeInstance;
-    std::atomic<bool> RUNNING = true;
+    std::atomic<bool> RUNNING;
     std::thread InputThread;
     std::thread EventThread;
 

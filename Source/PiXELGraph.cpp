@@ -17,7 +17,7 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
     return TRUE;
 }
 
-PiXELGraph::PiXELGraph() { activeInstance = this; }
+PiXELGraph::PiXELGraph() : RUNNING(true) { activeInstance = this; }
 
 PiXELGraph &PiXELGraph::GetInstance()
 {
