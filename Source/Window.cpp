@@ -19,7 +19,6 @@ void Window::ConstructWindow()
 {
     system("start DebugWindow.exe");
 
-
     if (ConsoleOutputH == INVALID_HANDLE_VALUE)
     {
         throw Error("Bad Handle");
@@ -107,6 +106,8 @@ void Window::ConstructWindow()
         throw Error("SetConsoleWindowInfo");
         return;
     }
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 }
 
 bool Window::Focused()

@@ -18,6 +18,7 @@ private:
 
     static int ScreenWidth, ScreenHeight;
     std::vector<Color> ScreenBuffer;
+    std::vector<Color> PreviosBuffer;
     View viewPort;
 
     void SetParameters(int WindowWidth, int WindowHeight);

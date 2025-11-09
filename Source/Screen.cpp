@@ -40,30 +40,72 @@ void Screen::SetParameters(int WindowWidth, int WindowHeight)
     ScreenHeight = WindowHeight;
 
     ScreenBuffer = std::vector<Color>(ScreenWidth * ScreenHeight);
+    PreviosBuffer = ScreenBuffer;
 }
 
 void Screen::Display()
 {
     auto &instance = GetInstance();
 
-    std::ostringstream buffer;
-    buffer << RESET_CURSOR_POSITION;
+    std::string buffer;
+    buffer.reserve(instance.ScreenWidth * instance.ScreenHeight * 8);
 
-    Color lastColor = Color(-1, -1, -1);
-    for (int i = 0; i < instance.ScreenWidth * instance.ScreenHeight; i++)
+    auto appendInt = [&](int n) {
+        char tmp[16];
+        int len = std::snprintf(tmp, sizeof(tmp), "%d", n);
+        buffer.append(tmp, len);
+    };
+
+    buffer += RESET_CURSOR_POSITION;
+
+    for (int y = 0; y < instance.ScreenHeight; ++y)
     {
-        if (instance.ScreenBuffer[i] != lastColor)
+        int x = 0;
+        while (x < instance.ScreenWidth)
         {
-            buffer << "\033[48;2;" << instance.ScreenBuffer[i].r << ';' << instance.ScreenBuffer[i].g << ';' << instance.ScreenBuffer[i].b << "m";
-            lastColor = instance.ScreenBuffer[i];
-        }
-        buffer << ' ';
+            int i = y * instance.ScreenWidth + x;
+            const Color &color = instance.ScreenBuffer[i];
+            Color &previousColor = instance.PreviosBuffer[i];
 
-        if ((i + 1) % instance.ScreenWidth == 0 && (i + 1) % (instance.ScreenWidth * instance.ScreenHeight) != 0)
-            buffer << '\n';
+            if (color == previousColor)
+            {
+                ++x;
+                continue;
+            }
+
+            int runStart = x;
+            int runEnd = x;
+            while (runEnd + 1 < instance.ScreenWidth)
+            {
+                int j = y * instance.ScreenWidth + (runEnd + 1);
+                if (instance.ScreenBuffer[j] != color ||
+                    instance.ScreenBuffer[j] == instance.PreviosBuffer[j])
+                    break;
+                ++runEnd;
+            }
+
+            for (int k = runStart; k <= runEnd; ++k)
+                instance.PreviosBuffer[y * instance.ScreenWidth + k] = color;
+
+            buffer += "\033[";
+            appendInt(y + 1); buffer += ";";
+            appendInt(runStart + 1); buffer += "H";
+            
+            buffer += "\033[48;2;";
+            appendInt(color.r); buffer += ';';
+            appendInt(color.g); buffer += ';';
+            appendInt(color.b); buffer += "m";
+
+            buffer += std::string(runEnd - runStart + 1, ' ');
+
+            x = runEnd + 1;
+        }
     }
 
-    std::cout << buffer.str();
+    buffer += "\033[0m\0";
+
+    std::fwrite(buffer.c_str(), 1, buffer.size(), stdout);
+    std::fflush(stdout);
 }
 
 void Screen::Clear()
