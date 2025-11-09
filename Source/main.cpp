@@ -22,7 +22,7 @@ private:
         t1.SetColor(Color::Black);
         
         e1 = Shapes::Elipse(50, 50);
-        e1.SetFillColor(Color(255, 0, 0, 0.1));
+        e1.SetFillColor(Color(255, 0, 0, 0.9));
 
         // clip = Clip("gun.mp3", 1.0);
     }
@@ -120,7 +120,7 @@ public:
     Demo()
     {
         MaxFPS = 60;
-        Init(1280, 720, 2, L"DEMO");
+        Init(1280, 720, 1, L"DEMO");
     }
 };
 
