@@ -1,7 +1,5 @@
 HOW TO BUILD USING THE BASH BUILD
-build.bat R -> for release
-build.bat -> for debug
-
+build.bat
 
 BASH BUILD APP
 ============================================================
@@ -9,8 +7,6 @@ BASH BUILD APP
 setlocal
 
 cls
-
-set BUILD_TYPE=%1
 
 if not exist Build mkdir Build
 cd Build
@@ -31,8 +27,6 @@ BASH RUN APP
 setlocal
 
 cls
-
-set BUILD_TYPE=%1
 
 cd Build
 cd Release
