@@ -14,7 +14,7 @@
 
 int Screen::ScreenWidth = 0;
 int Screen::ScreenHeight = 0;
-Color Screen::BacgroundColor = Color::White;
+Color Screen::BacgroundColor = Color::Black;
 
 Screen &Screen::GetInstance()
 {
@@ -256,15 +256,27 @@ void DrawRectangle(int x, int y, int width, int height, Color color)
     DrawLine(x, height, x, y, color);
 }
 
-void DrawElipse(int x, int y, int radius, Color color, int point_count)
+void FillRectangle(int x, int y, int width, int height, Color color)
+{
+    float left = x;
+    float top = y;
+    float right = x + width;
+    float bottom = y + height;
+
+    for(int y = top; y <= bottom; y++)
+        for(int x = left; x <= right; x++)
+            PlotPixel(x, y, color);
+}
+
+void DrawElipse(int x, int y, int width, int height, Color color, int point_count)
 {
     float rez = (2 * PI) / point_count;
     float last_X, last_Y, f_X, f_Y;
 
     for (float angle = 0.0f; angle <= 2 * PI; angle += rez)
     {
-        float new_X = cos(angle) * radius;
-        float new_Y = sin(angle) * radius;
+        float new_X = cos(angle) * width;
+        float new_Y = sin(angle) * height;
 
         if (angle <= 0.0f)
         {
@@ -285,30 +297,29 @@ void DrawElipse(int x, int y, int radius, Color color, int point_count)
     DrawLine(last_X + x, last_Y + y, f_X + x, f_Y + y, color);
 }
 
-void DrawLines(const std::vector<Vertex> &vertices, bool closed)
+void FillElipse(int x, int y, int width, int height, Color color, int point_count)
 {
-    for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+    float left = x;
+    float top = y;
+    float right = x + width;
+    float bottom = y + height;
+
+    AABB boundingBox(left, top, right, bottom);
+    std::vector<Vector2> vertices;
+
+    float rez = (2 * PI) / point_count;
+    for (float angle = 0.0f; angle <= 2 * PI; angle += rez)
     {
-        auto next_vertex = std::next(vertex);
-        if (next_vertex == vertices.end())
-        {
-            if (closed)
-                next_vertex = vertices.begin();
-            else
-                return;
-        }
+        float x = cos(angle) * width;
+        float y = sin(angle) * height;
 
-        Vertex vertexA = *vertex;
-        Vertex vertexB = *next_vertex;
-
-        Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
-        Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
-
-        DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+        vertices.emplace_back(x, y);
     }
+
+    Fill(vertices, boundingBox, color);
 }
 
-void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color)
+void Fill(const std::vector<Vector2> &vertices, const AABB &boundingBox, const Color &color)
 {
     int minY = boundingBox.top;
     int maxY = boundingBox.bottom;
@@ -362,6 +373,39 @@ void Fill(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color co
     delete[] intersections;
 }
 
+void FillShape(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color)
+{
+    std::vector<Vector2> new_vertices;
+
+    for(const auto &vertex : vertices)
+        new_vertices.push_back(vertex.position);
+
+    Fill(new_vertices, boundingBox, color);
+}
+
+void DrawLines(const std::vector<Vertex> &vertices, bool closed)
+{
+    for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+    {
+        auto next_vertex = std::next(vertex);
+        if (next_vertex == vertices.end())
+        {
+            if (closed)
+                next_vertex = vertices.begin();
+            else
+                return;
+        }
+
+        Vertex vertexA = *vertex;
+        Vertex vertexB = *next_vertex;
+
+        Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
+        Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
+
+        DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+    }
+}
+
 void DrawShape(Shape &shape)
 {
     if (shape.transform.update)
@@ -382,7 +426,7 @@ void DrawShape(Shape &shape)
             shape.cameraBoundingBox = UpdateAABB(cameraVertices);
         }
      
-        Fill(shape.cameraTvertices, shape.cameraBoundingBox, shape.fillColor);
+        FillShape(shape.cameraTvertices, shape.cameraBoundingBox, shape.fillColor);
     }
 
     if (shape.color != Color::Transparent)

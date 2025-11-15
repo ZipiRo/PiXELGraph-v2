@@ -26,6 +26,8 @@ public:
     Event(const Event &) = delete;
     void operator=(const Event &) = delete;
 
+    static char UChar;
+
     static EventType GetEvent();
 
     static Event &GetInstance();

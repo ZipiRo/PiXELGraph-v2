@@ -1,27 +1,27 @@
-#include "Audio/Clip.h"
+#include "Audio/AudioClip.h"
 
-Clip::Clip()
+AudioClip::AudioClip()
 {
     volume = 1.0f;
 }
 
-Clip::Clip(const std::string &audioFile, float volume)
+AudioClip::AudioClip(const std::string &audioFile, float volume)
 {
     audioFilePath = audioFile;
     this->volume = volume;
 }
 
-void Clip::SetVolume(float newVolume)
+void AudioClip::SetVolume(float newVolume)
 {
     volume = newVolume;
 }
 
-float Clip::GetVolume()
+float AudioClip::GetVolume()
 {
     return volume;
 }
 
-void Clip::SetAudioFile(const std::string &audioFile)
+void AudioClip::SetAudioFile(const std::string &audioFile)
 {
     audioFilePath = audioFile;
 }

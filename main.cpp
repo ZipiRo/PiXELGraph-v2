@@ -12,8 +12,6 @@ private:
 
     Shapes::Elipse e1;
 
-    Clip clip;
-
     void Start() override
     {
         Screen::GetView().SetScreenCenter(Vector2(Screen::Width() / 2, Screen::Height() / 2));
@@ -23,8 +21,6 @@ private:
         
         e1 = Shapes::Elipse(50, 50);
         e1.SetFillColor(Color(255, 0, 0, 0.9));
-
-        // clip = Clip("gun.mp3", 1.0);
     }
 
     void Event() override 
@@ -32,7 +28,6 @@ private:
         if(Event::GetEvent() == EventType::EVENT_MOUSE_LCLICK)
         {
             Screen::BacgroundColor = Color::RandomColor();
-            AudioSource::PlaySound(clip);
         }
         
         if(Event::GetEvent() == EventType::EVENT_MOUSE_SCROLL_UP)
@@ -45,6 +40,14 @@ private:
         {
             Screen::GetView().Zoom(-1.0f * Time::deltaTime);
             Debug::Log(std::to_string(Screen::GetView().GetZoom()));
+        }
+
+        if(Event::GetEvent() == EventType::EVENT_KEY_PRESS)
+        {
+            std::string s = "Char ";
+            s += Event::UChar;
+
+            Debug::Log(s);
         }
     }
 

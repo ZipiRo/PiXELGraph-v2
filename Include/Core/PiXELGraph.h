@@ -23,7 +23,7 @@ class PiXELGraph;
 #include "ViewPort.h"
 #include "Screen.h"
 
-#include "Audio/Clip.h"
+#include "Audio/AudioClip.h"
 #include "Audio/AudioSource.h"
 
 #include "Graphics/Font.h"
@@ -53,7 +53,7 @@ private:
 
 protected:
 
-    double MaxFPS = 60;
+    double MaxFPS;
 
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
 

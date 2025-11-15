@@ -4,7 +4,7 @@
 
 #include "miniaudio.h"
 
-#include "Clip.h"
+#include "AudioClip.h"
 
 class AudioSource
 {
@@ -24,7 +24,7 @@ public:
 
     static AudioSource &GetInstance();
 
-    static void PlaySound(const Clip &clip);
+    static void PlaySound(const AudioClip &clip);
 
     static void SetVolume(float newVolume);
     static float GetVolume();

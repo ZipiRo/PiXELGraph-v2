@@ -17,7 +17,11 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
     return TRUE;
 }
 
-PiXELGraph::PiXELGraph() : RUNNING(true) { activeInstance = this; }
+PiXELGraph::PiXELGraph() : RUNNING(true) 
+{ 
+    activeInstance = this;
+    MaxFPS = 61; 
+}
 
 PiXELGraph &PiXELGraph::GetInstance()
 {
@@ -47,10 +51,10 @@ void PiXELGraph::Exit()
 {
     if(!RUNNING) return;
     RUNNING = false;
-    Debug::KillDebuger();
 
     activeInstance->Quit();
 
+    Debug::KillDebuger();
     AudioSource::Dispose();
 }
 

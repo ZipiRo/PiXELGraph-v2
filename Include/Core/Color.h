@@ -15,6 +15,18 @@ public:
     bool operator!=(const Color &other) const;
     bool operator==(const Color &other) const;
 
+    Color operator*(float factor) const;
+    Color operator/(float factor) const;
+
+    Color operator*(const Color &other) const;
+    Color operator/(const Color &other) const;
+
+    Color operator+(float amount) const;
+    Color operator-(float amount) const;
+
+    Color operator+(const Color &other) const;
+    Color operator-(const Color &other) const;
+
     static const Color Transparent;
     static const Color White;
     static const Color Black;

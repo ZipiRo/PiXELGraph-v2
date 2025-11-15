@@ -5,6 +5,7 @@
 #include <windows.h>
 
 EventType Event::event = EventType::EVENT_NONE;
+char Event::UChar;
 
 Event &Event::GetInstance()
 {
@@ -32,7 +33,15 @@ void Event::FetchEventData()
     {
     case KEY_EVENT:
         if(eventRecord.Event.KeyEvent.bKeyDown) 
+        {
             event = EventType::EVENT_KEY_PRESS;
+
+            wchar_t wcharachter = eventRecord.Event.KeyEvent.uChar.UnicodeChar;  
+            if(wcharachter != 0)
+                UChar = (char)wcharachter;
+            else 
+                UChar = '?';
+        }
         else 
             event = EventType::EVENT_KEY_RELEASE; 
 
@@ -45,7 +54,7 @@ void Event::FetchEventData()
             
             break;
         }
-        
+
         if (eventRecord.Event.MouseEvent.dwEventFlags == MOUSE_WHEELED)
         {
             short delta = (short)HIWORD(eventRecord.Event.MouseEvent.dwButtonState);

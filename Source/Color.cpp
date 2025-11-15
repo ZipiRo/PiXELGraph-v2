@@ -33,6 +33,46 @@ bool Color::operator== (const Color &other) const
     return r == other.r && g == other.g && b == other.b && a == other.a;
 }
 
+Color Color::operator*(float factor) const
+{
+    return Color(this->r * factor, this->g * factor, this->b * factor);
+}
+
+Color Color::operator/(float factor) const 
+{
+    return Color(this->r / factor, this->g / factor, this->b / factor);
+}
+
+Color Color::operator*(const Color &other) const
+{
+    return Color(this->r * other.r, this->g * other.g, this->b * other.b);
+}
+
+Color Color::operator/(const Color &other) const
+{
+    return Color(this->r / other.r, this->g / other.g, this->b / other.b);
+}
+
+Color Color::operator+(const Color &other) const 
+{
+    return Color(this->r + other.r, this->g + other.g, this->b + other.b);
+}
+
+Color Color::operator-(const Color &other) const 
+{
+    return Color(this->r - other.r, this->g - other.g, this->b - other.b);
+}
+
+Color Color::operator+(float amount) const 
+{
+    return Color(this->r + amount, this->g + amount, this->b + amount);
+}
+
+Color Color::operator-(float amount) const 
+{
+    return Color(this->r - amount, this->g - amount, this->b - amount);
+}
+
 Color::Color(int r, int g, int b, float a)
 {
     if (r < 0) r = 0;

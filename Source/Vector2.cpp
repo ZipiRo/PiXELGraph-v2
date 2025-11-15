@@ -82,12 +82,12 @@ Vector2 Vector2::operator-() const
     return Vector2(-this->x, -this->y);
 }
 
-Vector2 Vector2::operator+(const Vector2 vector) const
+Vector2 Vector2::operator+(const Vector2 &vector) const
 {
     return Vector2(this->x + vector.x, this->y + vector.y);
 }
 
-Vector2 Vector2::operator-(const Vector2 vector) const
+Vector2 Vector2::operator-(const Vector2 &vector) const
 {
     return Vector2(this->x - vector.x, this->y - vector.y);
 }
@@ -110,6 +110,16 @@ Vector2 Vector2::operator*(float scalar) const
 Vector2 Vector2::operator/(float scalar) const
 {
     return Vector2(this->x / scalar, this->y / scalar);
+}
+
+Vector2 Vector2::operator*(const Vector2 &vector) const
+{
+    return Vector2(this->x * vector.x, this->y * vector.y);
+}
+
+Vector2 Vector2::operator/(const Vector2 &vector) const
+{
+    return Vector2(this->x / vector.x, this->y / vector.y);
 }
 
 Vector2 &Vector2::operator+=(const Vector2 &vector)

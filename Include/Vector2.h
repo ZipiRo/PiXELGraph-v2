@@ -14,10 +14,12 @@ public:
     bool operator!=(const Vector2 &vector);
 
     Vector2 operator-() const;
-    Vector2 operator+(const Vector2 vector) const;
-    Vector2 operator-(const Vector2 vector) const;
+    Vector2 operator+(const Vector2 &vector) const;
+    Vector2 operator-(const Vector2 &vector) const;
     Vector2 operator*(float scalar) const;
     Vector2 operator/(float scalar) const;
+    Vector2 operator*(const Vector2 &vector) const;
+    Vector2 operator/(const Vector2 &vector) const;
     Vector2 &operator+=(const Vector2 &vector);
     Vector2 &operator-=(const Vector2 &vector);
     Vector2 &operator*=(float scalar);

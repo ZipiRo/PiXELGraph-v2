@@ -6,7 +6,7 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "Audio/AudioSource.h"
 
-#include "Audio/Clip.h"
+#include "Audio/AudioClip.h"
 
 AudioSource::AudioSource()
 {
@@ -27,7 +27,7 @@ AudioSource &AudioSource::GetInstance()
     return instance;
 }
 
-void AudioSource::PlaySound(const Clip &audioClip)
+void AudioSource::PlaySound(const AudioClip &audioClip)
 {
     if(audioClip.audioFilePath.empty())
         return;
