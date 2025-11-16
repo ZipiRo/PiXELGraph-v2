@@ -55,7 +55,10 @@ protected:
     double MaxFPS;
 
     PiXELGraph();
-    
+
+    static PiXELGraph &GetInstance();
+    static void SetInstance(PiXELGraph &instance);
+
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
 
     virtual void Start() {}
@@ -67,6 +70,5 @@ protected:
     void Exit();
 
 public:
-
     void Run();
 };

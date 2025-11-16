@@ -8,7 +8,7 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
     switch (signal)
     {
     case CTRL_CLOSE_EVENT:
-        PiXELGraph::activeInstance->Exit();
+        PiXELGraph::GetInstance().Exit();
         break;
     default:
         return FALSE;
@@ -21,6 +21,16 @@ PiXELGraph::PiXELGraph() : RUNNING(true)
 { 
     activeInstance = this;
     MaxFPS = 61; 
+}
+
+PiXELGraph &PiXELGraph::GetInstance()
+{
+    return *activeInstance;
+}
+
+void PiXELGraph::SetInstance(PiXELGraph &instance)
+{
+    activeInstance = &instance;
 }
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
