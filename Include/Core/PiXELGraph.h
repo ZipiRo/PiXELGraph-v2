@@ -52,14 +52,11 @@ private:
     friend BOOL WINAPI ConsoleHandler(DWORD signal);
 
 protected:
-
     double MaxFPS;
 
-    void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
-
     PiXELGraph();
-
-    static PiXELGraph &GetInstance();
+    
+    void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
 
     virtual void Start() {}
     virtual void Event() {}
@@ -70,5 +67,6 @@ protected:
     void Exit();
 
 public:
+
     void Run();
 };
