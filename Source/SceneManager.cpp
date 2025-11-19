@@ -58,7 +58,11 @@ void SceneManager::LoadScene(int buildIndex)
     if(buildIndex < 0 && buildIndex >= instance.scenes.size())
         throw Error("This scene index does not exist!");
     
-    instance.currentScene = instance.scenes[buildIndex];
+    SceneInfo &scene = instance.scenes[buildIndex];
+    
+    instance.currentScene = scene.createFunction();
+    instance.currentScene->buildIndex = scene.buildIndex;
+    instance.currentScene->name = scene.name;
 
     instance.changeScene = true;
 }

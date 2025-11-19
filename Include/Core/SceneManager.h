@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 
 class Scene
 {
@@ -20,11 +21,18 @@ public:
     int buildIndex;
 };
 
+struct SceneInfo
+{
+    std::string name;
+    int buildIndex;
+    std::function<Scene*()> createFunction;
+};
+
 class SceneManager
 {
 private:
     Scene *currentScene;
-    std::vector<Scene*> scenes;
+    std::vector<SceneInfo> scenes;
     bool changeScene;
     
     SceneManager();
@@ -50,9 +58,10 @@ void SceneManager::AddScene(const std::string &sceneName)
     auto &instance = GetInstance();
     int buildIndex = instance.scenes.size();
 
-    T *new_scene = new T();
-    new_scene->buildIndex = buildIndex;
-    new_scene->name = sceneName;
+    SceneInfo new_scene;
+    new_scene.buildIndex = buildIndex;
+    new_scene.name = sceneName;
+    new_scene.createFunction = [=]() { return new T(); };
 
     instance.scenes.push_back(new_scene);
 }
