@@ -65,6 +65,7 @@ void SceneManager::AddScene(const std::string &sceneName)
     new_scene.buildIndex = buildIndex;
     new_scene.name = sceneName;
 
+    // This is a function that will create a new instance of the scene everytime the scene is loaded
     new_scene.createFunction = [=]() { return std::make_unique<T>(); };
 
     instance.scenes.push_back(std::move(new_scene));

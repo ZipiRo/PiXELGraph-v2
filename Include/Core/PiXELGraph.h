@@ -26,8 +26,10 @@ class SceneManager;
 #include "ViewPort.h"
 #include "Screen.h"
 
+#ifdef USE_AUDIO
 #include "Audio/AudioClip.h"
 #include "Audio/AudioSource.h"
+#endif
 
 #include "Graphics/Font.h"
 

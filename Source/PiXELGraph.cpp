@@ -37,7 +37,9 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Event::GetInstance();
         Input::GetInstance();
         Font::GetInstance();
+#ifdef USE_AUDIO
         AudioSource::GetInstance();
+#endif
     }
     catch (const std::exception &exception)
     {
@@ -56,7 +58,9 @@ void PiXELGraph::Exit()
     SceneManager::GetActiveScene()->Quit();
 #endif
 
+#ifdef USE_AUDIO
     AudioSource::Dispose();
+#endif
     Debug::KillDebuger();
 }
 
