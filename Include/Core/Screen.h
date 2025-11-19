@@ -3,11 +3,11 @@
 #include <vector>
 
 #include "Color.h"
+#include "ViewPort.h"
+
 #include "Graphics/Vertex.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Text.h"
-
-#define TRANSPARENCY
 
 class Screen
 {
@@ -15,6 +15,7 @@ private:
     Screen() {}
 
     friend class PiXELGraph;
+    friend class SceneManager;
 
     static int ScreenWidth, ScreenHeight;
     std::vector<Color> ScreenBuffer;

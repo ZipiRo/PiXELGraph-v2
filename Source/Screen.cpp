@@ -125,8 +125,6 @@ void PlotPixel(int x, int y, Color color)
 
     if (x >= 0 && x < Screen::ScreenWidth && y >= 0 && y < Screen::ScreenHeight)
     {
-        
-#ifdef TRANSPARENCY
         Color lastColor = screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x];
 
         float inverseAlpha = 1.0f - color.a;
@@ -137,7 +135,6 @@ void PlotPixel(int x, int y, Color color)
             (color.b * color.a) + (lastColor.b * inverseAlpha),
             color.a
         );
-#endif
 
         screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x] = pixelColor;        
     }
