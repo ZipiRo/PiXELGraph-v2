@@ -25,25 +25,29 @@ void SceneManager::RunScene()
 {
     auto &instance = GetInstance(); 
 
-    Scene &scene = *instance.GetActiveScene();
+    Scene *scene = instance.GetActiveScene();
     instance.changeScene = false;
 
-    scene.Start();
+    scene->Start();
 
     while (!instance.changeScene)
     {
         Time::Tick();
         
-        scene.Event();
+        if(instance.changeScene) continue;
+        scene->Event();
+
         if (Time::deltaTime >= 1.0f / MaxFPS)
         {
             Time::Reset();
 
-            scene.Update();
+            if(instance.changeScene) continue;
+            scene->Update();
 
             Screen::Clear();
 
-            scene.Draw();
+            if(instance.changeScene) continue;
+            scene->Draw();
 
             Screen::Display();
             Screen::GetView().update = false;
@@ -55,14 +59,13 @@ void SceneManager::LoadScene(int buildIndex)
 {
     auto &instance = GetInstance();
  
-    if(buildIndex < 0 && buildIndex >= instance.scenes.size())
+    if(buildIndex < 0 || buildIndex >= instance.scenes.size())
         throw Error("This scene index does not exist!");
     
-    SceneInfo &scene = instance.scenes[buildIndex];
-    
-    instance.currentScene = scene.createFunction();
-    instance.currentScene->buildIndex = scene.buildIndex;
-    instance.currentScene->name = scene.name;
+    instance.currentScene = instance.scenes[buildIndex].createFunction();
+
+    instance.currentScene->buildIndex = instance.scenes[buildIndex].buildIndex;
+    instance.currentScene->name = instance.scenes[buildIndex].name;
 
     instance.changeScene = true;
 }
@@ -72,7 +75,7 @@ Scene *SceneManager::GetActiveScene()
     auto &instance = GetInstance();
 
     if(instance.currentScene == nullptr)
-        instance.currentScene = new Scene();
+        throw Error("There is no active scene loaded!");
 
-    return instance.currentScene;
+    return instance.currentScene.get();
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <memory>
 
 class Scene
 {
@@ -25,13 +26,13 @@ struct SceneInfo
 {
     std::string name;
     int buildIndex;
-    std::function<Scene*()> createFunction;
+    std::function<std::unique_ptr<Scene>()> createFunction;
 };
 
 class SceneManager
 {
 private:
-    Scene *currentScene;
+    std::unique_ptr<Scene> currentScene;
     std::vector<SceneInfo> scenes;
     bool changeScene;
     
@@ -39,6 +40,7 @@ private:
     static void RunScene();
 
     friend class PiXELGraph;
+    
 public:
     SceneManager(const SceneManager&) = delete;
     SceneManager& operator=(const SceneManager&) = delete;
@@ -61,7 +63,8 @@ void SceneManager::AddScene(const std::string &sceneName)
     SceneInfo new_scene;
     new_scene.buildIndex = buildIndex;
     new_scene.name = sceneName;
-    new_scene.createFunction = [=]() { return new T(); };
 
-    instance.scenes.push_back(new_scene);
+    new_scene.createFunction = [=]() { return std::make_unique<T>(); };
+
+    instance.scenes.push_back(std::move(new_scene));
 }

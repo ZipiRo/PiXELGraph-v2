@@ -20,8 +20,15 @@ private:
     {
     }
 
+    Vector2 ousepos;
+
     void Update() override
     {
+        ousepos = Input::MousePosition;
+
+        if(Input::IsMouseButtonDown(MouseButton::Left))
+            e1.transform.SetPosition(ousepos);
+
         if(Input::IsKeyDown(Key::Key_Space))
             SceneManager::LoadScene(SceneManager::GetActiveScene()->buildIndex + 1);
     }
@@ -53,8 +60,14 @@ private:
         Debug::Log("Demo 2");
     }
 
+    Vector2 ousepos;
+    
     void Event() override 
     {
+        ousepos = Input::MousePosition;
+
+        if(Input::IsMouseButtonDown(MouseButton::Left))
+            e1.transform.SetPosition(ousepos);
     }
 
     void Update() override
