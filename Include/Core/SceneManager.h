@@ -51,6 +51,7 @@ public:
     static void AddScene(const std::string &sceneName);
 
     static void LoadScene(int buildIndex);
+    static void LoadScene(const std::string &name);
     static Scene* GetActiveScene();
 };
 

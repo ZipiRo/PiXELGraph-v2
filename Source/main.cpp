@@ -100,7 +100,7 @@ int main()
     SceneManager::AddScene<Demo1>("Scene 1");
     SceneManager::AddScene<Demo2>("Scene 2");
 
-    SceneManager::LoadScene(0);
+    SceneManager::LoadScene("Scene 1");
 
     Engine engine;
     engine.Run();
