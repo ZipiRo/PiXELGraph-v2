@@ -38,7 +38,7 @@ void Input::FetchInputData()
     POINT MOUSE_POINT;
     if (GetCursorPos(&MOUSE_POINT))
         if (ScreenToClient(Window::ConsoleWindow(), &MOUSE_POINT))
-            MousePosition = Vector2(MOUSE_POINT.x, MOUSE_POINT.y);
+            MousePosition = Vector2(MOUSE_POINT.x, MOUSE_POINT.y) / Window::WindowFontSize();
 }
 
 bool Input::IsKeyDown(Key key)
