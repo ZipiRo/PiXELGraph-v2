@@ -1,6 +1,8 @@
 /Build
 /.vscode
-/html
+/HTML
+/Clib
+*.exe
 *.bat
 *.mp3
 *.png

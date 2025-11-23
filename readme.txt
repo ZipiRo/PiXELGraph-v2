@@ -28,8 +28,7 @@ setlocal
 
 cls
 
-cd Build
-cd Release
+cd Build/Release
 start PiXELGraph
 cd ../..
 
