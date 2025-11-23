@@ -9,4 +9,6 @@
 #endif
 
 // Engine Maximum Frames Per Second 
-#define MaxFramesPerSecond 60 // FPS
+#define MaxFramesPerSecond 99999 // FPS
+
+constexpr int FPS = MaxFramesPerSecond; 

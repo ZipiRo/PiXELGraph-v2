@@ -10,8 +10,6 @@
 #include "EngineSettings.h"
 #include "Core/SceneManager.h"
 
-const double MaxFPS = MaxFramesPerSecond;
-
 SceneManager::SceneManager()
 { currentScene = nullptr; changeScene = false;}
 
@@ -37,7 +35,7 @@ void SceneManager::RunScene()
         if(instance.changeScene) continue;
         scene->Event();
 
-        if (Time::deltaTime >= 1.0f / MaxFPS)
+        if (Time::deltaTime >= 1.0f / FPS)
         {
             Time::Reset();
 

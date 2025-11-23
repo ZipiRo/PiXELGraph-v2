@@ -12,7 +12,7 @@ private:
         e1.SetColor(Color::Black);
         e1.transform.SetPosition(50, 100);
 
-        Screen::BacgroundColor = Color::Red;
+        Screen::BackgroundColor = Color::Red;
         Debug::Log("Demo 1");
     }
 
@@ -22,8 +22,16 @@ private:
 
     Vector2 ousepos;
 
+    float timer = 1;
     void Update() override
     {
+        timer += Time::deltaTime;
+        if(timer >= 1)
+        {
+            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime));
+            timer = 0;
+        }
+
         ousepos = Input::MousePosition;
 
         if(Input::IsMouseButtonDown(MouseButton::Left))
@@ -56,7 +64,7 @@ private:
         e1 = Shapes::Elipse(10, 10);
         e1.SetColor(Color::Black);
         e1.transform.SetPosition(100, 100);
-        Screen::BacgroundColor = Color::Blue;
+        Screen::BackgroundColor = Color::Blue;
         Debug::Log("Demo 2");
     }
 
@@ -92,7 +100,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(1280, 720, 1, L"Game"); }
+    Engine() { Init(100, 100, 1, L"Game"); }
 };
 
 int main()

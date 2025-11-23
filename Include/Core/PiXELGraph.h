@@ -60,8 +60,8 @@ private:
 
     friend BOOL WINAPI ConsoleHandler(DWORD signal);
     friend class SceneManager;
-    
 protected:
+
     PiXELGraph();
 
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);

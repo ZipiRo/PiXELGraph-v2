@@ -3,7 +3,6 @@
 #include "Core/PiXELGraph.h" 
 
 PiXELGraph* PiXELGraph::activeInstance = nullptr;
-const double MaxFPS = MaxFramesPerSecond;
 
 BOOL WINAPI ConsoleHandler(DWORD signal)
 {
@@ -80,7 +79,7 @@ void PiXELGraph::Run()
             Time::Tick();
 
             Event();
-            if (Time::deltaTime >= 1.0f / MaxFPS)
+            if (Time::deltaTime >= 1.0f / FPS)
             {
                 Time::Reset();
 
