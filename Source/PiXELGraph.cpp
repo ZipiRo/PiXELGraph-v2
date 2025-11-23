@@ -1,7 +1,9 @@
 #include "Console/Window.h"
-#include "Core/PiXELGraph.h"
+
+#include "Core/PiXELGraph.h" 
 
 PiXELGraph* PiXELGraph::activeInstance = nullptr;
+const double MaxFPS = MaxFramesPerSecond;
 
 BOOL WINAPI ConsoleHandler(DWORD signal)
 {
@@ -17,20 +19,11 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
     return TRUE;
 }
 
-PiXELGraph::PiXELGraph() : RUNNING(true) 
-{ 
-    activeInstance = this;
-    MaxFPS = 61; 
-}
+PiXELGraph::PiXELGraph() : RUNNING(true) { activeInstance = this; }
 
 PiXELGraph &PiXELGraph::GetInstance()
 {
     return *activeInstance;
-}
-
-void PiXELGraph::SetInstance(PiXELGraph &instance)
-{
-    activeInstance = &instance;
 }
 
 void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &WindowTitle)
@@ -44,7 +37,9 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Event::GetInstance();
         Input::GetInstance();
         Font::GetInstance();
+#ifdef USE_AUDIO
         AudioSource::GetInstance();
+#endif
     }
     catch (const std::exception &exception)
     {
@@ -57,12 +52,19 @@ void PiXELGraph::Exit()
     if(!RUNNING) return;
     RUNNING = false;
 
+#ifndef USE_SCENE
     activeInstance->Quit();
+#else
+    SceneManager::GetActiveScene()->Quit();
+#endif
 
-    Debug::KillDebuger();
+#ifdef USE_AUDIO
     AudioSource::Dispose();
+#endif
+    Debug::KillDebuger();
 }
 
+#ifndef USE_SCENE
 void PiXELGraph::Run()
 {
     try
@@ -101,6 +103,30 @@ void PiXELGraph::Run()
         HandleError(exception.what());
     }
 }
+#else
+void PiXELGraph::Run()
+{
+    try
+    {
+        Time::GetInstance();
+
+        InputThread = std::thread(&PiXELGraph::InputLoop, this);
+        EventThread = std::thread(&PiXELGraph::EventLoop, this);
+
+        while (RUNNING)
+        {
+            SceneManager::RunScene();
+        }
+
+        if(InputThread.joinable()) InputThread.join();
+        if(EventThread.joinable()) EventThread.join();
+    }
+    catch (const std::exception &exception)
+    {
+        HandleError(exception.what());
+    }
+}
+#endif
 
 void PiXELGraph::InputLoop()
 {

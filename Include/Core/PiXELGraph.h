@@ -7,6 +7,8 @@
 #include <vector>
 #include <limits>
 
+#include "EngineSettings.h"
+
 #include "UMath.h"
 #include "Vector2.h"
 
@@ -17,14 +19,17 @@
 #include "Console/Debug.h"
 
 class PiXELGraph;
+class SceneManager;
 
 #include "Timer.h"
 #include "Color.h"
 #include "ViewPort.h"
 #include "Screen.h"
 
+#ifdef USE_AUDIO
 #include "Audio/AudioClip.h"
 #include "Audio/AudioSource.h"
+#endif
 
 #include "Graphics/Font.h"
 
@@ -35,6 +40,10 @@ class PiXELGraph;
 #include "Graphics/Rectangle.h"
 #include "Graphics/Elipse.h"
 #include "Graphics/Text.h"
+
+#ifdef USE_SCENE
+#include "SceneManager.h"
+#endif
 
 class PiXELGraph
 {
@@ -50,25 +59,26 @@ private:
     void HandleError(const std::string &message);
 
     friend BOOL WINAPI ConsoleHandler(DWORD signal);
-
+    friend class SceneManager;
+    
 protected:
-    double MaxFPS;
-
     PiXELGraph();
 
-    static PiXELGraph &GetInstance();
-    static void SetInstance(PiXELGraph &instance);
-
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
+    void Exit();
 
+#ifndef USE_SCENE
     virtual void Start() {}
     virtual void Event() {}
     virtual void Update() {}
     virtual void Draw() {}
     virtual void Quit() {}
-
-    void Exit();
+#endif
 
 public:
+    PiXELGraph(const PiXELGraph&) = delete;
+    PiXELGraph& operator=(const PiXELGraph&) = delete;
+    static PiXELGraph &GetInstance();
+    
     void Run();
 };

@@ -10,7 +10,7 @@ std::vector<Vertex> CreateElipseVertices(const int point_count)
     std::vector<Vertex> vertices;
 
     float res = (2 * PI) / point_count;
-    for(float angle = 0.f; angle < 2 * PI; angle += res)
+    for(float angle = 0.0f; angle < 2.0f * PI; angle += res)
     {
         float x = cos(angle); 
         float y = sin(angle);
