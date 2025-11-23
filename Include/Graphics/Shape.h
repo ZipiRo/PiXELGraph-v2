@@ -5,7 +5,7 @@
 #include "Core/Color.h"
 
 #include "Transform.h"
-#include "AABB.h"
+#include "BoundingBox.h"
 #include "Vertex.h"
 
 class Shape
@@ -17,8 +17,8 @@ private:
     std::vector<Vertex> Tvertices;
     std::vector<Vertex> cameraTvertices;
 
-    AABB boundingBox;
-    AABB cameraBoundingBox;
+    BoundingBox boundingBox;
+    BoundingBox cameraBoundingBox;
 
     Color color;
     Color fillColor;
@@ -32,11 +32,11 @@ public:
     Shape(const std::vector<Vertex> &vertices);
 
     std::vector<Vertex> GetTvertices();
-    AABB GetBoundingBox();
+    BoundingBox GetBoundingBox();
 
     void SetColor(Color color);
     void SetFillColor(Color color);
 };
 
 std::vector<Vertex> UpdateVertices(Transform &transform, const std::vector<Vertex> &vertices);
-AABB UpdateAABB(const std::vector<Vertex> &vertices);
+BoundingBox UpdateAABB(const std::vector<Vertex> &vertices);

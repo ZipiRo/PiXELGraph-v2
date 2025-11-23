@@ -5,7 +5,7 @@
 
 #include "Vertex.h"
 #include "Transform.h"
-#include "AABB.h"
+#include "BoundingBox.h"
 
 class Text
 {
@@ -16,7 +16,7 @@ private:
     std::vector<Vertex> Tvertices;
     std::vector<int> indices;
 
-    AABB boundingBox;
+    BoundingBox boundingBox;
 
     Color color;
     Color fillColor;
@@ -31,7 +31,7 @@ public:
     Transform transform;
 
     std::vector<Vertex> GetTvertices();
-    AABB GetBoundingBox();
+    BoundingBox GetBoundingBox();
 
     void SetString(const std::string &text);
 

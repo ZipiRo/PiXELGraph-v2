@@ -54,5 +54,5 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed = true);
 void DrawShape(Shape &shape);
 void DrawTEXT(Text &text);
 
-void Fill(const std::vector<Vector2> &vertices, const AABB &boundingBox, const Color &color);
-void FillShape(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color);
+void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color);
+void FillShape(const std::vector<Vertex> &vertices, const BoundingBox& boundingBox, Color color);

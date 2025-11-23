@@ -28,7 +28,7 @@ std::vector<Vertex> UpdateVertices(Transform &transfrom, const std::vector<Verte
     return Tvertices;
 }
 
-AABB UpdateAABB(const std::vector<Vertex> &vertices)
+BoundingBox UpdateAABB(const std::vector<Vertex> &vertices)
 {
     float left = vertices[0].position.x;
     float right = left;
@@ -48,7 +48,7 @@ AABB UpdateAABB(const std::vector<Vertex> &vertices)
             bottom = vertex.position.y;
     }
 
-    return AABB(left, top, right, bottom);
+    return BoundingBox(left, top, right, bottom);
 }
 
 std::vector<Vertex> Shape::GetTvertices()
@@ -62,7 +62,7 @@ std::vector<Vertex> Shape::GetTvertices()
     return Tvertices;
 }
 
-AABB Shape::GetBoundingBox()
+BoundingBox Shape::GetBoundingBox()
 {
     if (transform.update)
     {

@@ -1,6 +1,6 @@
-#include "Graphics/AABB.h"
+#include "Graphics/BoundingBox.h"
 
-AABB::AABB()
+BoundingBox::BoundingBox()
 {
     this->left = 0;
     this->top = 0;
@@ -8,7 +8,7 @@ AABB::AABB()
     this->bottom = 0;
 }
 
-AABB::AABB(int left, int top, int right, int bottom)
+BoundingBox::BoundingBox(int left, int top, int right, int bottom)
 {
     this->left = left;
     this->top = top;

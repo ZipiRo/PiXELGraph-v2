@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 #include "UMath.h"
 #include "Console/Debug.h"
@@ -242,6 +243,60 @@ void DrawLine(int x1, int y1, int x2, int y2, Color color)
     }
 }
 
+void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
+{
+    int minY = boundingBox.top;
+    int maxY = boundingBox.bottom;
+
+    if (minY > maxY)
+        std::swap(minY, maxY);
+
+    if (minY < 0 && maxY >= 0)
+        minY = 0;
+    else if (minY < 0 || maxY < 0)
+        return;
+
+    const int maxSize = maxY * 2 + 5;
+    int *intersections = new int[maxSize];
+
+    for (int y = minY; y <= maxY; y++)
+    {
+        int count = 0;
+
+        for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+        {
+            auto next_vertex = std::next(vertex);
+            if (next_vertex == vertices.end())
+                next_vertex = vertices.begin();
+
+            Vertex vertexA = *vertex;
+            Vertex vertexB = *next_vertex;
+
+            if (vertexA.position.y == vertexB.position.y)
+                continue;
+
+            if (y >= std::min(vertexA.position.y, vertexB.position.y) && y < std::max(vertexB.position.y, vertexA.position.y))
+            {
+                int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
+                intersections[count++] = x;
+            }
+        }
+        
+        std::sort(intersections, intersections + count);
+                    
+        for (int i = 0; i + 1 < count; i += 2)
+        {
+            int xStart = intersections[i];
+            int xEnd = std::floor(intersections[i + 1]);
+
+            for (int x = xStart; x <= xEnd; x++)
+                PlotPixel(x, y, color);
+        }
+    }
+
+    delete[] intersections;
+}
+
 void DrawRectangle(int x, int y, int width, int height, Color color)
 {
     width = width + x;
@@ -301,7 +356,7 @@ void FillElipse(int x, int y, int width, int height, Color color, int point_coun
     float right = x + width;
     float bottom = y + height;
 
-    AABB boundingBox(left, top, right, bottom);
+    BoundingBox boundingBox(left, top, right, bottom);
     std::vector<Vector2> vertices;
 
     float rez = (2 * PI) / point_count;
@@ -316,61 +371,7 @@ void FillElipse(int x, int y, int width, int height, Color color, int point_coun
     Fill(vertices, boundingBox, color);
 }
 
-void Fill(const std::vector<Vector2> &vertices, const AABB &boundingBox, const Color &color)
-{
-    int minY = boundingBox.top;
-    int maxY = boundingBox.bottom;
-
-    if (minY > maxY)
-        std::swap(minY, maxY);
-
-    if (minY < 0 && maxY >= 0)
-        minY = 0;
-    else if (minY < 0 || maxY < 0)
-        return;
-
-    const int maxSize = maxY * 2 + 5;
-    int *intersections = new int[maxSize];
-
-    for (int y = minY; y <= maxY; y++)
-    {
-        int count = 0;
-
-        for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
-        {
-            auto next_vertex = std::next(vertex);
-            if (next_vertex == vertices.end())
-                next_vertex = vertices.begin();
-
-            Vertex vertexA = *vertex;
-            Vertex vertexB = *next_vertex;
-
-            if (vertexA.position.y == vertexB.position.y)
-                continue;
-
-            if (y >= std::min(vertexA.position.y, vertexB.position.y) && y < std::max(vertexB.position.y, vertexA.position.y))
-            {
-                int x = vertexA.position.x + (y - vertexA.position.y) * (vertexB.position.x - vertexA.position.x) / (vertexB.position.y - vertexA.position.y);
-                intersections[count++] = x;
-            }
-        }
-
-        HeapSort(intersections, count);
-                    
-        for (int i = 0; i + 1 < count; i += 2)
-        {
-            int xStart = intersections[i];
-            int xEnd = std::floor(intersections[i + 1]);
-
-            for (int x = xStart; x <= xEnd; x++)
-                PlotPixel(x, y, color);
-        }
-    }
-
-    delete[] intersections;
-}
-
-void FillShape(const std::vector<Vertex> &vertices, const AABB& boundingBox, Color color)
+void FillShape(const std::vector<Vertex> &vertices, const BoundingBox& boundingBox, Color color)
 {
     std::vector<Vector2> new_vertices;
 

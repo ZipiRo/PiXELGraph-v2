@@ -35,7 +35,7 @@ class SceneManager;
 
 #include "Graphics/Vertex.h"
 #include "Graphics/Transform.h"
-#include "Graphics/AABB.h"
+#include "Graphics/BoundingBox.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Rectangle.h"
 #include "Graphics/Elipse.h"

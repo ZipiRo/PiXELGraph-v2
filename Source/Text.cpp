@@ -69,7 +69,7 @@ std::vector<Vertex> Text::GetTvertices()
     return Tvertices;
 }
 
-AABB Text::GetBoundingBox()
+BoundingBox Text::GetBoundingBox()
 {
     if (transform.update)
     {
