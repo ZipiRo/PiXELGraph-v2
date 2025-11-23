@@ -7,5 +7,6 @@
 *.mp3
 *.png
 *.wav
+*.txt
 *.o
 Doxyfile

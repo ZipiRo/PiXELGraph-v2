@@ -91,7 +91,7 @@ private:
         if(Input::IsMouseButtonDown(MouseButton::Left))
             e1.transform.SetPosition(ousepos);
 
-        if(Input::IsKeyDown(Key::Key_Space))
+        if(Input::IsKeyDown(Key::Key_Enter))
             SceneManager::LoadScene(SceneManager::GetActiveScene()->buildIndex - 1);
     }
 
