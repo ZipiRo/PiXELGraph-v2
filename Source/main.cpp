@@ -9,7 +9,7 @@ private:
     void Start() override
     {
         e1 = Shapes::Elipse(10, 10);
-        e1.SetColor(Color::Black);
+        e1.SetFillColor(Color::Black);
         e1.transform.SetPosition(50, 100);
 
         Screen::BackgroundColor = Color::Red;
@@ -100,7 +100,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(100, 100, 1, L"Game"); }
+    Engine() { Init(800, 600, 1, L"Game"); }
 };
 
 int main()
