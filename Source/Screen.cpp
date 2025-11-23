@@ -406,6 +406,8 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed)
 
 void DrawShape(Shape &shape)
 {
+    if(shape.vertices.empty()) return;
+
     if (shape.transform.update)
     {
         shape.Tvertices = UpdateVertices(shape.transform, shape.vertices);
@@ -416,15 +418,15 @@ void DrawShape(Shape &shape)
     {
         if (shape.transform.update || Screen::GetView().update)
         {
-            std::vector<Vertex> cameraVertices;
+            std::vector<Vertex> viewVertices;
             for(auto vertex : shape.Tvertices)
-                cameraVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
+                viewVertices.emplace_back(Screen::GetView().WorldToScreen(vertex.position), vertex.color);
 
-            shape.cameraTvertices = cameraVertices;
-            shape.cameraBoundingBox = UpdateAABB(cameraVertices);
+            shape.VTvertices = viewVertices;
+            shape.VBoundingBox = UpdateAABB(viewVertices);
         }
      
-        FillShape(shape.cameraTvertices, shape.cameraBoundingBox, shape.fillColor);
+        FillShape(shape.VTvertices, shape.VBoundingBox, shape.fillColor);
     }
 
     if (shape.color != Color::Transparent)

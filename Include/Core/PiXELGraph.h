@@ -6,6 +6,8 @@
 #include <atomic>
 #include <vector>
 #include <limits>
+#include <functional>
+#include <memory>
 
 #include "EngineSettings.h"
 

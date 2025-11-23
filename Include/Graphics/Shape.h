@@ -15,10 +15,10 @@ protected:
 
 private:
     std::vector<Vertex> Tvertices;
-    std::vector<Vertex> cameraTvertices;
+    std::vector<Vertex> VTvertices;
 
     BoundingBox boundingBox;
-    BoundingBox cameraBoundingBox;
+    BoundingBox VBoundingBox;
 
     Color color;
     Color fillColor;
