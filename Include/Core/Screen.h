@@ -38,7 +38,7 @@ public:
 
     static int Width();
     static int Height();
-    static Color BacgroundColor;
+    static Color BackgroundColor;
 };
 
 void PlotPixel(int x, int y, Color color);

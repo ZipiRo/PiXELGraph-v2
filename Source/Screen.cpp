@@ -14,7 +14,7 @@
 
 int Screen::ScreenWidth = 0;
 int Screen::ScreenHeight = 0;
-Color Screen::BacgroundColor = Color::Black;
+Color Screen::BackgroundColor = Color::Black;
 
 Screen &Screen::GetInstance()
 {
@@ -111,7 +111,7 @@ void Screen::Display()
 void Screen::Clear()
 {
     auto &instance = GetInstance();
-    std::fill(instance.ScreenBuffer.begin(), instance.ScreenBuffer.end(), BacgroundColor);
+    std::fill(instance.ScreenBuffer.begin(), instance.ScreenBuffer.end(), BackgroundColor);
 }
 
 int Screen::Width() { return ScreenWidth - 1; }

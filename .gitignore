@@ -1,7 +1,9 @@
 /Build
 /.vscode
+/html
 *.bat
 *.mp3
 *.png
 *.wav
 *.o
+Doxyfile
