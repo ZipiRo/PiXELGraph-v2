@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>View — PiXELGraph-v2 API</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h1>PiXELGraph-v2</h1>
+    <p>Retro console engine API</p>
+    <h3>Classes</h3>
+    <ul>
+      <li><a href="AudioClip.html">AudioClip</a></li>
+      <li><a href="AudioSource.html">AudioSource</a></li>
+      <li><a href="BoundingBox.html">BoundingBox</a></li>
+      <li><a href="Color.html">Color</a></li>
+      <li><a href="Debug.html">Debug</a></li>
+      <li><a href="Elipse.html">Elipse</a></li>
+      <li><a href="Error.html">Error</a></li>
+      <li><a href="Event.html">Event</a></li>
+      <li><a href="Font.html">Font</a></li>
+      <li><a href="Input.html">Input</a></li>
+      <li><a href="PiXELGraph.html">PiXELGraph</a></li>
+      <li><a href="Rectangle.html">Rectangle</a></li>
+      <li><a href="Scene.html">Scene</a></li>
+      <li><a href="SceneManager.html">SceneManager</a></li>
+      <li><a href="Screen.html">Screen</a></li>
+      <li><a href="Shape.html">Shape</a></li>
+      <li><a href="Text.html">Text</a></li>
+      <li><a href="Time.html">Time</a></li>
+      <li><a href="Transform.html">Transform</a></li>
+      <li><a href="Vector2.html">Vector2</a></li>
+      <li><a href="Vertex.html">Vertex</a></li>
+      <li><a href="View.html">View</a></li>
+      <li><a href="Window.html">Window</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="top-tabs">
+      <a class="active" href="../index.html">API Reference</a>
+      <a href="https://github.com/ZipiRo/PiXELGraph-v2">GitHub Page</a>
+      <a href="../examples.html">Examples</a>
+    </div>
+
+    <h1>View <span class="badge">class</span></h1>
+    <div class="section">
+      <p><strong>Header:</strong> <code>#include "Core/ViewPort.h"</code></p>
+      <p class="desc">Camera-like class that controls how world coordinates are mapped to screen coordinates (center,
+        rotation, zoom).</p>
+    </div>
+    <div class="section">
+      <h2>Methods</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Return</th>
+            <th>Parameters</th>
+            <th>Signature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>SetScreenCenter</code><br /><span class='desc'>Sets the ScreenCenter.</span></td>
+            <td><code>void</code></td>
+            <td><code>const Vector2&amp; center</code></td>
+            <td><code>void SetScreenCenter(const Vector2&amp; center);</code></td>
+          </tr>
+          <tr>
+            <td><code>SetPosition</code><br /><span class='desc'>Sets the Position.</span></td>
+            <td><code>void</code></td>
+            <td><code>const Vector2&amp; newPosition</code></td>
+            <td><code>void SetPosition(const Vector2&amp; newPosition);</code></td>
+          </tr>
+          <tr>
+            <td><code>Move</code><br /><span class='desc'>Function declared in the header. See usage context for
+                details.</span></td>
+            <td><code>void</code></td>
+            <td><code>const Vector2&amp; delta</code></td>
+            <td><code>void Move(const Vector2&amp; delta);</code></td>
+          </tr>
+          <tr>
+            <td><code>SetAngle</code><br /><span class='desc'>Sets the Angle.</span></td>
+            <td><code>void</code></td>
+            <td><code>float newAngle</code></td>
+            <td><code>void SetAngle(float newAngle);</code></td>
+          </tr>
+          <tr>
+            <td><code>Rotate</code><br /><span class='desc'>Function declared in the header. See usage context for
+                details.</span></td>
+            <td><code>void</code></td>
+            <td><code>float amount</code></td>
+            <td><code>void Rotate(float amount);</code></td>
+          </tr>
+          <tr>
+            <td><code>SetZoom</code><br /><span class='desc'>Sets the Zoom.</span></td>
+            <td><code>void</code></td>
+            <td><code>float newZoom</code></td>
+            <td><code>void SetZoom(float newZoom);</code></td>
+          </tr>
+          <tr>
+            <td><code>Zoom</code><br /><span class='desc'>Function declared in the header. See usage context for
+                details.</span></td>
+            <td><code>void</code></td>
+            <td><code>float amount</code></td>
+            <td><code>void Zoom(float amount);</code></td>
+          </tr>
+          <tr>
+            <td><code>WorldToScreen</code><br /><span class='desc'>Converts world-space coordinates into
+                screen-space.</span></td>
+            <td><code>Vector2</code></td>
+            <td><code>const Vector2&amp; worldPosition</code></td>
+            <td><code>Vector2 WorldToScreen(const Vector2&amp; worldPosition);</code></td>
+          </tr>
+          <tr>
+            <td><code>ScreenToWorld</code><br /><span class='desc'>Converts screen-space coordinates back into
+                world-space.</span></td>
+            <td><code>Vector2</code></td>
+            <td><code>const Vector2&amp; screenPosition</code></td>
+            <td><code>Vector2 ScreenToWorld(const Vector2&amp; screenPosition);</code></td>
+          </tr>
+          <tr>
+            <td><code>GetZoom</code><br /><span class='desc'>Returns the Zoom.</span></td>
+            <td><code>float</code></td>
+            <td><code></code></td>
+            <td><code>float GetZoom();</code></td>
+          </tr>
+          <tr>
+            <td><code>GetPosition</code><br /><span class='desc'>Returns the Position.</span></td>
+            <td><code>Vector2</code></td>
+            <td><code></code></td>
+            <td><code>Vector2 GetPosition();</code></td>
+          </tr>
+          <tr>
+            <td><code>GetAngle</code><br /><span class='desc'>Returns the Angle.</span></td>
+            <td><code>float</code></td>
+            <td><code></code></td>
+            <td><code>float GetAngle();</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class='section'>
+      <h2>Member Variables</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Type</th>
+            <th>Declaration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>screenCenter</code><br /><span class='desc'>Center position used for views or geometry.</span>
+            </td>
+            <td><code>Vector2</code></td>
+            <td><code>Vector2 screenCenter;</code></td>
+          </tr>
+          <tr>
+            <td><code>position</code><br /><span class='desc'>Position in either world or screen coordinates.</span>
+            </td>
+            <td><code>Vector2</code></td>
+            <td><code>Vector2 position;</code></td>
+          </tr>
+          <tr>
+            <td><code>angle</code><br /><span class='desc'>Rotation angle, usually stored in degrees.</span></td>
+            <td><code>float</code></td>
+            <td><code>float angle;</code></td>
+          </tr>
+          <tr>
+            <td><code>zoom</code><br /><span class='desc'>Variable declared as part of the engine&#x27;s state.</span>
+            </td>
+            <td><code>float</code></td>
+            <td><code>float zoom;</code></td>
+          </tr>
+          <tr>
+            <td><code>sin0</code><br /><span class='desc'>Variable declared as part of the engine&#x27;s state.</span>
+            </td>
+            <td><code>float</code></td>
+            <td><code>float sin0;</code></td>
+          </tr>
+          <tr>
+            <td><code>cos0</code><br /><span class='desc'>Variable declared as part of the engine&#x27;s state.</span>
+            </td>
+            <td><code>float</code></td>
+            <td><code>float cos0;</code></td>
+          </tr>
+          <tr>
+            <td><code>update</code><br /><span class='desc'>Variable declared as part of the engine&#x27;s state.</span>
+            </td>
+            <td><code>bool</code></td>
+            <td><code>bool update;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+    <div class="section">
+      <h2>Example</h2>
+      <pre><code>// Example usage of View
+// Combine methods from the lists above.</code></pre>
+    </div>
+  </div>
+</body>
+
+</html>
