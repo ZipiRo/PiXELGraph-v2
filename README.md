@@ -17,14 +17,17 @@ The library is distributed as a precompiled static library (`Library/PiXELGraph-
 
 This file provides a secondary output console used for logging (`Debug::Log`) and engine messages.  
 If you build without it, the program will run, but debug output will not appear.
+The compiled DebugWindow.exe should be in the same folder as the main program.
 
-Example build command including it:
+### 🔹 The resource `font.cf` **should be in the same folder as the main program** 
+This file is the main font used in the Font class.
+If you don't add it the program will give an exception that there is no font.cf file.
 
 ---
 
 ## Features
 
-- ✅ **Scene system** (`Scene`, `SceneManager`) with `Start`, `Update`, `Draw`, etc.
+- ✅ **Scene system** (`Scene`, `SceneManager`) with `Start`, `Update`, `Draw`, `Event`, `Quit`
 - ✅ **Console window control** (`Window`, `Screen`, `View`)
 - ✅ **2D drawing API**:
   - Shapes (`Shape`, `Rectangle`, `Elipse`, `Vertex`, `BoundingBox`)
@@ -63,23 +66,15 @@ PiXELGraph-v2/
 - **Platform:** Windows (uses `windows.h` and the Win32 console)
 - **Compiler:** Any modern C++ compiler (C++17 recommended)
   - MinGW / g++
-  - MSVC (Visual Studio)
 - **Audio:** `miniaudio` is already included as a single-header library (`Include/miniaudio.h`).
+- **Font:** `nlohmann/json.hpp` is included for JSON font.cf parsing.
 
 ### 2. Include the headers
 
 Add the `Include/` directory to your compiler's include paths.
 
-Example (g++):
-
 ```bash
 g++ -std=c++17 -IInclude main.cpp Library/PiXELGraph-v2.a -o Demo
-```
-
-Example (MSVC from Developer Command Prompt):
-
-```bat
-cl /std:c++17 /I Include main.cpp Library\PiXELGraph-v2.a /Fe:Demo.exe
 ```
 
 > 💡 Adjust paths and library flags depending on your toolchain / project setup.
@@ -134,11 +129,11 @@ private:
 // Initialize the Engine as a derived class
 class Engine : public PiXELGraph
 {
-pubilic:
+public:
     Engine()
     {
         Init(800, 600, 2, L"Demo");
-        MaxFramesPerSecond = 120;
+        MaxFramesPerSecond = MaxFPS;
     }
 };
 
@@ -196,7 +191,7 @@ private:
     void Update() override { /* logic here */ }
     void Draw() override   { /* DrawShape(...); */ }
 
-pubilic:
+public:
     Engine()
     {
         Init(800, 600, 2, L"Demo");
@@ -235,7 +230,52 @@ Include/EngineSettings.h
 | `USE_SCENES` | true = scene framework / false = manual engine mode |
 | `USE_AUDIO` | true = will allow you to use AudioSource & AudioClip classes / false = IT WILL NOT BE USED |
 | `USE_DEBUGER` | true = will open a debug window and alow you to use Debug::Log / false = IT WILL NOT BE USED |
+| `MaxFPS` | you can use this to set a limit the max frames per second then asign it to MaxFramesPerSecond in the constructor |
+
 ---
+
+## 🖥 Event Function (Correct Input Handling)
+
+PiXELGraph separates input event polling from rendering and updating.
+Because of this, all input should be processed inside Event(), not Update().
+
+Event() is tied to OS input polling (independent of framerate),
+while Update() runs based on the engine's frame speed.
+If input is only checked in Update(), fast key or mouse actions may be missed.
+
+### Why this matters
+
+| Function | Runs When? | Used For |
+|---|---|---|
+| Event()  | Whenever the system sends input (NOT FPS dependent) | Keyboard + mouse input (correct place) |
+| Update() | Runs every frame | Movement, gameplay logic, physics |
+| Draw()   | Runs every frame | Rendering only |
+
+### Correct usage pattern
+
+```cpp
+void Event() override
+{
+    if(Input::IsKeyPressed(Key::Space))
+        Debug::Log("Space pressed\n");
+
+    if(Event::GetEvent() == EventType::EVENT_MOUSE_LCLICK)
+        Debug::Log("Left mouse click pressed\n");
+}
+
+void Update() override
+{
+    // Logic and movement here
+}
+
+void Draw() override
+{
+    // Only rendering
+}
+```
+
+**This applies to both Scene mode and Manual Engine mode.**
+
 
 ## Core Concepts & Types
 
@@ -276,8 +316,6 @@ Include/EngineSettings.h
 
 - **Debug**
 - **Error**
-
-Each of these classes is documented in more detail in the **generated API website** under `docs/`.
 
 ---
 
