@@ -84,7 +84,7 @@ private:
         timer += Time::deltaTime;
         if(timer >= 1)
         {
-            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 2");
+            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + "\nDemo 2");
             timer = 0;
         }
 

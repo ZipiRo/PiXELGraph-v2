@@ -1,51 +1,30 @@
 #include <iostream>
 #include <fstream>
-#include <filesystem>
 #include <string>
 #include <windows.h>
-#include <cstring>
-
-std::ifstream debug;
-std::ofstream debugO;
-
-char buffer[105];
-int bufferSize, lastBufferSize;
+#include <thread>
 
 int main()
 {
-    wchar_t s[256];
-    swprintf_s(s, 256, L"PiXELGraph v2.0 | DebugWindow");
-    SetConsoleTitleW(s);
-        
-    debugO.open("debug.tmp");
-    debugO << "";
-    debugO.close();
+    SetConsoleTitleW(L"PiXELGraph v2.0 | DebugWindow");
 
-    while (1)
-    {      
-        bufferSize = std::filesystem::file_size("debug.tmp");
-        if(bufferSize == lastBufferSize) continue;
-        if(bufferSize == 0)
+    std::ifstream debug("debug.tmp", std::ios::in);
+    debug.seekg(0, std::ios::end);
+
+    std::string line;
+
+    while (true)
+    {
+        if (std::getline(debug, line))
         {
-            lastBufferSize = 0;
-            continue;
+            if (line == "-0xKILL")
+                return 0;
+
+            std::cout << line << std::endl;
         }
-
-        lastBufferSize = bufferSize;
-
-        debug.open("debug.tmp");
-        debug.getline(buffer, 105);
-
-        if(strstr(buffer, "-0xKILL") != nullptr)
-            return 0;
-
-        std::cout << buffer << '\n';
-        debug.close();
-        
-        debugO.open("debug.tmp");
-        debugO << "";
-        debugO.close();
+        else {
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            debug.clear();
+        }
     }
-
-    return 0;
 }

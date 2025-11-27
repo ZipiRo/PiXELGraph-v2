@@ -5,15 +5,14 @@
 class Debug
 {
 private:
-    Debug() {};
-
+    Debug();  
     static std::ofstream debugBuffer;
 
 public:
-    Debug(const Debug &) = delete;
-    void operator=(const Debug &) = delete;
-    
-    static Debug &GetDebug();
-    static void Log(std::string log);
-    static void KillDebuger();
+    Debug(const Debug&) = delete;
+    Debug& operator=(const Debug&) = delete;
+
+    static Debug& Get();
+    static void Log(const std::string& msg);
+    static void Kill();
 };

@@ -65,7 +65,7 @@ void PiXELGraph::Exit()
 #endif
 
 #ifdef USE_DEBUGER
-    Debug::KillDebuger();
+    Debug::Kill();
 #endif
 
 }

@@ -1,27 +1,26 @@
 #include "Console/Debug.h"
 
-#include <fstream>
-#include <filesystem>
-#include <string>
-
 std::ofstream Debug::debugBuffer;
 
-Debug &Debug::GetDebug()
+Debug::Debug()
+{
+    debugBuffer.open("debug.tmp", std::ios::app);
+}
+
+Debug& Debug::Get()
 {
     static Debug instance;
     return instance;
 }
 
-void Debug::Log(std::string log)
+void Debug::Log(const std::string& msg)
 {
-    debugBuffer.open("debug.tmp");
-    debugBuffer << log << '\n';
-    debugBuffer.close();
+    Get();                             
+    debugBuffer << msg << std::endl;
+    debugBuffer.flush();              
 }
 
-void Debug::KillDebuger()
+void Debug::Kill()
 {
-    debugBuffer.open("debug.tmp");
-    debugBuffer << "-0xKILL";
-    debugBuffer.close();
+    Log("-0xKILL");
 }
