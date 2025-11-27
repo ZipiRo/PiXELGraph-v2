@@ -30,7 +30,7 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
     try
     {
         SetConsoleCtrlHandler(ConsoleHandler, TRUE);
-
+    
         Window::GetInstance().SetParameters(WindowWidth, WindowHeight, PixelSize, WindowTitle);
         Screen::GetInstance().SetParameters(WindowWidth / Window::WindowFontSize(), WindowHeight / Window::WindowFontSize());
         Event::GetInstance();
@@ -50,7 +50,6 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
 
 void PiXELGraph::Exit()
 {
-    if(!RUNNING) return;
     RUNNING = false;
 
 #ifdef USE_SCENE
@@ -73,41 +72,41 @@ void PiXELGraph::Exit()
 #ifndef USE_SCENE
 void PiXELGraph::Run()
 {
-    try
-    {
-        Start();
-        Time::GetInstance();
-
-        InputThread = std::thread(&PiXELGraph::InputLoop, this);
-        EventThread = std::thread(&PiXELGraph::EventLoop, this);
-
-        while (RUNNING)
+        try
         {
-            Time::Tick();
+            Start();
+            Time::GetInstance();
 
-            Event();
-            if (Time::deltaTime >= 1.0f / FramesPerSecond)
+            InputThread = std::thread(&PiXELGraph::InputLoop, this);
+            EventThread = std::thread(&PiXELGraph::EventLoop, this);
+
+            while (RUNNING)
             {
-                Time::Reset();
+                Time::Tick();
 
-                Update();
+                Event();
+                if (Time::deltaTime >= 1.0f / MaxFramesPerSecond)
+                {
+                    Time::Reset();
 
-                Screen::Clear();
+                    Update();
 
-                Draw();
+                    Screen::Clear();
 
-                Screen::Display();
-                Screen::GetView().update = false;
+                    Draw();
+
+                    Screen::Display();
+                    Screen::GetView().update = false;
+                }  
             }
         }
+        catch (const std::exception &exception)
+        {
+            HandleError(exception.what());
+        } 
 
         if(InputThread.joinable()) InputThread.join();
         if(EventThread.joinable()) EventThread.join();
-    }
-    catch (const std::exception &exception)
-    {
-        HandleError(exception.what());
-    }
 }
 #else
 void PiXELGraph::Run()
@@ -120,42 +119,54 @@ void PiXELGraph::Run()
         EventThread = std::thread(&PiXELGraph::EventLoop, this);
 
         while (RUNNING)
-        {
             SceneManager::RunScene(MaxFramesPerSecond);
-        }
-
-        if(InputThread.joinable()) InputThread.join();
-        if(EventThread.joinable()) EventThread.join();
     }
     catch (const std::exception &exception)
     {
         HandleError(exception.what());
     }
+
+    if(InputThread.joinable()) InputThread.join();
+    if(EventThread.joinable()) EventThread.join();
 }
 #endif
 
 void PiXELGraph::InputLoop()
 {
-    while (RUNNING)
+    try 
     {
-        if(!Window::Focused()) continue;
-        Input::FetchInputData();
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        while (RUNNING)
+        {
+            if(!Window::Focused()) continue;
+            Input::FetchInputData();
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        }
+    } catch(const std::exception &exception)
+    {
+        HandleError(exception.what());
     }
 }
 
 void PiXELGraph::EventLoop()
 {
-    while (RUNNING)
+    try 
     {
-        if(!Window::Focused()) continue;
-        Event::FetchEventData();
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        while (RUNNING)
+        {
+            if(!Window::Focused()) continue;
+            Event::FetchEventData();
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        }
+    } catch(const std::exception &exception)
+    {
+        HandleError(exception.what());
     }
 }
 
 void PiXELGraph::HandleError(const std::string &message)
 {
+    RUNNING = false;
+
 #ifdef USE_DEBUGER
     Debug::Log("ERROR: " + message);
 #endif
@@ -163,5 +174,16 @@ void PiXELGraph::HandleError(const std::string &message)
     if(InputThread.joinable()) InputThread.join();
     if(EventThread.joinable()) EventThread.join();
 
-    Exit();
+    #ifdef USE_SCENE
+        if(SceneManager::HasActiveScene())
+            SceneManager::GetActiveScene()->Quit();
+
+        SceneManager::StopScene();
+    #else
+        activeInstance->Quit();
+    #endif
+
+    #ifdef USE_AUDIO
+        AudioSource::Dispose();
+    #endif
 }

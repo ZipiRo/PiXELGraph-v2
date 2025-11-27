@@ -25,7 +25,7 @@ void SceneManager::RunScene(int FramesPerSecond)
 
     Scene *scene = instance.GetActiveScene();
     instance.SceneManagerChanges = false;
-
+    
     scene->Start();
 
     while (!instance.SceneManagerChanges)
@@ -75,6 +75,12 @@ void SceneManager::LoadScene(const std::string &name)
     int index = 0;
     for(; index <= instance.scenes.size() && instance.scenes[index].name != name; index++);
     LoadScene(index);
+}
+
+bool SceneManager::HasActiveScene()
+{
+    auto &instance = GetInstance();
+    return instance.currentScene != nullptr;
 }
 
 void SceneManager::StopScene()

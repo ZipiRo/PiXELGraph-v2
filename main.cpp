@@ -112,7 +112,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(800, 600, 3, L"Game"); MaxFramesPerSecond = MaxFPS; }
+    Engine() { Init(800, 600, 1, L"Game"); MaxFramesPerSecond = MaxFPS; }
 };
 
 int main()

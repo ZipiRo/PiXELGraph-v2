@@ -53,6 +53,7 @@ public:
 
     static void LoadScene(int buildIndex);
     static void LoadScene(const std::string &name);
+    static bool HasActiveScene();
     static Scene* GetActiveScene();
 };
 

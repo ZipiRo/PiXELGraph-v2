@@ -7,7 +7,7 @@ Debug::Debug()
     debugBuffer.open("debug.tmp");
 }
 
-Debug& Debug::Get()
+Debug& Debug::GetInstance()
 {
     static Debug instance;
     return instance;
@@ -15,7 +15,7 @@ Debug& Debug::Get()
 
 void Debug::Log(const std::string& msg)
 {
-    Get();                             
+    GetInstance();                             
     debugBuffer << msg << std::endl;
     debugBuffer.flush();              
 }

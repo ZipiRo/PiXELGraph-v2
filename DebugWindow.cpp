@@ -9,7 +9,7 @@ int main()
     SetConsoleTitleW(L"PiXELGraph v2.0 | DebugWindow");
 
     std::ifstream debug("debug.tmp", std::ios::in);
-    debug.seekg(0, std::ios::end);
+    debug.seekg(0);
 
     std::string line;
 
