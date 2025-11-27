@@ -31,7 +31,6 @@ int main()
                 EnableMenuItem(menu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
 
                 DrawMenuBar(console); 
-                SetWindowPos(console, NULL, 0,0,0,0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
             }
 
             std::cout << line << std::endl;
