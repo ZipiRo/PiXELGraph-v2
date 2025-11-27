@@ -13,7 +13,12 @@ int main()
 
     EnableMenuItem(menu, SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
     
-    std::ifstream debug("debug.tmp", std::ios::in);
+    wchar_t tempPath[MAX_PATH];
+    GetTempPathW(MAX_PATH, tempPath);
+
+    std::wstring file = std::wstring(tempPath) + L"debug.tmp";
+
+    std::ifstream debug(file.c_str(), std::ios::in);
     debug.seekg(0);
 
     std::string line;

@@ -1,10 +1,17 @@
+#include <windows.h>
+#include <string.h>
+
 #include "Console/Debug.h"
 
 std::ofstream Debug::debugBuffer;
 
 Debug::Debug()
 {
-    debugBuffer.open("debug.tmp");
+    wchar_t tempPath[MAX_PATH];
+    GetTempPathW(MAX_PATH, tempPath);
+
+    std::wstring file = std::wstring(tempPath) + L"debug.tmp";
+    debugBuffer.open(file.c_str());
 }
 
 Debug& Debug::GetInstance()
