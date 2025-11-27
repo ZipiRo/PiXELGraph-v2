@@ -4,7 +4,7 @@ std::ofstream Debug::debugBuffer;
 
 Debug::Debug()
 {
-    debugBuffer.open("debug.tmp", std::ios::app);
+    debugBuffer.open("debug.tmp");
 }
 
 Debug& Debug::Get()
