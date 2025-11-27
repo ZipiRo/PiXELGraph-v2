@@ -95,6 +95,9 @@ private:
 
         if(Input::IsKeyDown(Key::Key_Enter))
             SceneManager::LoadScene(SceneManager::GetActiveScene()->buildIndex - 1);
+
+        if(Input::IsKeyDown(Key::Key_Tab))
+            SceneManager::LoadScene("Scene 3");
     }
 
     void Draw() override
@@ -119,8 +122,11 @@ int main()
 {   
     SceneManager::AddScene<Demo1>("Scene 1");
     SceneManager::AddScene<Demo2>("Scene 2");
+    SceneManager::AddScene<Demo2>("Scene 3");
 
     SceneManager::LoadScene("Scene 1");
+
+    SceneManager::RemoveScene("Scene 3");
 
     Engine engine;
     engine.Run();

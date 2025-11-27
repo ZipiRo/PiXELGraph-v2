@@ -50,6 +50,8 @@ public:
     
     template <typename T>
     static void AddScene(const std::string &sceneName);
+    static void RemoveScene(int buildIndex);
+    static void RemoveScene(const std::string &name);
 
     static void LoadScene(int buildIndex);
     static void LoadScene(const std::string &name);

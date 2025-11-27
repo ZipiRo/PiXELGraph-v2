@@ -53,7 +53,26 @@ void SceneManager::RunScene(int FramesPerSecond)
     }
 }
 
-void SceneManager::LoadScene(int buildIndex)
+void SceneManager::RemoveScene(int buildIndex)
+{
+    auto &instance = GetInstance();
+
+    if(buildIndex < 0 || buildIndex >= instance.scenes.size())
+        throw Error("This scene index does not exist!");
+
+    instance.scenes.erase(instance.scenes.begin() + buildIndex);
+}
+
+void SceneManager::RemoveScene(const std::string &name)
+{
+    auto &instance = GetInstance();
+
+    int index = 0;
+    for(; index <= instance.scenes.size() && instance.scenes[index].name != name; index++);
+    RemoveScene(index);
+}
+
+void SceneManager::LoadScene(int buildIndex) 
 {
     auto &instance = GetInstance();
  
