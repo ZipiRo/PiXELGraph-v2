@@ -86,7 +86,7 @@ void PiXELGraph::Run()
             Time::Tick();
 
             Event();
-            if (Time::deltaTime >= 1.0f / FPS)
+            if (Time::deltaTime >= 1.0f / FramesPerSecond)
             {
                 Time::Reset();
 
@@ -121,7 +121,7 @@ void PiXELGraph::Run()
 
         while (RUNNING)
         {
-            SceneManager::RunScene();
+            SceneManager::RunScene(MaxFramesPerSecond);
         }
 
         if(InputThread.joinable()) InputThread.join();

@@ -19,7 +19,7 @@ SceneManager &SceneManager::GetInstance()
     return instance;
 }
 
-void SceneManager::RunScene()
+void SceneManager::RunScene(int FramesPerSecond)
 {
     auto &instance = GetInstance(); 
 
@@ -35,7 +35,7 @@ void SceneManager::RunScene()
         if(instance.SceneManagerChanges) continue;
         scene->Event();
 
-        if (Time::deltaTime >= 1.0f / FPS)
+        if (Time::deltaTime >= 1.0f / FramesPerSecond)
         {
             Time::Reset();
 

@@ -27,7 +27,7 @@ private:
         timer += Time::deltaTime;
         if(timer >= 1)
         {
-            // Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 1");
+            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 1");
             timer = 0;
         }
 
@@ -50,7 +50,6 @@ private:
 
     void Quit() override
     {
-        
     }
 
 public:
@@ -85,7 +84,7 @@ private:
         timer += Time::deltaTime;
         if(timer >= 1)
         {
-            // Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 2");
+            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 2");
             timer = 0;
         }
 
@@ -113,7 +112,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(800, 600, 3, L"Game"); }
+    Engine() { Init(800, 600, 3, L"Game"); MaxFramesPerSecond = 10; }
 };
 
 int main()
@@ -121,7 +120,7 @@ int main()
     SceneManager::AddScene<Demo1>("Scene 1");
     SceneManager::AddScene<Demo2>("Scene 2");
 
-    // SceneManager::LoadScene("Scene 1");
+    SceneManager::LoadScene("Scene 1");
 
     Engine engine;
     engine.Run();

@@ -67,6 +67,7 @@ private:
     friend class SceneManager;
 protected:
 
+    int MaxFramesPerSecond;
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
     PiXELGraph();
 

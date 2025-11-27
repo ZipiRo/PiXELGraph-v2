@@ -37,7 +37,7 @@ private:
     bool SceneManagerChanges;
     
     SceneManager();
-    static void RunScene();
+    static void RunScene(int FramesPerSecond);
     static void StopScene();
 
     friend class PiXELGraph;
