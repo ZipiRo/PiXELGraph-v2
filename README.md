@@ -11,6 +11,16 @@ It lets you build simple 2D games, visual experiments, and tools directly in the
 The library is distributed as a precompiled static library (`Library/PiXELGraph-v2.a`) plus headers in `Include/`.
 
 ---
+## ⚠ Important Build Note
+
+### 🔹 You **must also compile** `DebugWindow.cpp`
+
+This file provides a secondary output console used for logging (`Debug::Log`) and engine messages.  
+If you build without it, the program will run, but debug output will not appear.
+
+Example build command including it:
+
+---
 
 ## Features
 
@@ -37,12 +47,11 @@ PiXELGraph-v2/
 │  ├─ Graphics/          # Shapes, Text, Transform, Font, Vertex, BoundingBox
 │  └─ Audio/             # AudioClip, AudioSource
 ├─ Library/
-│  ├─ *.o                # Precompiled object files
 │  └─ PiXELGraph-v2.a    # Static library
 ├─ Resources/
 │  └─ font.cf           # Bitmap font data
 ├─ main.cpp              # Example / demo entry point
-└─ DebugWindow.cpp       # Optional debug console helper
+└─ DebugWindow.cpp       #  Debug console helper
 ```
 
 ---
@@ -122,6 +131,17 @@ private:
     }
 };
 
+// Initialize the Engine as a derived class
+class Engine : public PiXELGraph
+{
+pubilic:
+    Engine()
+    {
+        Init(800, 600, 2, L"Demo");
+        MaxFramesPerSecond = 120;
+    }
+};
+
 int main()
 {
     // Register scenes
@@ -131,12 +151,90 @@ int main()
     SceneManager::LoadScene("Game");
 
     // Start the engine main loop
-    PiXELGraph::GetInstance().Run();
-
+    Engine engine;
+    engine.Run();
+  
     return 0;
 }
+
+```
+## 🔥 Running WITHOUT Scenes (manual mode)
+
+If you prefer a raw engine loop like SDL/DirectX style:
+
+1. Open:
+
+```
+Include/EngineSettings.h
 ```
 
+2. Set:
+
+```cpp
+#define USE_SCENES false
+```
+
+Then you control:
+
+```cpp
+void Start();
+void Event();
+void Update();
+void Draw();
+void Quit();
+```
+
+### Example Manual Mode
+
+```cpp
+#include "Core/PiXELGraph.h"
+
+class Engine : public PiXELGraph
+{
+private:
+    void Start() override   { Screen::BackgroundColor = Color::Black; }
+    void Update() override { /* logic here */ }
+    void Draw() override   { /* DrawShape(...); */ }
+
+pubilic:
+    Engine()
+    {
+        Init(800, 600, 2, L"Demo");
+        MaxFramesPerSecond = 120;
+    }
+};
+
+
+int main(){
+    Engine engine;
+    engine.Run();
+}
+
+```
+
+When to use manual mode:
+
+| Use case | Reason |
+|---|---|
+| Single-screen tools/games | Simple workflow |
+| Custom game architecture | No scene manager overhead |
+| You need pure control | Update/Draw just like SDL |
+
+---
+
+## 🔧 EngineSettings.h options
+
+Located at:
+
+```
+Include/EngineSettings.h
+```
+
+| Setting | Description |
+|---|---|
+| `USE_SCENES` | true = scene framework / false = manual engine mode |
+| `USE_AUDIO` | true = will allow you to use AudioSource & AudioClip classes / false = IT WILL NOT BE USED |
+| `USE_DEBUGER` | true = will open a debug window and alow you to use Debug::Log / false = IT WILL NOT BE USED |
 ---
 
 ## Core Concepts & Types
@@ -195,11 +293,12 @@ Each of these classes is documented in more detail in the **generated API websit
    - `Quit()` — cleanup (optional)
 4. **Register scenes** using `SceneManager::AddScene<YourScene>("Name")`.
 5. **Load a scene** with `SceneManager::LoadScene("Name")`.
-6. **Start the engine** with `PiXELGraph::GetInstance().Run()`.
+6. **Initialize the engine** by deriving PiXELGraph to a class.
+7. **Make the class constructor** and use `Init(WIDTH, HEIGHT, PIXEL_SIZE, TITLE_NAME)`.
 
 ---
 
-## Debugging
+## Debugging & Errors
 
 Use the `Debug` class to log information to a debug buffer:
 
@@ -207,41 +306,11 @@ Use the `Debug` class to log information to a debug buffer:
 Debug::Log("Hello from PiXELGraph!\n");
 ```
 
-Errors inside the engine throw an `Error` exception with a message you can catch:
+The engine has a built-in error handler and will **catch `Error` exceptions automatically**.  
+If something goes wrong internally, the engine will capture it and forward the message to the debug output window (from `DebugWindow.cpp`).
+
+If you want to trigger your own controlled failures, you can throw an error manually:
 
 ```cpp
-try
-{
-    PiXELGraph::GetInstance().Run();
-}
-catch (const Error& e)
-{
-    Debug::Log(std::string("Engine error: ") + e.what() + "\n");
-}
+throw Error("Player health is below zero!");
 ```
-
----
-
-## License
-
-> Add your license information here (MIT, GPL, proprietary, etc.).
-
----
-
-## Generated Documentation Site
-
-This repo comes with a static **HTML documentation site** in the `docs/` folder:
-
-- `docs/index.html` — overview & navigation
-- `docs/classes/*.html` — one page per engine class, with:
-  - Method list (signatures)
-  - Header include path
-  - **Beginner-friendly usage example**
-
-You can host it locally or publish it via GitHub Pages.
-
-```text
-# For GitHub Pages
-# Put 'docs/' in the repository and enable Pages → "Deploy from /docs"
-```
-
