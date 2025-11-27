@@ -11,7 +11,7 @@
 #include "Core/SceneManager.h"
 
 SceneManager::SceneManager()
-{ currentScene = nullptr; changeScene = false;}
+{ currentScene = nullptr; SceneManagerChanges = false;}
 
 SceneManager &SceneManager::GetInstance()
 {
@@ -24,27 +24,27 @@ void SceneManager::RunScene()
     auto &instance = GetInstance(); 
 
     Scene *scene = instance.GetActiveScene();
-    instance.changeScene = false;
+    instance.SceneManagerChanges = false;
 
     scene->Start();
 
-    while (!instance.changeScene)
+    while (!instance.SceneManagerChanges)
     {
         Time::Tick();
         
-        if(instance.changeScene) continue;
+        if(instance.SceneManagerChanges) continue;
         scene->Event();
 
         if (Time::deltaTime >= 1.0f / FPS)
         {
             Time::Reset();
 
-            if(instance.changeScene) continue;
+            if(instance.SceneManagerChanges) continue;
             scene->Update();
 
             Screen::Clear();
 
-            if(instance.changeScene) continue;
+            if(instance.SceneManagerChanges) continue;
             scene->Draw();
 
             Screen::Display();
@@ -65,7 +65,7 @@ void SceneManager::LoadScene(int buildIndex)
     instance.currentScene->buildIndex = instance.scenes[buildIndex].buildIndex;
     instance.currentScene->name = instance.scenes[buildIndex].name;
 
-    instance.changeScene = true;
+    instance.SceneManagerChanges = true;
 }
 
 void SceneManager::LoadScene(const std::string &name)
@@ -75,6 +75,12 @@ void SceneManager::LoadScene(const std::string &name)
     int index = 0;
     for(; index <= instance.scenes.size() && instance.scenes[index].name != name; index++);
     LoadScene(index);
+}
+
+void SceneManager::StopScene()
+{
+    auto &instance = GetInstance();
+    instance.SceneManagerChanges = true;
 }
 
 Scene *SceneManager::GetActiveScene()

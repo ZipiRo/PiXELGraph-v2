@@ -27,7 +27,7 @@ private:
         timer += Time::deltaTime;
         if(timer >= 1)
         {
-            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 1");
+            // Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 1");
             timer = 0;
         }
 
@@ -38,6 +38,9 @@ private:
 
         if(Input::IsKeyDown(Key::Key_Space))
             SceneManager::LoadScene(SceneManager::GetActiveScene()->buildIndex + 1);
+
+        if(Input::IsKeyDown(Key::Key_Escape))
+            PiXELGraph::GetInstance().Exit();
     }
 
     void Draw() override
@@ -82,7 +85,7 @@ private:
         timer += Time::deltaTime;
         if(timer >= 1)
         {
-            Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 2");
+            // Debug::Log("FPS " + std::to_string(1.0f / Time::deltaTime) + " Demo 2");
             timer = 0;
         }
 
@@ -118,7 +121,7 @@ int main()
     SceneManager::AddScene<Demo1>("Scene 1");
     SceneManager::AddScene<Demo2>("Scene 2");
 
-    SceneManager::LoadScene("Scene 1");
+    // SceneManager::LoadScene("Scene 1");
 
     Engine engine;
     engine.Run();

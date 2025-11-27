@@ -34,10 +34,11 @@ class SceneManager
 private:
     std::unique_ptr<Scene> currentScene;
     std::vector<SceneInfo> scenes;
-    bool changeScene;
+    bool SceneManagerChanges;
     
     SceneManager();
     static void RunScene();
+    static void StopScene();
 
     friend class PiXELGraph;
     

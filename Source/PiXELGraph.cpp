@@ -36,9 +36,11 @@ void PiXELGraph::Init(int WindowWidth, int WindowHeight, int PixelSize, const st
         Event::GetInstance();
         Input::GetInstance();
         Font::GetInstance();
+
 #ifdef USE_AUDIO
         AudioSource::GetInstance();
 #endif
+
     }
     catch (const std::exception &exception)
     {
@@ -51,16 +53,21 @@ void PiXELGraph::Exit()
     if(!RUNNING) return;
     RUNNING = false;
 
-#ifndef USE_SCENE
-    activeInstance->Quit();
-#else
+#ifdef USE_SCENE
     SceneManager::GetActiveScene()->Quit();
+    SceneManager::StopScene();
+#else
+    activeInstance->Quit();
 #endif
 
 #ifdef USE_AUDIO
     AudioSource::Dispose();
 #endif
+
+#ifdef USE_DEBUGER
     Debug::KillDebuger();
+#endif
+
 }
 
 #ifndef USE_SCENE
@@ -149,8 +156,10 @@ void PiXELGraph::EventLoop()
 
 void PiXELGraph::HandleError(const std::string &message)
 {
+#ifdef USE_DEBUGER
     Debug::Log("ERROR: " + message);
-        
+#endif
+
     if(InputThread.joinable()) InputThread.join();
     if(EventThread.joinable()) EventThread.join();
 

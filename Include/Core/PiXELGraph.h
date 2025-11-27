@@ -18,7 +18,10 @@
 #include "Console/EventSystem.h"
 #include "Console/InputSystem.h"
 #include "Console/Window.h"
+
+#ifdef USE_DEBUGER
 #include "Console/Debug.h"
+#endif
 
 class PiXELGraph;
 class SceneManager;
@@ -64,10 +67,8 @@ private:
     friend class SceneManager;
 protected:
 
-    PiXELGraph();
-
     void Init(int WindowWidth, int WindowHeight, int PixelSize, const std::wstring &title);
-    void Exit();
+    PiXELGraph();
 
 #ifndef USE_SCENE
     virtual void Start() {}
@@ -83,4 +84,5 @@ public:
     static PiXELGraph &GetInstance();
     
     void Run();
+    void Exit();
 };

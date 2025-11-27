@@ -8,6 +8,11 @@
 #define USE_AUDIO
 #endif
 
+// Use DebugWindow
+#if true
+#define USE_DEBUGER
+#endif
+
 // Engine Maximum Frames Per Second 
 #define MaxFramesPerSecond 99999 // FPS
 

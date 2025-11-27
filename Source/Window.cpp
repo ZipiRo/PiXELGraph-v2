@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "EngineSettings.h"
 #include "Console/Window.h"
 
 int Window::WIDTH = 0;
@@ -17,7 +18,9 @@ Window &Window::GetInstance()
 
 void Window::ConstructWindow()
 {
+#ifdef USE_DEBUGER
     system("start DebugWindow.exe");
+#endif
 
     if (ConsoleOutputH == INVALID_HANDLE_VALUE)
     {
