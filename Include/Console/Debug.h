@@ -15,4 +15,5 @@ public:
     static Debug& GetInstance();
     static void Log(const std::string& msg);
     static void Kill();
+    static void Errors();
 };

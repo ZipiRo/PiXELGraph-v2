@@ -169,6 +169,7 @@ void PiXELGraph::HandleError(const std::string &message)
 
 #ifdef USE_DEBUGER
     Debug::Log("ERROR: " + message);
+    Debug::Errors();
 #endif
 
     if(InputThread.joinable()) InputThread.join();

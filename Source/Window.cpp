@@ -19,7 +19,7 @@ Window &Window::GetInstance()
 void Window::ConstructWindow()
 {
 #ifdef USE_DEBUGER
-    system("start DebugWindow.exe");
+    system("start /min DebugWindow.exe");
 #endif
 
     if (ConsoleOutputH == INVALID_HANDLE_VALUE)
@@ -120,6 +120,7 @@ void Window::ConstructWindow()
         throw Error("SetConsoleWindowInfo");
         return;
     }
+
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 }

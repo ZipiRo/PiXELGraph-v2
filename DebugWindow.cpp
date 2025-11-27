@@ -7,7 +7,12 @@
 int main()
 {
     SetConsoleTitleW(L"PiXELGraph v2.0 | DebugWindow");
+    
+    HWND console = GetConsoleWindow();
+    HMENU menu = GetSystemMenu(console, FALSE);
 
+    EnableMenuItem(menu, SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+    
     std::ifstream debug("debug.tmp", std::ios::in);
     debug.seekg(0);
 
@@ -19,6 +24,15 @@ int main()
         {
             if (line == "-0xKILL")
                 return 0;
+            else if(line == "-0xERROR")
+            {
+                ShowWindow(console, SW_RESTORE);
+                SetForegroundWindow(console);
+                EnableMenuItem(menu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
+
+                DrawMenuBar(console); 
+                SetWindowPos(console, NULL, 0,0,0,0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            }
 
             std::cout << line << std::endl;
         }

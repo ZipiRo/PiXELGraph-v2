@@ -24,3 +24,8 @@ void Debug::Kill()
 {
     Log("-0xKILL");
 }
+
+void Debug::Errors()
+{
+    Log("-0xERROR");
+}
