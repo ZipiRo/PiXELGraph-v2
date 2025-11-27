@@ -1,6 +1,6 @@
 # PiXELGraph-v2
 
-PiXELGraph-v2 is a **retro-style Windows console graphics engine** written in C++.  
+PiXELGraph-v2 is a **console graphics engine** written in C++.  
 It lets you build simple 2D games, visual experiments, and tools directly in the console window using:
 - Scenes and a basic game loop
 - Shapes, text rendering, and a virtual camera
@@ -9,6 +9,7 @@ It lets you build simple 2D games, visual experiments, and tools directly in the
 - A small math layer (`Vector2`, `Transform`, etc.)
 
 The library is distributed as a precompiled static library (`Library/PiXELGraph-v2.a`) plus headers in `Include/`.
+PiXELGraph-v2 is just for Windows for now!
 
 ---
 ## ⚠ Important Build Note
