@@ -12,6 +12,6 @@ namespace Shapes
     
     public:
         Elipse();
-        Elipse(float radiusX, float radiusY, const int point_count = 30);
+        Elipse(float radiusX, float radiusY, const int point_count = 15);
     };   
 }

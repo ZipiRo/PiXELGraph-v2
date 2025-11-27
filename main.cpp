@@ -8,7 +8,7 @@ private:
 
     void Start() override
     {
-        e1 = Shapes::Elipse(10, 10);
+        e1 = Shapes::Elipse(10, 10, 10);
         e1.SetColor(Color::Black);
         e1.transform.SetPosition(50, 100);
 
@@ -62,7 +62,7 @@ private:
     Shapes::Elipse e1;
     void Start() override
     {
-        e1 = Shapes::Elipse(10, 10);
+        e1 = Shapes::Elipse(10, 10, 10);
         e1.SetColor(Color::Black);
         e1.transform.SetPosition(100, 100);
         Screen::BackgroundColor = Color::Blue;
@@ -112,7 +112,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(800, 600, 3, L"Game"); MaxFramesPerSecond = 10; }
+    Engine() { Init(800, 600, 3, L"Game"); MaxFramesPerSecond = MaxFPS; }
 };
 
 int main()

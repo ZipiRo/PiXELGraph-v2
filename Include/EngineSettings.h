@@ -12,3 +12,5 @@
 #if true
 #define USE_DEBUGER
 #endif
+
+#define MaxFPS 99999 // FPS
