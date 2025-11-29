@@ -68,7 +68,7 @@ void SceneManager::RemoveScene(const std::string &name)
     auto &instance = GetInstance();
 
     int index = 0;
-    for(; index <= instance.scenes.size() && instance.scenes[index].name != name; index++);
+    for(; index < instance.scenes.size() && instance.scenes[index].name != name; index++);
     RemoveScene(index);
 }
 
@@ -92,7 +92,7 @@ void SceneManager::LoadScene(const std::string &name)
     auto &instance = GetInstance();
 
     int index = 0;
-    for(; index <= instance.scenes.size() && instance.scenes[index].name != name; index++);
+    for(; index < instance.scenes.size() && instance.scenes[index].name != name; index++);
     LoadScene(index);
 }
 

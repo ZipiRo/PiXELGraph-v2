@@ -104,6 +104,7 @@ private:
     void Draw() override
     {        
         DrawShape(e1);
+        PlotPixel(ousepos.x, ousepos.y, Color::Black);
     }
 
     void Quit() override
@@ -117,7 +118,7 @@ public:
 
 class Engine : public PiXELGraph {
 public:
-    Engine() { Init(800, 600, 1, L"Game"); MaxFramesPerSecond = 121; }
+    Engine() { Init(800, 600, 2, L"Game"); MaxFramesPerSecond = 121; }
 };
 
 int main()
