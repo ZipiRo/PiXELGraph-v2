@@ -258,9 +258,6 @@ void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
     float lineAngle = acosf(ny);
 
     int half = thickness * 0.5f;
-
-    int 
-
 }
 
 void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
