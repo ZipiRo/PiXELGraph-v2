@@ -45,12 +45,13 @@ public:
 void PlotPixel(int x, int y, Color color);
 
 void DrawLine(int x1, int y1, int x2, int y2, Color color);
+void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color);
 void DrawRectangle(int x, int y, int width, int height, Color color);
 void FillRectangle(int x, int y, int width, int height, Color color);
 void DrawElipse(int x, int y, int width, int height, Color color, int point_count = 30);
 void FillElipse(int x, int y, int width, int height, Color color, int point_count = 30);
 
-void DrawLines(const std::vector<Vertex> &vertices, bool closed = true);
+void DrawLines(const std::vector<Vertex> &vertices, bool closed = true, int thickness = 1);
 void DrawShape(Shape &shape);
 void DrawTEXT(Text &text);
 

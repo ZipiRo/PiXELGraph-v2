@@ -19,7 +19,9 @@ private:
     BoundingBox boundingBox;
 
     Color color;
-    Color fillColor;
+
+    int font_weight;
+    int font_size;
 
     std::string string;
 
@@ -34,6 +36,8 @@ public:
     BoundingBox GetBoundingBox();
 
     void SetString(const std::string &text);
+    void SetFontSize(int size);
+    void SetFontWeight(int weight);
 
     void SetColor(Color color);
 };

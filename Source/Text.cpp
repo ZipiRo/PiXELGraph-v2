@@ -54,8 +54,11 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
 
 Text::Text()
 {
-    this->color = Color::Transparent;
-    this->fillColor = Color::Transparent;
+    color = Color::Black;
+    font_size = 5;
+    font_weight = 1;
+
+    transform.SetScale(font_size, font_size);
 }
 
 std::vector<Vertex> Text::GetTvertices()
@@ -97,4 +100,18 @@ void Text::SetColor(Color color)
     this->color = color;
     for (auto &vertex : vertices)
         vertex.color = this->color;
+}
+
+void Text::SetFontSize(int size)
+{
+    font_size = size;
+    transform.SetScale(font_size, font_size);
+}
+
+// The font weight starts from 1
+void Text::SetFontWeight(int weight)
+{
+    font_weight = weight;
+    if(font_weight <= 0)
+        font_weight = 1;
 }

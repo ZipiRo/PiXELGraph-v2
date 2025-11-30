@@ -243,6 +243,26 @@ void DrawLine(int x1, int y1, int x2, int y2, Color color)
     }
 }
 
+void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
+{
+    float dx = (float)(x2 - x1);
+    float dy = (float)(y2 - y1);
+
+    float length = Vector2::Length(Vector2(dx, dy));
+    if(length <= 1) return;
+
+    float inverseLength = 1.0f / length;
+
+    float nx = -dy * inverseLength;
+    float ny = dx * inverseLength;
+    float lineAngle = acosf(ny);
+
+    int half = thickness * 0.5f;
+
+    int 
+
+}
+
 void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
 {
     int minY = boundingBox.top;
@@ -381,7 +401,7 @@ void FillShape(const std::vector<Vertex> &vertices, const BoundingBox& boundingB
     Fill(new_vertices, boundingBox, color);
 }
 
-void DrawLines(const std::vector<Vertex> &vertices, bool closed)
+void DrawLines(const std::vector<Vertex> &vertices, bool closed, int thickness)
 {
     for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
     {
@@ -400,7 +420,8 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed)
         Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
         Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
 
-        DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+        if(thickness > 1) DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
+        else DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
     }
 }
 
@@ -454,8 +475,8 @@ void DrawTEXT(Text &text)
             std::vector<Vertex>line;
             line.emplace_back(text.Tvertices[text.indices[i]]);
             line.emplace_back(text.Tvertices[text.indices[i + 1]]);
-
-            DrawLines(line, false);
+            
+            DrawLines(line, false, text.font_weight);
         }
     }
 }
