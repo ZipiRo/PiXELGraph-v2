@@ -245,19 +245,58 @@ void DrawLine(int x1, int y1, int x2, int y2, Color color)
 
 void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
 {
-    float dx = (float)(x2 - x1);
-    float dy = (float)(y2 - y1);
+    if(thickness <= 0) 
+        return;
+        
+    if(thickness == 1)
+    {
+        DrawLine(x1, y1, x2, y2, color);
+        return;
+    }
+        
+    float dx = (float)x2 - x1;
+    float dy = (float)y2 - y1;
 
     float length = Vector2::Length(Vector2(dx, dy));
-    if(length <= 1) return;
+    if(length < 0.01f)
+    {
+        float half = thickness * 0.5f;
+        FillRectangle(x1 - half, y2 - half, thickness, thickness, color);
 
-    float inverseLength = 1.0f / length;
+        return;
+    }
 
-    float nx = -dy * inverseLength;
-    float ny = dx * inverseLength;
-    float lineAngle = acosf(ny);
+    float nx = -dy / length;
+    float ny = dx / length;
 
-    int half = thickness * 0.5f;
+    float half = thickness * 0.5f;
+
+    float ox = nx * half;
+    float oy = ny * half;
+
+    std::vector<Vector2> vertices;
+    
+    vertices.emplace_back(x1 - ox, y1 - oy);
+    vertices.emplace_back(x2 - ox, y2 - oy);
+    vertices.emplace_back(x2 + ox , y2 + oy);
+    vertices.emplace_back(x1 + ox , y1 + oy);
+
+    float left = vertices[0].x;
+    float top = vertices[0].y;
+    float right = vertices[0].x;
+    float bottom = vertices[0].y;
+
+    for(const auto &vertex : vertices)
+    {
+        left = std::min(left, vertex.x);
+        top = std::min(top, vertex.y);
+        right = std::max(right , vertex.x);
+        bottom = std::max(bottom, vertex.y);
+    }
+
+    BoundingBox box(left, top, right, bottom);
+
+    Fill(vertices, box, color);
 }
 
 void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
@@ -417,8 +456,8 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed, int thickness)
         Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
         Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
 
-        if(thickness > 1) DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
-        else DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+        if(thickness == 1) DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+            else DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
     }
 }
 

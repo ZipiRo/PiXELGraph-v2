@@ -55,7 +55,7 @@ void CreateTextVertices(const std::string &text, std::vector<Vertex> &vertices, 
 Text::Text()
 {
     color = Color::Black;
-    font_size = 5;
+    font_size = 6;
     font_weight = 1;
 
     transform.SetScale(font_size, font_size);
@@ -102,9 +102,13 @@ void Text::SetColor(Color color)
         vertex.color = this->color;
 }
 
+// The font size starts from 6 
 void Text::SetFontSize(int size)
 {
     font_size = size;
+    if(font_size < 6)
+        font_size = 6;
+        
     transform.SetScale(font_size, font_size);
 }
 
