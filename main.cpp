@@ -5,17 +5,21 @@ class Demo1 : public Scene
 private:
     
     Text default_text;
+    Text bold_text;
 
-    std::string words = "The quick brown fox jumps over the lazy dog";
+    std::string words = "The quick brown fox jumps over the lazy dog!";
 
     void Start() override
     {
-        Screen::BackgroundColor = Color::Black;
+        Screen::BackgroundColor = Color::White;
 
         default_text.SetString(words);
-        default_text.SetFontSize(6);
-        default_text.SetColor(Color::White);
-        // default_text.SetFontWeight(2);
+        default_text.transform.SetPosition(5, 5);
+
+        bold_text.SetString(words);
+        bold_text.transform.SetPosition(5, 20);
+        bold_text.SetFontSize(9);
+        bold_text.SetFontWeight(2);
     }
 
     void Event() override 
@@ -35,8 +39,7 @@ private:
     void Draw() override
     {
         DrawTEXT(default_text);
-
-        DrawThickLine(100, 100, 200, 200, 2, Color::White);
+        DrawTEXT(bold_text);
     }
 
     void Quit() override
