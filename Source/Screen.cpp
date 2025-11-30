@@ -118,6 +118,8 @@ void Screen::Clear()
 int Screen::Width() { return ScreenWidth - 1; }
 int Screen::Height() { return ScreenHeight - 1; }
 
+// PRIMARY DRAW
+
 void PlotPixel(int x, int y, Color color)
 {
     auto& screenInstance = Screen::GetInstance();
@@ -243,6 +245,7 @@ void DrawLine(int x1, int y1, int x2, int y2, Color color)
     }
 }
 
+// OTHER DRAW
 void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
 {
     int minY = boundingBox.top;
@@ -295,6 +298,64 @@ void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, 
     }
 
     delete[] intersections;
+}
+
+void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
+{
+    if(thickness <= 0) 
+        return;
+        
+    if(thickness == 1)
+    {
+        DrawLine(x1, y1, x2, y2, color);
+        return;
+    }
+
+    thickness -= 1; 
+        
+    float dx = (float)x2 - x1;
+    float dy = (float)y2 - y1;
+
+    float length = Vector2::Length(Vector2(dx, dy));
+    if(length < 0.01f)
+    {
+        float half = thickness * 0.5f;
+        FillRectangle(x1 - half, y2 - half, thickness, thickness, color);
+
+        return;
+    }
+
+    float nx = -dy / length;
+    float ny = dx / length;
+
+    float half = thickness * 0.5f;
+
+    float ox = nx * half;
+    float oy = ny * half;
+
+    std::vector<Vector2> vertices;
+    
+    vertices.emplace_back(x1 - ox, y1 - oy);
+    vertices.emplace_back(x2 - ox, y2 - oy);
+    vertices.emplace_back(x2 + ox , y2 + oy);
+    vertices.emplace_back(x1 + ox , y1 + oy);
+
+    float left = vertices[0].x;
+    float top = vertices[0].y;
+    float right = vertices[0].x;
+    float bottom = vertices[0].y;
+
+    for(const auto &vertex : vertices)
+    {
+        left = std::min(left, vertex.x);
+        top = std::min(top, vertex.y);
+        right = std::max(right , vertex.x);
+        bottom = std::max(bottom, vertex.y);
+    }
+
+    BoundingBox box(left, top, right, bottom);
+
+    Fill(vertices, box, color);
 }
 
 void DrawRectangle(int x, int y, int width, int height, Color color)
@@ -381,7 +442,7 @@ void FillShape(const std::vector<Vertex> &vertices, const BoundingBox& boundingB
     Fill(new_vertices, boundingBox, color);
 }
 
-void DrawLines(const std::vector<Vertex> &vertices, bool closed)
+void DrawLines(const std::vector<Vertex> &vertices, bool closed, int thickness)
 {
     for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
     {
@@ -400,7 +461,8 @@ void DrawLines(const std::vector<Vertex> &vertices, bool closed)
         Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
         Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
 
-        DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+        if(thickness == 1) DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+            else DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
     }
 }
 
@@ -430,7 +492,7 @@ void DrawShape(Shape &shape)
     }
 
     if (shape.color != Color::Transparent)
-        DrawLines(shape.Tvertices);
+        DrawLines(shape.Tvertices, true, shape.lineThickness);
     
     shape.transform.update = false;
 }
@@ -454,8 +516,8 @@ void DrawTEXT(Text &text)
             std::vector<Vertex>line;
             line.emplace_back(text.Tvertices[text.indices[i]]);
             line.emplace_back(text.Tvertices[text.indices[i + 1]]);
-
-            DrawLines(line, false);
+            
+            DrawLines(line, false, text.font_weight);
         }
     }
 }
