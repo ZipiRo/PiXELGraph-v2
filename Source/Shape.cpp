@@ -7,8 +7,9 @@ Shape::Shape(const std::vector<Vertex> &vertices)
 {
     this->vertices = vertices;
 
-    this->color = Color::Transparent;
-    this->fillColor = Color::Transparent;
+    color = Color::Transparent;
+    fillColor = Color::Transparent;
+    lineThickness = 1;
 
     boundingBox = UpdateAABB(vertices);
 
@@ -84,4 +85,8 @@ void Shape::SetColor(Color color)
 void Shape::SetFillColor(Color color)
 {
     fillColor = color;
+}
+void Shape::SetLineThickness(int thickness)
+{
+    lineThickness = thickness;
 }
