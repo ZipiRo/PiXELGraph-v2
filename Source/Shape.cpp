@@ -81,7 +81,3 @@ void Shape::SetFillColor(Color color)
 {
     fillColor = color;
 }
-void Shape::SetLineThickness(int thickness)
-{
-    lineThickness = thickness;
-}

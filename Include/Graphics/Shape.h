@@ -20,8 +20,6 @@ private:
     BoundingBox boundingBox;
     BoundingBox VBoundingBox;
 
-    int lineThickness;
-
     Color color;
     Color fillColor;
 
@@ -38,8 +36,6 @@ public:
 
     void SetColor(Color color);
     void SetFillColor(Color color);
-    void SetLineThickness(int thickness);
-
 };
 
 std::vector<Vertex> UpdateVertices(Transform &transform, const std::vector<Vertex> &vertices);

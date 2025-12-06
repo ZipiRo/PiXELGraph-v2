@@ -401,7 +401,7 @@ void DrawShape(Shape &shape)
     }
 
     if (shape.color != Color::Transparent)
-        DrawLines(shape.Tvertices, true, shape.lineThickness);
+        DrawLines(shape.Tvertices);
     
     shape.transform.update = false;
 }
