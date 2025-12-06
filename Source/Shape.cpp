@@ -9,10 +9,6 @@ Shape::Shape(const std::vector<Vertex> &vertices)
 
     color = Color::Transparent;
     fillColor = Color::Transparent;
-<<<<<<< HEAD
-    lineThickness = 1;
-=======
->>>>>>> Redoing-the-Drawing
 
     boundingBox = UpdateAABB(vertices);
 
