@@ -23,8 +23,6 @@ private:
     Color color;
     Color fillColor;
 
-    int lineThickness;
-
     friend void DrawShape(Shape &shape);
     Shape() {}
 
@@ -38,7 +36,6 @@ public:
 
     void SetColor(Color color);
     void SetFillColor(Color color);
-    void SetLineThickness(int thickness);
 };
 
 std::vector<Vertex> UpdateVertices(Transform &transform, const std::vector<Vertex> &vertices);

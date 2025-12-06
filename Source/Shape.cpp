@@ -7,13 +7,13 @@ Shape::Shape(const std::vector<Vertex> &vertices)
 {
     this->vertices = vertices;
 
-    this->color = Color::Transparent;
-    this->fillColor = Color::Transparent;
+    color = Color::Transparent;
+    fillColor = Color::Transparent;
 
     boundingBox = UpdateAABB(vertices);
 
     for (auto &vertex : this->vertices)
-        vertex.color = this->color;
+        vertex.color = color;
 }
 
 std::vector<Vertex> UpdateVertices(Transform &transfrom, const std::vector<Vertex> &vertices)
