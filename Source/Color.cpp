@@ -45,32 +45,22 @@ Color Color::operator/(float factor) const
 
 Color Color::operator*(const Color &other) const
 {
-    return Color(this->r * other.r, this->g * other.g, this->b * other.b);
+    return Color(this->r * other.r, this->g * other.g, this->b * other.b, this->a * other.a);
 }
 
 Color Color::operator/(const Color &other) const
 {
-    return Color(this->r / other.r, this->g / other.g, this->b / other.b);
+    return Color(this->r / other.r, this->g / other.g, this->b / other.b, this->a / other.a);
 }
 
 Color Color::operator+(const Color &other) const 
 {
-    return Color(this->r + other.r, this->g + other.g, this->b + other.b);
+    return Color(this->r + other.r, this->g + other.g, this->b + other.b, this->a + other.a);
 }
 
 Color Color::operator-(const Color &other) const 
 {
-    return Color(this->r - other.r, this->g - other.g, this->b - other.b);
-}
-
-Color Color::operator+(float amount) const 
-{
-    return Color(this->r + amount, this->g + amount, this->b + amount);
-}
-
-Color Color::operator-(float amount) const 
-{
-    return Color(this->r - amount, this->g - amount, this->b - amount);
+    return Color(this->r - other.r, this->g - other.g, this->b - other.b, this->a - other.a);
 }
 
 Color::Color(int r, int g, int b, float a)

@@ -21,9 +21,6 @@ public:
     Color operator*(const Color &other) const;
     Color operator/(const Color &other) const;
 
-    Color operator+(float amount) const;
-    Color operator-(float amount) const;
-
     Color operator+(const Color &other) const;
     Color operator-(const Color &other) const;
 

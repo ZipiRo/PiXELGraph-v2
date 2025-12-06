@@ -53,6 +53,7 @@ void Transform::SetAngle(float newAngle)
 {
     angle = newAngle;
     NormalizeAngle(this->angle);
+    SinCosUpdate();
     update = true;
 }
 
@@ -109,6 +110,7 @@ void Transform::Rotate(float amount)
 {
     angle += amount;
     NormalizeAngle(angle);
+    SinCosUpdate();
     update = true;
 }
 

@@ -9,19 +9,20 @@ Shape::Shape(const std::vector<Vertex> &vertices)
 
     color = Color::Transparent;
     fillColor = Color::Transparent;
+<<<<<<< HEAD
     lineThickness = 1;
+=======
+>>>>>>> Redoing-the-Drawing
 
     boundingBox = UpdateAABB(vertices);
 
     for (auto &vertex : this->vertices)
-        vertex.color = this->color;
+        vertex.color = color;
 }
 
 std::vector<Vertex> UpdateVertices(Transform &transfrom, const std::vector<Vertex> &vertices)
 {
     std::vector<Vertex> Tvertices;
-
-    transfrom.SinCosUpdate();
 
     for (auto &vertex : vertices)
         Tvertices.emplace_back(Vertex(TransformVertex(transfrom, vertex.position), vertex.color));
@@ -57,7 +58,6 @@ std::vector<Vertex> Shape::GetTvertices()
     if (transform.update)
     {
         Tvertices = UpdateVertices(transform, vertices);
-        transform.update = false;
     }
 
     return Tvertices;
@@ -69,7 +69,6 @@ BoundingBox Shape::GetBoundingBox()
     {
         Tvertices = UpdateVertices(transform, vertices);
         boundingBox = UpdateAABB(Tvertices);
-        transform.update = false;
     }
 
     return boundingBox;
