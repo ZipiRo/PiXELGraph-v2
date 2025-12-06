@@ -115,30 +115,31 @@ void Screen::Clear()
     std::fill(instance.ScreenBuffer.begin(), instance.ScreenBuffer.end(), BackgroundColor);
 }
 
-int Screen::Width() { return ScreenWidth - 1; }
-int Screen::Height() { return ScreenHeight - 1; }
+int Screen::Width() 
+{ 
+    return ScreenWidth - 1;
+}
+
+int Screen::Height() 
+{ 
+    return ScreenHeight - 1; 
+}
 
 void PlotPixel(int x, int y, Color color)
 {
-    auto& screenInstance = Screen::GetInstance();
+    if (!(x >= 0 && x < Screen::ScreenWidth && y >= 0 && y < Screen::ScreenHeight)) return;
 
-    Color pixelColor = color;
+    auto& screenInstance = Screen::GetInstance();   
+    Color lastColor = screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x];
 
-    if (x >= 0 && x < Screen::ScreenWidth && y >= 0 && y < Screen::ScreenHeight)
-    {
-        Color lastColor = screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x];
+    float inverseAlpha = 1.0f - color.a;
 
-        float inverseAlpha = 1.0f - color.a;
-
-        pixelColor = Color(
-            (color.r * color.a) + (lastColor.r * inverseAlpha), 
-            (color.g * color.a) + (lastColor.g * inverseAlpha), 
-            (color.b * color.a) + (lastColor.b * inverseAlpha),
-            color.a
-        );
-
-        screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x] = pixelColor;        
-    }
+    screenInstance.ScreenBuffer[y * Screen::ScreenWidth + x] = Color(
+        (color.r * color.a) + (lastColor.r * inverseAlpha), 
+        (color.g * color.a) + (lastColor.g * inverseAlpha), 
+        (color.b * color.a) + (lastColor.b * inverseAlpha),
+        color.a
+    );   
 }
 
 void DrawLine(int x1, int y1, int x2, int y2, Color color)
@@ -274,24 +275,24 @@ void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
     float ox = nx * half;
     float oy = ny * half;
 
-    std::vector<Vector2> vertices;
+    std::vector<Vertex> vertices;
     
     vertices.emplace_back(x1 - ox, y1 - oy);
     vertices.emplace_back(x2 - ox, y2 - oy);
     vertices.emplace_back(x2 + ox , y2 + oy);
     vertices.emplace_back(x1 + ox , y1 + oy);
 
-    float left = vertices[0].x;
-    float top = vertices[0].y;
-    float right = vertices[0].x;
-    float bottom = vertices[0].y;
+    float left = vertices[0].position.x;
+    float top = vertices[0].position.y;
+    float right = vertices[0].position.x;
+    float bottom = vertices[0].position.y;
 
     for(const auto &vertex : vertices)
     {
-        left = std::min(left, vertex.x);
-        top = std::min(top, vertex.y);
-        right = std::max(right , vertex.x);
-        bottom = std::max(bottom, vertex.y);
+        left = std::min(left, vertex.position.x);
+        top = std::min(top, vertex.position.y);
+        right = std::max(right , vertex.position.x);
+        bottom = std::max(bottom, vertex.position.y);
     }
 
     BoundingBox box(left, top, right, bottom);
@@ -299,7 +300,31 @@ void DrawThickLine(int x1, int y1, int x2, int y2, int thickness, Color color)
     Fill(vertices, box, color);
 }
 
-void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, const Color &color)
+void DrawLines(const std::vector<Vertex> &vertices, bool closed, int thickness)
+{
+    for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+    {
+        auto next_vertex = std::next(vertex);
+        if (next_vertex == vertices.end())
+        {
+            if (closed)
+                next_vertex = vertices.begin();
+            else
+                return;
+        }
+
+        Vertex vertexA = *vertex;
+        Vertex vertexB = *next_vertex;
+
+        const Vector2 &A = Screen::GetView().WorldToScreen(vertexA.position);
+        const Vector2 &B = Screen::GetView().WorldToScreen(vertexB.position);
+
+        if(thickness == 1) DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
+            else DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
+    }
+}
+
+void Fill(const std::vector<Vertex> &vertices, const BoundingBox &boundingBox, const Color &color)
 {
     int minY = boundingBox.top;
     int maxY = boundingBox.bottom;
@@ -307,12 +332,7 @@ void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, 
     if (minY > maxY)
         std::swap(minY, maxY);
 
-    if (minY < 0 && maxY >= 0)
-        minY = 0;
-    else if (minY < 0 || maxY < 0)
-        return;
-
-    const int maxSize = maxY * 2 + 5;
+    const int maxSize = std::abs(maxY) * 2 + 5;
     int *intersections = new int[maxSize];
 
     for (int y = minY; y <= maxY; y++)
@@ -353,114 +373,6 @@ void Fill(const std::vector<Vector2> &vertices, const BoundingBox &boundingBox, 
     delete[] intersections;
 }
 
-void DrawRectangle(int x, int y, int width, int height, Color color)
-{
-    width = width + x;
-    height = height + y;
-
-    DrawLine(x, y, width, y, color);
-    DrawLine(width, y, width, height, color);
-    DrawLine(width, height, x, height, color);
-    DrawLine(x, height, x, y, color);
-}
-
-void FillRectangle(int x, int y, int width, int height, Color color)
-{
-    float left = x;
-    float top = y;
-    float right = x + width;
-    float bottom = y + height;
-
-    for(int y = top; y <= bottom; y++)
-        for(int x = left; x <= right; x++)
-            PlotPixel(x, y, color);
-}
-
-void DrawElipse(int x, int y, int width, int height, Color color, int point_count)
-{
-    float rez = (2 * PI) / point_count;
-    float last_X, last_Y, f_X, f_Y;
-
-    for (float angle = 0.0f; angle <= 2 * PI; angle += rez)
-    {
-        float new_X = cos(angle) * width;
-        float new_Y = sin(angle) * height;
-
-        if (angle <= 0.0f)
-        {
-            last_X = new_X;
-            last_Y = new_Y;
-            f_X = new_X;
-            f_Y = new_Y;
-
-            continue;
-        }
-
-        DrawLine(last_X + x, last_Y + y, new_X + x, new_Y + y, color);
-
-        last_X = new_X;
-        last_Y = new_Y;
-    }
-
-    DrawLine(last_X + x, last_Y + y, f_X + x, f_Y + y, color);
-}
-
-void FillElipse(int x, int y, int width, int height, Color color, int point_count)
-{
-    float left = x;
-    float top = y;
-    float right = x + width;
-    float bottom = y + height;
-
-    BoundingBox boundingBox(left, top, right, bottom);
-    std::vector<Vector2> vertices;
-
-    float rez = (2 * PI) / point_count;
-    for (float angle = 0.0f; angle <= 2 * PI; angle += rez)
-    {
-        float x = cos(angle) * width;
-        float y = sin(angle) * height;
-
-        vertices.emplace_back(x, y);
-    }
-
-    Fill(vertices, boundingBox, color);
-}
-
-void FillShape(const std::vector<Vertex> &vertices, const BoundingBox& boundingBox, Color color)
-{
-    std::vector<Vector2> new_vertices;
-
-    for(const auto &vertex : vertices)
-        new_vertices.push_back(vertex.position);
-
-    Fill(new_vertices, boundingBox, color);
-}
-
-void DrawLines(const std::vector<Vertex> &vertices, bool closed, int thickness)
-{
-    for (auto vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
-    {
-        auto next_vertex = std::next(vertex);
-        if (next_vertex == vertices.end())
-        {
-            if (closed)
-                next_vertex = vertices.begin();
-            else
-                return;
-        }
-
-        Vertex vertexA = *vertex;
-        Vertex vertexB = *next_vertex;
-
-        Vector2 A = Screen::GetView().WorldToScreen(vertexA.position);
-        Vector2 B = Screen::GetView().WorldToScreen(vertexB.position);
-
-        if(thickness == 1) DrawLine(A.x, A.y, B.x, B.y, vertexA.color);
-            else DrawThickLine(A.x, A.y, B.x, B.y, thickness, vertexA.color);
-    }
-}
-
 void DrawShape(Shape &shape)
 {
     if(shape.vertices.empty()) return;
@@ -483,7 +395,7 @@ void DrawShape(Shape &shape)
             shape.VBoundingBox = UpdateAABB(viewVertices);
         }
      
-        FillShape(shape.VTvertices, shape.VBoundingBox, shape.fillColor);
+        Fill(shape.VTvertices, shape.VBoundingBox, shape.fillColor);
     }
 
     if (shape.color != Color::Transparent)
@@ -515,4 +427,79 @@ void DrawTEXT(Text &text)
             DrawLines(line, false, text.font_weight);
         }
     }
+}
+
+
+void DrawRectangle(int x, int y, int width, int height, Color color)
+{
+    width = width + x;
+    height = height + y;
+
+    DrawLine(x, y, width, y, color);
+    DrawLine(width, y, width, height, color);
+    DrawLine(width, height, x, height, color);
+    DrawLine(x, height, x, y, color);
+}
+
+void FillRectangle(int x, int y, int width, int height, Color color)
+{
+    float left = x;
+    float top = y;
+    float right = x + width;
+    float bottom = y + height;
+
+    for(int y = top; y <= bottom; y++)
+        for(int x = left; x <= right; x++)
+            PlotPixel(x, y, color);
+}
+
+void DrawElipse(int x, int y, int radiusX, int radiusY, Color color, int point_count)
+{
+    float rez = (2 * PI) / point_count;
+    float last_X, last_Y, f_X, f_Y;
+
+    for (float angle = 0.01f; angle <= 2 * PI; angle += rez)
+    {
+        float new_X = cos(angle) * radiusX;
+        float new_Y = sin(angle) * radiusY;
+
+        if (angle <= 0.0f)
+        {
+            last_X = new_X;
+            last_Y = new_Y;
+            f_X = new_X;
+            f_Y = new_Y;
+
+            continue;
+        }
+
+        DrawLine(last_X + x, last_Y + y, new_X + x, new_Y + y, color);
+
+        last_X = new_X;
+        last_Y = new_Y;
+    }
+
+    DrawLine(last_X + x, last_Y + y, f_X + x, f_Y + y, color);
+}
+
+void FillElipse(int x, int y, int radiusX, int radiusY, Color color, int point_count)
+{
+    float left = x - radiusX;
+    float top = y - radiusY;
+    float right = x + radiusX;
+    float bottom = y + radiusY;
+
+    BoundingBox boundingBox(left, top, right, bottom);
+    std::vector<Vertex> vertices;
+
+    float rez = (2 * PI) / point_count;
+    for (float angle = 0.01f; angle <= 2 * PI; angle += rez)
+    {
+        float new_x = cos(angle) * radiusX;
+        float new_y = sin(angle) * radiusY;
+
+        vertices.emplace_back(new_x + x, new_y + y);
+    }
+
+    Fill(vertices, boundingBox, color);
 }
