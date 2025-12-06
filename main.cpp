@@ -25,6 +25,7 @@ private:
 
         rect = Shapes::Rectangle(100, 100);
         rect.SetFillColor(Color::Red);
+        rect.transform.SetAngle(PI / 4);
         rect.SetColor(Color::Black);
     }
 
