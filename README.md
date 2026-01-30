@@ -12,15 +12,15 @@ The library is distributed as a precompiled static library (`Library/PiXELGraph-
 PiXELGraph-v2 is just for Windows for now!
 
 ---
-## ⚠ Important Build Note
+## Important Build Note
 
-### 🔹 You **must also compile** `DebugWindow.cpp`
+### You **must also compile** `DebugWindow.cpp`
 
 This file provides a secondary output console used for logging (`Debug::Log`) and engine messages.  
 If you build without it, the program will run, but debug output will not appear.
 The compiled DebugWindow.exe should be in the same folder as the main program.
 
-### 🔹 The resource `font.cf` **should be in the same folder as the main program** 
+### The resource `font.cf` **should be in the same folder as the main program** 
 This file is the main font used in the Font class.
 If you don't add it the program will give an exception that there is no font.cf file.
 
@@ -28,16 +28,16 @@ If you don't add it the program will give an exception that there is no font.cf 
 
 ## Features
 
-- ✅ **Scene system** (`Scene`, `SceneManager`) with `Start`, `Update`, `Draw`, `Event`, `Quit`
-- ✅ **Console window control** (`Window`, `Screen`, `View`)
-- ✅ **2D drawing API**:
+- **Scene system** (`Scene`, `SceneManager`) with `Start`, `Update`, `Draw`, `Event`, `Quit`
+- **Console window control** (`Window`, `Screen`, `View`)
+- **2D drawing API**:
   - Shapes (`Shape`, `Rectangle`, `Elipse`, `Vertex`, `BoundingBox`)
   - Text rendering (`Text`, `Font`)
   - Colors (`Color`)
-- ✅ **Input handling** (`Input`, `Event`) for keyboard and mouse
-- ✅ **Time utilities** (`Time::deltaTime`, `Time::Tick()`)
-- ✅ **Audio playback** (`AudioClip`, `AudioSource`)
-- ✅ **Debug utilities** (`Debug::Log`, custom `Error` exception)
+- **Input handling** (`Input`, `Event`) for keyboard and mouse
+- **Time utilities** (`Time::deltaTime`, `Time::Tick()`)
+- **Audio playback** (`AudioClip`, `AudioSource`)
+- **Debug utilities** (`Debug::Log`, custom `Error` exception)
 
 ---
 
@@ -78,7 +78,7 @@ Add the `Include/` directory to your compiler's include paths.
 g++ -std=c++17 -IInclude main.cpp Library/PiXELGraph-v2.a -o Demo
 ```
 
-> 💡 Adjust paths and library flags depending on your toolchain / project setup.
+> Adjust paths and library flags depending on your toolchain / project setup.
 
 ---
 
@@ -154,7 +154,7 @@ int main()
 }
 
 ```
-## 🔥 Running WITHOUT Scenes (manual mode)
+## Running WITHOUT Scenes (manual mode)
 
 If you prefer a raw engine loop like SDL/DirectX style:
 
@@ -218,7 +218,7 @@ When to use manual mode:
 
 ---
 
-## 🔧 EngineSettings.h options
+## EngineSettings.h options
 
 Located at:
 
@@ -235,7 +235,7 @@ Include/EngineSettings.h
 
 ---
 
-## 🖥 Event Function (Correct Input Handling)
+## Event Function (Correct Input Handling)
 
 PiXELGraph separates input event polling from rendering and updating.
 Because of this, all input should be processed inside Event(), not Update().
